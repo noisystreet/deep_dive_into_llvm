@@ -52,20 +52,34 @@
 
 | 文件 | 说明 |
 |------|------|
-| `source/preface/index.rst` | 前言：编写动机、目标读者、预备知识、全书结构 |
 | `source/index.rst` | Sphinx 根文档（toctree 入口） |
-| `source/chapter_01_intro/` | LLVM 简介（历史、架构概览、Hello World） |
-| `source/chapter_02_ir/` | LLVM IR 核心（IR 基础、指令集、元数据、模块结构） |
-| `source/chapter_03_frontend/` | 前端与 Clang（AST、CodeGen、Clang 架构） |
-| `source/chapter_04_pass/` | LLVM Pass 框架（Pass 基础、分析 Pass、变换 Pass） |
-| `source/chapter_05_opt/` | 优化通道（经典优化、内联、循环优化、向量化） |
-| `source/chapter_06_tablegen/` | TableGen（DSL 基础、记录、代码生成） |
-| `source/chapter_07_backend/` | 后端代码生成（指令选择、寄存器分配、指令调度） |
-| `source/chapter_08_jit/` | JIT 编译（MCJIT、ORC JIT、Lazy JIT） |
-| `source/chapter_09_tools/` | LLVM 工具链（opt, llc, lli, clang 等工具深度使用） |
-| `source/chapter_10_advanced/` | 进阶与实战（LTO、ThinLTO、Sanitizer、调试分析） |
-| `source/appendix/` | 附录（参考资源、代码阅读指南、术语表） |
 | `source/conf.py` | Sphinx 构建配置 |
+| `source/volume_01_llvm/index.rst` | 第一卷 LLVM 目录入口 |
+| `source/volume_01_llvm/preface/` | 前言：编写动机、目标读者、预备知识、全书结构 |
+| `source/volume_01_llvm/chapter_01_intro/` | LLVM 简介（历史、架构概览、Hello World） |
+| `source/volume_01_llvm/chapter_02_ir/` | LLVM IR 核心（IR 基础、指令集、元数据、模块结构） |
+| `source/volume_01_llvm/chapter_03_frontend/` | 前端与 Clang（AST、CodeGen、Clang 架构） |
+| `source/volume_01_llvm/chapter_04_pass/` | LLVM Pass 框架（Pass 基础、分析 Pass、变换 Pass） |
+| `source/volume_01_llvm/chapter_05_opt/` | 优化通道（经典优化、内联、循环优化、向量化） |
+| `source/volume_01_llvm/chapter_06_tablegen/` | TableGen（DSL 基础、记录、代码生成） |
+| `source/volume_01_llvm/chapter_07_backend/` | 后端代码生成（指令选择、寄存器分配、指令调度） |
+| `source/volume_01_llvm/chapter_08_jit/` | JIT 编译（MCJIT、ORC JIT、Lazy JIT） |
+| `source/volume_01_llvm/chapter_09_tools/` | LLVM 工具链（opt, llc, lli, clang 等工具深度使用） |
+| `source/volume_01_llvm/chapter_10_advanced/` | 进阶与实战（LTO、ThinLTO、Sanitizer、调试分析） |
+| `source/volume_01_llvm/appendix/` | 附录（参考资源、代码阅读指南、术语表、环境搭建） |
+| `source/volume_02_mlir/index.rst` | 第二卷 MLIR 目录入口 |
+| `source/volume_02_mlir/chapter_01_mlir_overview/` | MLIR 概述与设计哲学 |
+| `source/volume_02_mlir/chapter_02_core_concepts/` | 核心概念（Operation、Type、Region、Location） |
+| `source/volume_02_mlir/chapter_03_dialects/` | 内置 Dialect（func、arith、scf、linalg、llvm） |
+| `source/volume_02_mlir/chapter_04_ods/` | ODS 与 TableGen（定义 Op、Trait、Interface） |
+| `source/volume_02_mlir/chapter_05_mlir_pass/` | MLIR Pass 框架（Pattern Rewrite、Dialect Conversion） |
+| `source/volume_02_mlir/chapter_06_lowering/` | Lowering（tensor → scf → llvm → IR） |
+| `source/volume_02_mlir/chapter_07_mlir_ml_frameworks/` | ML 框架集成（TOSA、StableHLO、Tiling、GPU） |
+| `source/volume_02_mlir/chapter_08_custom_dialect/` | 自定义 Dialect 设计与集成 |
+| `source/volume_02_mlir/chapter_09_mlir_tools/` | MLIR 工具链（mlir-opt、mlir-translate、mlir-cpu-runner） |
+| `source/volume_02_mlir/chapter_10_mlir_advanced/` | 进阶主题（并行、异步、Vector、JIT） |
+| `examples/` | 可运行示例代码（按章节组织） |
+| `llvm-project/` | LLVM 源码（`.gitignore`，需单独克隆） |
 | `Makefile` | 构建入口（`make html` / `make clean`） |
 | `scripts/precommit-check.sh` | 预提交检查脚本（验证 RST 文档语法） |
 | `requirements.txt` | 构建依赖（sphinx, sphinx-rtd-theme, sphinxcontrib-mermaid） |
@@ -120,7 +134,9 @@
 
 ## 写作路线图
 
-按以下顺序推进内容编写：
+两卷正文均已写完。后续修订按卷推进：
+
+### 第一卷：LLVM（`source/volume_01_llvm/`）
 
 1. **第 1 章：LLVM 简介** — LLVM 历史、架构概览、Hello World、基本工具使用
 2. **第 2 章：LLVM IR 核心** — IR 基础语法、指令集、元数据、Module/Function/BasicBlock 结构
@@ -132,6 +148,19 @@
 8. **第 8 章：JIT 编译** — MCJIT、ORC JIT 架构、Lazy Compilation、LLJIT
 9. **第 9 章：LLVM 工具链** — opt、llc、lli、llvm-dis、llvm-as、FileCheck 等工具的深度使用
 10. **第 10 章：进阶与实战** — LTO/ThinLTO、Sanitizer、LLVM 调试、性能分析、自定义后端
+
+### 第二卷：MLIR（`source/volume_02_mlir/`）
+
+1. **第 1 章：MLIR 概述** — 什么是 MLIR、设计哲学
+2. **第 2 章：核心概念** — Operation、Type/Attribute、Region/Block、Location
+3. **第 3 章：内置 Dialect** — func、arith、scf/cf、tensor/linalg、llvm dialect
+4. **第 4 章：ODS 与 TableGen** — 定义 Op、Trait、Interface、类型与属性
+5. **第 5 章：MLIR Pass 框架** — PassManager、Pattern Rewrite、Dialect Conversion、Pipeline
+6. **第 6 章：Lowering** — tensor → scf → llvm → LLVM IR
+7. **第 7 章：ML 框架集成** — TOSA、StableHLO、Tiling/Fusion、GPU
+8. **第 8 章：自定义 Dialect** — 设计、定义 Op、Lowering 实现、集成
+9. **第 9 章：MLIR 工具链** — mlir-opt、mlir-translate、mlir-cpu-runner、测试
+10. **第 10 章：进阶主题** — SCF 并行、异步、Vector、JIT
 
 ## 构建方法
 
