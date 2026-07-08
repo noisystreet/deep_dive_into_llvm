@@ -39,8 +39,10 @@ jobs:
         run: |
           wget -q https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
-          sudo ./llvm.sh 18 all
+          sudo ./llvm.sh 18
+          sudo apt-get install -y mlir-18-tools
           echo "/usr/lib/llvm-18/bin" >> "$GITHUB_PATH"
+          mlir-opt-18 --version
 
       - name: Verify MLIR examples
         run: bash scripts/verify-mlir-examples.sh

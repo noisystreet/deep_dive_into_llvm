@@ -19,6 +19,19 @@ find_mlir_opt() {
             return
         fi
     done
+    # apt.llvm.org 安装的 mlir-opt 通常在 /usr/lib/llvm-N/bin/
+    for dir in /usr/lib/llvm-*/bin; do
+        if [ -x "$dir/mlir-opt" ]; then
+            echo "$dir/mlir-opt"
+            return
+        fi
+        for candidate in mlir-opt-19 mlir-opt-18 mlir-opt-17; do
+            if [ -x "$dir/$candidate" ]; then
+                echo "$dir/$candidate"
+                return
+            fi
+        done
+    done
     return 1
 }
 
