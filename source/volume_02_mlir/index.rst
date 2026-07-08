@@ -17,3 +17,9 @@
    chapter_08_custom_dialect/index
    chapter_09_mlir_tools/index
    chapter_10_mlir_advanced/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: 附录
+
+   appendix/index

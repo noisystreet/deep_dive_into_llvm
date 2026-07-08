@@ -194,6 +194,46 @@ ODS 不能覆盖 100% 的代码生成场景。**对于大部分情况（90%+）�
        let hasCustomAssemblyFormat = 1;
    }
 
---------
+Toy Tutorial：ODS 的完整实战
+================================
+
+ODS 最好的学习材料是 Toy Tutorial。在 Ch3 中，Toy 语言首次引入自定义 Dialect，
+其 ODS 定义位于：
+
+- `mlir/examples/toy/Ch3/include/toy/Dialect.td <file:///workspace/llvm-project/mlir/examples/toy/Ch3/include/toy/Dialect.td>`__
+- `mlir/examples/toy/Ch3/include/toy/Ops.td <file:///workspace/llvm-project/mlir/examples/toy/Ch3/include/toy/Ops.td>`__
+
+以 ``toy.mul`` 为例，ODS 中一行 ``let arguments = (ins F64Tensor:$lhs, F64Tensor:$rhs)`` ，
+``mlir-tblgen`` 就会生成参数访问器、类型检查、解析/打印函数——
+这正是前文 list-table 中"自动生成"列的全部内容。
+
+构建流程：
+
+.. code-block:: console
+
+   # 在 Toy 构建目录中，CMake 自动调用 mlir-tblgen
+   # 生成的文件类似 ToyOps.h.inc / ToyOps.cpp.inc
+   ls llvm-project/mlir/examples/toy/Ch3/include/toy/
+
+ODS 与第一卷 TableGen 的关系：:ref:`chapter-06-05-code-generation` 描述的
+``llvm-tblgen`` 代码生成机制，在 MLIR 中由 ``mlir-tblgen`` 继承并扩展。
+核心思想不变——用声明式 ``.td`` 文件驱动 C++ 代码生成。
+
+动手验证
+==========
+
+检查 ``arith`` Dialect 的 ODS 规模，感受自动生成的威力：
+
+.. code-block:: console
+
+   wc -l llvm-project/mlir/include/mlir/Dialect/Arith/IR/ArithOps.td
+   # 约 1800 行 TableGen → 生成数万行 C++
+
+本章小结
+========
+
+ODS 是 MLIR 可扩展性的基石：它把 Operation 的样板代码交给 ``mlir-tblgen`` ，
+让开发者专注于语义和降级逻辑。后续章节将逐一展开 Op 定义、Trait、Interface 和
+TableGen 驱动的类型系统。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

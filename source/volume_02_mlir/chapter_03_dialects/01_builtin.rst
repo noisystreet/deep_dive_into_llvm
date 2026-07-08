@@ -172,6 +172,53 @@ FunctionType
 
 符号表在跨 Operation 引用中非常关键，比如函数调用需要通过符号表查找被调用者。
 
---------
+源码走读：ModuleOp 的 ODS 定义
+======================================
+
+``builtin`` Dialect 的操作定义在
+`BuiltinOps.td <file:///workspace/llvm-project/mlir/include/mlir/IR/BuiltinOps.td>`__ 。
+
+``ModuleOp`` 的 TableGen 描述非常精炼：
+
+.. code-block:: text
+
+   def ModuleOp : Builtin_Op<"module", [
+       AffineScope, IsolatedFromAbove, NoRegionArguments, SymbolTable, Symbol,
+       OpAsmOpInterface
+   ] # GraphRegionNoTerminator.traits> {
+     let summary = "A top level container operation";
+     let description = [{
+       A `module` represents a top-level container operation.
+     }];
+
+注意 Trait 列表中的 ``SymbolTable`` 和 ``IsolatedFromAbove`` ：
+
+- ``SymbolTable`` 使 Module 成为符号查找的容器，支撑 ``func.call @foo`` 这类引用
+- ``IsolatedFromAbove`` 保证 Module 内部的值不会泄漏到外部——这是 SSA 作用域的边界
+
+``UnrealizedConversionCastOp`` 也在同一文件中定义，它是 Dialect Conversion 的
+临时桥梁。:ref:`mlir-06-06-03` 中的 ``--reconcile-unrealized-casts`` 检查的
+正是这类操作的残留。
+
+动手验证
+==========
+
+观察 ``module`` 作为顶层容器的行为：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir
+
+输出最外层应是 ``module { ... }`` 包裹的 ``func.func`` 。
+如果手动删除 ``module`` 包裹，``mlir-opt`` 的验证器会报告 IR 结构错误——
+这说明 ``ModuleOp`` 不是可选的语法糖，而是 MLIR 程序的根节点。
+
+本章小结
+========
+
+``builtin`` Dialect 提供了所有 MLIR 程序共享的基础设施：顶层容器、基础类型、
+符号表和 Conversion 桥梁。理解它是阅读任何其他 Dialect 的前提。
+
+下一节 :ref:`mlir-03-03-02` 将介绍最常用的 func/arith/math 三件套。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

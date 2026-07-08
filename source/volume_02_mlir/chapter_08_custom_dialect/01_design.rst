@@ -122,6 +122,69 @@ MyDSL → `arith` → `LLVM Dialect` → LLVM IR
 3. **验证完整**：在 ODS 中定义充分的验证规则
 4. **文档同步**：ODS 中的 `summary` 和 `description` 是自动文档来源
 
---------
+与 Toy Tutorial 的对照
+==============================
+
+MyDSL 的设计思路与 LLVM 官方 Toy Tutorial 完全一致。Toy 是 MLIR 自带的
+端到端示例，从 Ch1 到 Ch7 循序渐进地构建了一个完整的 Toy 语言编译器：
+
+.. code-block:: text
+
+   mlir/examples/toy/
+   ├── Ch1/   # AST 遍历
+   ├── Ch2/   # 引入 MLIR 代码生成
+   ├── Ch3/   # 定义 Toy Dialect
+   ├── Ch4/   # 添加优化 Pass
+   ├── Ch5/   # 部分降级
+   ├── Ch6/   # 完整降级到 LLVM Dialect
+   └── Ch7/   # 接入 JIT 执行
+
+Toy Tutorial 源码入口：
+`mlir/examples/toy/README.md <file:///workspace/llvm-project/mlir/examples/toy/README.md>`__
+
+Ch7 的 ``LowerToLLVM.cpp`` 展示了自定义 Dialect 降级的标准写法——
+用 ``RewritePatternSet`` 将 ``toy.print`` 等操作替换为 ``llvm`` 操作，
+与 :ref:`mlir-05-05-02` 的 Pattern Rewrite 框架直接对应。
+
+MyDSL 与 Toy 的对应关系：
+
+.. list-table:: MyDSL vs Toy Tutorial
+   :header-rows: 1
+
+   * - MyDSL 组件
+     - Toy 对应文件
+     - 说明
+   * - ``MyDSLDialect.td``
+     - ``Ch3/include/toy/Dialect.td``
+     - ODS 定义 Dialect
+   * - ``MyDSLOps.td``
+     - ``Ch3/include/toy/Ops.td``
+     - ODS 定义 Operation
+   * - ``MyDSLToArith.cpp``
+     - ``Ch6/mlir/LowerToLLVM.cpp``
+     - 降级 Pattern 实现
+   * - 驱动程序
+     - ``Ch7/toyc.cpp``
+     - 接入 ``ExecutionEngine`` JIT
+
+建议读者在实现 MyDSL 时，以 Toy Ch3-Ch7 为参考实现对照阅读。
+第一卷 :ref:`chapter-06-01-tablegen-intro` 中的 TableGen 基础在此直接派上用场。
+
+动手验证
+==========
+
+浏览 Toy 示例源码结构：
+
+.. code-block:: console
+
+   ls llvm-project/mlir/examples/toy/
+   # 阅读 Ch3 的 Ops.td，对比本章 MyDSL 的 Operation 设计
+
+本章小结
+========
+
+自定义 Dialect 的设计核心是**抽象级别选择**和**降级路径规划**。
+MyDSL 选择了 arith 作为直接降级目标，与 Toy 选择 LLVM Dialect 类似但少了一层。
+后续几节将逐步实现 MyDSL 的 ODS 定义和降级逻辑。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

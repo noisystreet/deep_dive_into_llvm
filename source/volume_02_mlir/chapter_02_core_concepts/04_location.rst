@@ -127,8 +127,70 @@ MLIR 的验证器会在 IR 构造完成后自动运行，它检查：
    $ mlir-opt -verify-each=0 input.mlir    # 不进行 Pass 间验证
    $ mlir-opt -verify-each=1 input.mlir    # 每个 Pass 后验证
 
-在开发阶段，建议始终开启 ``-verify-each``。
+在开发阶段，建议始终开启 ``-verify-each`` 。
 
---------
+源码走读：Location 的类层次
+======================================
+
+MLIR 的位置信息不是简单的字符串，而是一棵可遍历的属性树。
+``Location.h`` 的文件头注释点明了设计目标：
+
+.. code-block:: text
+
+   These classes provide the ability to relate MLIR objects back to source
+   location position information.
+
+（`Location.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Location.h>`__）
+
+``LocationAttr`` 是所有位置类型的锚点。它提供 ``walk()`` 方法，
+以先序遍历的方式访问嵌套的位置节点——这正是 ``FusedLoc`` 融合多级
+位置信息的基础机制。
+
+对比第一卷 :ref:`chapter-02-05-debug-info` 中的 DWARF 调试信息：
+LLVM IR 的 ``!dbg`` 元数据在激进优化后可能失效或被剥离；
+MLIR 把 Location 做成 Operation 的一等属性，在 Dialect Conversion 过程中
+**默认保留**，这对多层降级管道中的错误诊断至关重要。
+
+源码走读：诊断与验证
+======================================
+
+诊断引擎的入口是 ``MLIRContext::getDiagEngine()`` 。
+``emitOpError`` 等方法生成 ``Diagnostic`` 对象，可以注册自定义 Handler
+将其转为 JSON 或 IDE 可消费的格式——这对构建 MLIR 语言服务器尤为重要。
+
+验证器则在 Operation 构造后自动调用每个 Op 的 ``verify()`` 方法。
+源码中 ``Operation::verify()`` 会检查 SSA 有效性、Block 终止符合法性，
+以及 ODS 自动生成的类型约束。这与第一卷 :ref:`chapter-02-04-metadata` 讨论的
+IR 验证思想一致：在变换之前尽早发现非法 IR。
+
+动手验证
+==========
+
+观察 Location 信息在 IR 打印中的效果：
+
+.. code-block:: console
+
+   cat > /tmp/loc_demo.mlir << 'EOF'
+   #loc = loc("demo.mlir":3:5)
+   func.func @add(%a: i32, %b: i32) -> i32 {
+     %sum = arith.addi %a, %b : i32 loc(#loc)
+     func.return %sum : i32
+   }
+   EOF
+   mlir-opt /tmp/loc_demo.mlir -mlir-print-debuginfo
+
+输出中 ``arith.addi`` 后应出现 ``loc("demo.mlir":3:5)`` 。
+尝试删除 ``func.return`` 前的类型标注，观察验证器报错的格式——
+错误信息会携带 Location，直接指向出错行。
+
+本章小结
+========
+
+Location 和诊断系统是 MLIR 相比 LLVM IR 的显著优势之一：
+多层降级不必牺牲可追溯性。在编写自定义 Pass 时，应始终通过
+``op->getLoc()`` 报告错误，而非打印裸字符串。
+
+这四篇核心概念文档至此告一段落。下一章 :ref:`mlir-03-index` 将进入
+具体的 Dialect 世界。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

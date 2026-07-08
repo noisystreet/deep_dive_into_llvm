@@ -159,6 +159,69 @@ math Dialect
          ↓（翻译）
    LLVM IR: add / constant
 
---------
+源码走读：ODS 中的 Dialect 定义
+======================================
+
+三个 Dialect 的 Operation 都通过 ODS 声明。以 ``func.call`` 为例，
+`FuncOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Func/IR/FuncOps.td>`__
+中的描述：
+
+.. code-block:: text
+
+   def CallOp : Func_Op<"call",
+       [CallOpInterface, MemRefsNormalizable,
+        DeclareOpInterfaceMethods<SymbolUserOpInterface>]> {
+     let summary = "call operation";
+     let description = [{
+       The `func.call` operation represents a direct call to a function that is
+       within the same symbol scope as the call.
+     }];
+
+``CallOpInterface`` 和 ``SymbolUserOpInterface`` 是 MLIR 的 Interface 机制——
+Pass 可以通过 Interface 统一处理所有"函数调用"语义的 Op，而不必逐个匹配
+``func.call``、``llvm.call`` 等具体名称。Interface 的详细机制见 :ref:`mlir-04-04-03` 。
+
+``arith`` Dialect 的基类定义在
+`ArithOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Arith/IR/ArithOps.td>`__ ：
+
+.. code-block:: text
+
+   class Arith_Op<string mnemonic, list<Trait> traits = []> :
+       Op<Arith_Dialect, mnemonic,
+          traits # [..., NoMemoryEffect] # ElementwiseMappable.traits>;
+
+``NoMemoryEffect`` 告诉优化器这些操作没有副作用，可以自由 CSE 和 DCE；
+``ElementwiseMappable`` 则允许 arith 操作直接作用于 tensor/vector 的逐元素映射。
+这两个 Trait 是 arith 能被广泛重用的关键。
+
+动手验证
+==========
+
+用项目示例观察 func + arith 的协作：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir
+
+确认输出中同时出现 ``func.func``、``arith.addi``、``func.return`` 三个 Dialect 的操作。
+然后运行完整降级：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts
+
+观察 ``func.func`` → ``llvm.func``、``arith.addi`` → ``llvm.add`` 的一一映射。
+
+本章小结
+========
+
+func/arith/math 是 MLIR 降级管道的"主干骨架"：func 提供结构，arith 提供计算，
+math 补充超越基本四则的数学函数。几乎所有端到端管道都会经过它们。
+
+下一节 :ref:`mlir-03-03-03` 将介绍控制流 Dialect：scf 与 cf 。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
