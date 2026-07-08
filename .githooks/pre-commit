@@ -1,0 +1,6 @@
+#!/bin/bash
+# Git Pre-Commit Hook: 检查 RST 文档语法
+# 启用方式: git config --local core.hooksPath .githooks
+
+echo "=== Git Pre-Commit Hook: 检查 RST 文档 ==="
+bash scripts/precommit-check.sh --hook
