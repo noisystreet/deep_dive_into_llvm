@@ -88,7 +88,7 @@ LLVM 是当代编译器基础设施的标杆。它不仅支撑着 Clang、Rustc�
 本书示例基于以下环境：
 
 - **操作系统**：Linux x86_64
-- **LLVM/Clang**：最新稳定版本（主线分支）
+- **LLVM/Clang**：22.x（``llvmorg-22.1.8``）
 - **构建工具**：CMake >= 3.20，Ninja 或 Make
 
 .. note::

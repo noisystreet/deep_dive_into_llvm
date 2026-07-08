@@ -7,8 +7,42 @@
 - 文档源目录：`source/`
 - 构建输出：`./_build/html/`（`make html` 后生成）
 - 目标读者：有 C/C++ 使用经验、希望了解 LLVM 编译器内部机制的开发者
-- 参考实现：**LLVM/Clang** 主线版本（最新稳定版）
+- 参考实现：**LLVM/Clang** 22.x（``llvmorg-22.1.8``）
 - 平台：Linux x86_64
+- 源码目录：``llvm-project/``（被 ``.gitignore`` 忽略，需要单独克隆）
+
+## LLVM 源码获取
+
+源文件引用依赖 LLVM 源码。在项目根目录下以 ``llvm-project`` 目录名克隆：
+
+.. code-block:: bash
+
+   # 方式一：浅克隆（推荐，节省空间，约 1GB）
+   git clone --depth 1 --branch llvmorg-22.1.8 \
+       https://github.com/llvm/llvm-project.git llvm-project
+
+   # 方式二：完整克隆（需要全部 git 历史时用，约 15GB）
+   git clone --branch llvmorg-22.1.8 \
+       https://github.com/llvm/llvm-project.git llvm-project
+
+.. code-block:: bash
+
+   # 切换到已存在的本地 llvm-project 目录中的指定 tag
+   cd llvm-project && git fetch --tags && git checkout llvmorg-22.1.8
+
+从源码构建 LLVM（可选，按需执行）：
+
+.. code-block:: bash
+
+   cd llvm-project
+   cmake -B build -G Ninja \
+       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+       -DLLVM_ENABLE_PROJECTS="clang;lld" \
+       -DLLVM_TARGETS_TO_BUILD="X86;AArch64;RISCV" \
+       -DLLVM_INCLUDE_TESTS=OFF
+   ninja -C build
+
+构建产物（llc, opt, lli 等）位于 ``llvm-project/build/bin/``，可加入 ``PATH``。
 
 ## 项目文件说明
 
