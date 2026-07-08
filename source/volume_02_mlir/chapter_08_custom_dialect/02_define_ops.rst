@@ -161,6 +161,40 @@ CMake 配置
    # 用 mlir-opt 验证
    $ mlir-opt --allow-unregistered-dialect test.mlir
 
---------
+与 Toy Tutorial 的 ODS 对照
+================================
+
+MyDSL 的 ODS 定义模式与 Toy Tutorial Ch3 完全一致。Toy 的 ``MulOp`` 定义在
+`Ops.td <file:///workspace/llvm-project/mlir/examples/toy/Ch3/include/toy/Ops.td>`__ ：
+
+.. code-block:: text
+
+   def MulOp : Toy_Op<"mul", [Pure, SameOperandsAndResultType]> {
+     let summary = "Multiplication operation";
+     let arguments = (ins F64Tensor:$lhs, F64Tensor:$rhs);
+     let results = (outs F64Tensor:$result);
+     let assemblyFormat = "$lhs `,` $rhs attr-dict `:` type($lhs)";
+   }
+
+对比 MyDSL 的 ``MacOp`` ，差异仅在于操作数和 Trait 不同，ODS 结构完全一致：
+``arguments`` 声明输入，``results`` 声明输出，``assemblyFormat`` 定义打印格式。
+``mlir-tblgen`` 为两者生成相同模式的 C++ 访问器和验证骨架。
+
+CMake 构建时，TableGen 规则自动调用 ``mlir-tblgen`` ：
+
+.. code-block:: cmake
+
+   mlir_tablegen(MyDSLOps.h.inc -gen-op-decls)
+   mlir_tablegen(MyDSLOps.cpp.inc -gen-op-defs)
+
+这与第一卷 :ref:`chapter-06-05-code-generation` 中 ``llvm-tblgen`` 的
+CMake 集成方式一脉相承，只是生成器从 ``llvm-tblgen`` 换成了 ``mlir-tblgen`` 。
+
+本章小结
+========
+
+ODS 定义是自定义 Dialect 的第一步：用 ``.td`` 文件声明 Operation 的结构，
+由 ``mlir-tblgen`` 生成 C++ 样板代码。下一节 :ref:`mlir-08-08-03` 将实现
+MyDSL 到 arith 的降级 Pattern 。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

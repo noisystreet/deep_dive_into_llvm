@@ -149,6 +149,61 @@ scf → cf 的降级
 
 这个降级由 ``convert-scf-to-cf`` Pass 完成。
 
+源码走读：scf.for 的 Region 语义
+======================================
+
+``scf.for`` 的 ODS 定义在
+`SCFOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/SCF/IR/SCFOps.td>`__ 。
+它实现了 ``RegionBranchOpInterface`` ——告诉 MLIR 框架这个 Op 的 Region
+如何与外部控制流交互。
+
+与 LLVM IR 的 ``phi`` 节点对比：``scf.for`` 用 ``iter_args`` 显式声明
+循环携带值，用 ``scf.yield`` 传递下一轮的状态。优化器不需要运行
+支配树分析就能识别循环结构——这正是 :ref:`chapter-05-03-loop-optimizations`
+中 LoopInfo 试图恢复的信息，而 scf 在 IR 层面直接保留了它。
+
+``cf`` 的底层分支定义在
+`ControlFlowOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/ControlFlow/IR/ControlFlowOps.td>`__ 。
+``cf.cond_br`` 通过 Block 参数传递值，等价于 LLVM IR 的 PHI 节点语义，
+但以一种更显式的 CFG 形式呈现。
+
+源码走读：SCFToControlFlow 的不变量
+======================================
+
+降级实现详见 :ref:`mlir-06-06-03` 中分析的
+`SCFToControlFlow.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/SCFToControlFlow/SCFToControlFlow.cpp>`__ 。
+其核心不变量值得在此重申：生成的 CFG 子图有单一入口和单一出口，
+循环携带值通过条件块的 Block 参数在所有后继块中可见。
+
+动手验证
+==========
+
+项目提供了 scf 循环示例，文件为 ``examples/mlir/chapter_03_dialects/scf_sum.mlir`` 。
+
+.. code-block:: console
+
+   # 观察结构化控制流
+   mlir-opt examples/mlir/chapter_03_dialects/scf_sum.mlir
+
+   # 降级为 cf + LLVM Dialect
+   mlir-opt examples/mlir/chapter_03_dialects/scf_sum.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts
+
+第二步输出中应出现 ``cf.br``、``cf.cond_br`` 和 ``^bb1`` 等 CFG 结构——
+这正是前文 scf → cf 降级示例的具体 IR 形态。
+
+本章小结
+========
+
+scf 和 cf 体现了 MLIR 在控制流上的分层设计：scf 保留结构，cf 暴露 CFG，
+最终都汇入 LLVM Dialect 的 ``llvm.br`` 。绝大多数 MLIR 程序在编写和优化阶段
+使用 scf，只在降级末期才接触 cf 。
+
+下一节 :ref:`mlir-03-03-04` 将介绍张量计算的核心 Dialect：tensor 与 linalg 。
+
 降级路径总结
 ==================
 

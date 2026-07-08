@@ -165,6 +165,58 @@ Bufferization：tensor → memref
 
 由 ``one-shot-bufferize`` Pass 完成。
 
---------
+源码走读：linalg.generic 的设计
+======================================
+
+``linalg.generic`` 是 MLIR 中最精巧的抽象之一。它的 ODS 定义在
+`LinalgStructuredOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Linalg/IR/LinalgStructuredOps.td>`__ ，
+核心字段 ``indexing_maps`` 和 ``iterator_types`` 将**循环结构**与**计算内核**
+解耦：
+
+- ``indexing_maps`` 用 ``AffineMap`` 描述每个操作数张量的索引如何映射到迭代空间
+- ``iterator_types`` 标记每个维度是 ``parallel`` 还是 ``reduction``
+- Region 内只包含标量计算，由 ``linalg.yield`` 返回
+
+这种设计让同一个 ``linalg.generic`` 框架可以表达逐元素加法、矩阵乘法、
+卷积等截然不同的运算——区别仅在于 indexing_maps 和 region 体的不同。
+
+矩阵乘法示例中 ``reduction`` 维度是关键：它告诉优化器"这个维度需要归约"，
+从而启用 tiling 时在该维度上累加，而非并行展开。:ref:`mlir-07-07-03` 中的
+Tiling/Fusion 优化正是建立在这个语义之上。
+
+源码走读：Bufferization 与循环展开
+======================================
+
+Bufferization 的三阶段分析见 :ref:`mlir-06-06-02` 中对
+`OneShotAnalysis.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Bufferization/Transforms/OneShotAnalysis.cpp>`__
+的解读。
+
+循环展开则由 `Loops.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Linalg/Transforms/Loops.cpp>`__
+中的 ``inlineRegionAndEmitStore`` 驱动：对每个循环索引，从 memref 加载元素，
+克隆 region 计算，再 store 结果。
+
+动手验证
+==========
+
+用项目中的 tensor 加法示例走通 bufferize + 循环展开：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/tensor_add.mlir \
+       --one-shot-bufferize="bufferize-function-boundaries" \
+       --convert-linalg-to-loops
+
+输出应包含 ``scf.for`` 循环，循环体内有 ``memref.load`` 和 ``memref.store`` 。
+对比 bufferize 之前的 ``linalg.elemwise_binary`` ，可以直观感受
+"声明式张量计算 → 命令式循环" 的翻译过程。
+
+本章小结
+========
+
+tensor 和 linalg 构成了 MLIR 机器学习编译的"中层语言"：tensor 提供不可变值语义，
+linalg 提供结构化循环模板。它们通过 Bufferization 和 LowerToLoops 两条路径
+分别解决内存管理和循环展开，最终汇入 :ref:`mlir-03-03-03` 的 scf 控制流。
+
+下一节 :ref:`mlir-03-03-05` 将介绍降级管道的终点站：LLVM Dialect 。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

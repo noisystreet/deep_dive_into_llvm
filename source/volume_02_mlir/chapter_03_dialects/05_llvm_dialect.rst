@@ -141,6 +141,63 @@ LLVM Dialect 也可以包含 GPU 相关的操作，如 LLVM 内建函数：
 在 MLIR-GPU 编译管道中，GPU Dialect 最终也会降级为 LLVM Dialect，
 然后通过 LLVM 的后端生成 PTX（NVIDIA）或 AMDGCN（AMD）代码。
 
---------
+源码走读：LLVM Dialect 的 ODS
+================================
+
+LLVM Dialect 的操作定义在
+`LLVMOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/LLVMIR/LLVMOps.td>`__ 。
+设计原则是**一对一映射 LLVM IR**——每个 MLIR 操作都有明确的 LLVM IR 对应物，
+这使得 ``mlir-translate`` 的翻译逻辑高度机械化。
+
+类型系统定义在 ``LLVMTypes.td`` 中。LLVM 15 之后引入的不透明指针
+（``!llvm.ptr`` ）也在此反映——与第一卷 :ref:`chapter-02-02-instruction-set`
+讨论的 LLVM IR 指针演进同步。
+
+源码走读：ModuleTranslation
+================================
+
+MLIR → LLVM IR 的翻译由
+`ModuleTranslation.cpp <file:///workspace/llvm-project/mlir/lib/Target/LLVMIR/ModuleTranslation.cpp>`__
+实现。文件头注释：
+
+.. code-block:: text
+
+   This file implements the translation between an MLIR LLVM dialect module and
+   the corresponding LLVMIR module.
+
+翻译器遍历 MLIR Module 中的每个 Operation，通过 ``LLVMTranslationInterface``
+分发到具体的翻译函数。生成的 ``llvm::Module`` 可以直接交给 ``opt`` 优化
+或 ``llc`` 生成机器码——完整衔接第一卷 :ref:`chapter-09-02-llc` 的工具链。
+
+动手验证
+==========
+
+用项目示例走通 MLIR → LLVM Dialect → LLVM IR 的完整链路：
+
+.. code-block:: console
+
+   # 第一步：降级到 LLVM Dialect
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+       -o /tmp/llvm_dialect.mlir
+
+   # 第二步：翻译为 LLVM IR 文本
+   mlir-translate --mlir-to-llvmir /tmp/llvm_dialect.mlir
+
+输出应是标准 LLVM IR 文本，包含 ``define`` 和 ``add`` 指令。
+可将此 ``.ll`` 文件继续交给 ``opt -O2`` 或 ``lli`` 执行。
+
+本章小结
+========
+
+LLVM Dialect 是 MLIR 与 LLVM 后端之间的精确桥梁。掌握它的关键是理解：
+MLIR 降级管道的前半段在各 Dialect 之间转换语义，后半段在 LLVM Dialect 中
+固化为一一对应的 LLVM IR 操作，最终由 ``ModuleTranslation`` 导出。
+
+第 3 章 Dialect 概览至此完成。下一章 :ref:`mlir-04-index` 将深入
+ODS 如何定义这些 Dialect 中的每一个 Operation 。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
