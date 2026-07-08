@@ -1,11 +1,176 @@
 .. _mlir-08-08-03:
 
-=============
-实现 Lowering
-=============
+==========================
+实现 Lowering 到 arith/scf
+==========================
 
-.. TODO:
+定义完 Operation 后，下一步是编写**降级模式** （Conversion Pattern），
+将 MyDSL 的 Operator 转换为 MLIR 标准 Dialect 的操作。
 
-- 编写 ConversionPattern
-- 配置 ConversionTarget
-- 测试 Lowering
+.. rst-class:: center
+
+   "写降级模式"是自定义 Dialect 开发中最核心的工程任务。
+
+降级目标
+==================
+
+.. code-block:: text
+
+   my_dsl.mac %a, %b, %c : i32
+       ↓
+   %mul = arith.muli %a, %b : i32
+   %add = arith.addi %mul, %c : i32
+
+   my_dsl.square %x : i32
+       ↓
+   arith.muli %x, %x : i32
+
+降级 Pattern 实现
+========================
+
+**MacOp 降级**
+
+.. code-block:: cpp
+
+   // MyDSLToArith.cpp
+   #include "mydsl/MyDSLOps.h"
+   #include "mlir/IR/PatternMatch.h"
+   #include "mlir/Dialect/Arith/IR/Arith.h"
+
+   struct MacOpLowering : public OpRewritePattern<MacOp> {
+       MacOpLowering(MLIRContext *context)
+           : OpRewritePattern<MacOp>(context) {}
+
+       LogicalResult matchAndRewrite(MacOp op,
+           PatternRewriter &rewriter) const override {
+
+           // 获取位置
+           Location loc = op.getLoc();
+
+           // 创建乘法
+           Value mul = rewriter.create<arith::MulIOp>(
+               loc, op.getA(), op.getB());
+
+           // 创建加法
+           Value add = rewriter.create<arith::AddIOp>(
+               loc, mul, op.getC());
+
+           // 用结果替换原 op
+           rewriter.replaceOp(op, add);
+           return success();
+       }
+   };
+
+**SquareOp 降级**
+
+.. code-block:: cpp
+
+   struct SquareOpLowering : public OpRewritePattern<SquareOp> {
+       SquareOpLowering(MLIRContext *context)
+           : OpRewritePattern<SquareOp>(context) {}
+
+       LogicalResult matchAndRewrite(SquareOp op,
+           PatternRewriter &rewriter) const override {
+
+           Location loc = op.getLoc();
+
+           // 平方 = 自乘
+           Value mul = rewriter.create<arith::MulIOp>(
+               loc, op.getX(), op.getX());
+
+           rewriter.replaceOp(op, mul);
+           return success();
+       }
+   };
+
+注册降级 Pattern
+========================
+
+.. code-block:: cpp
+
+   // 将 pattern 注册到 Dialect
+   void MyDSLDialect::getCanonicalizationPatterns(
+       RewritePatternSet &results) const {
+       results.add<MacOpLowering, SquareOpLowering>(getContext());
+   }
+
+或者作为一个独立的降级 Pass：
+
+.. code-block:: cpp
+
+   struct ConvertMyDSLToArithPass
+       : public PassWrapper<ConvertMyDSLToArithPass,
+                            OperationPass<FuncOp>> {
+
+       void runOnOperation() override {
+           RewritePatternSet patterns(&getContext());
+           patterns.add<MacOpLowering, SquareOpLowering>(&getContext());
+
+           // 使用贪心模式应用
+           if (failed(applyPatternsAndFoldGreedily(
+                   getOperation(), std::move(patterns)))) {
+               signalPassFailure();
+           }
+       }
+   };
+
+完整的降级管道
+==================
+
+将 MyDSL 降级到可执行代码的完整路径：
+
+.. code-block:: console
+
+   $ mlir-opt \
+       --convert-mydsl-to-arith \    # MyDSL → arith（自定义）
+       --convert-arith-to-llvm \     # arith → LLVM
+       --convert-func-to-llvm \      # func → LLVM
+       test.mlir | mlir-translate --mlir-to-llvmir
+
+降级前 vs 降级后
+========================
+
+.. code-block:: text
+
+   // === 降级前（MyDSL）===
+   func.func @test(%a: i32, %b: i32) -> i32 {
+       %0 = my_dsl.mac %a, %b, %a : i32
+       %1 = my_dsl.square %0 : i32
+       func.return %1 : i32
+   }
+
+   // === 降级后（arith）===
+   func.func @test(%a: i32, %b: i32) -> i32 {
+       %0 = arith.muli %a, %b : i32
+       %1 = arith.addi %0, %a : i32
+       %2 = arith.muli %1, %1 : i32
+       func.return %2 : i32
+   }
+
+   // === 进一步降级到 LLVM IR ===
+   define i32 @test(i32 %a, i32 %b) {
+       %0 = mul i32 %a, %b
+       %1 = add i32 %0, %a
+       %2 = mul i32 %1, %1
+       ret i32 %2
+   }
+
+验证降级正确性
+==================
+
+使用 ``mlir-opt`` 和 ``FileCheck`` 进行测试：
+
+.. code-block:: text
+
+   // CHECK: arith.muli
+   // CHECK: arith.addi
+   // CHECK: arith.muli
+   func.func @test(%a: i32, %b: i32) -> i32 {
+       %0 = my_dsl.mac %a, %b, %a : i32
+       %1 = my_dsl.square %0 : i32
+       func.return %1 : i32
+   }
+
+--------
+
+*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
