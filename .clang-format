@@ -1,0 +1,57 @@
+# 浅入深出 LLVM - Clang-Format 配置
+# 基于 LLVM 代码风格，适用于教程示例代码
+# 参考：https://llvm.org/docs/CodingStandards.html
+
+BasedOnStyle: LLVM
+
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+
+# 列宽：教程代码保持在 80 列以内，便于排版
+ColumnLimit: 80
+
+# 指针和引用的对齐方式
+PointerAlignment: Right
+ReferenceAlignment: Right
+
+# 访问修饰符缩进
+AccessModifierOffset: -2
+
+# 大括号换行风格
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterStruct: true
+  AfterFunction: true
+  AfterControlStatement: false
+  AfterEnum: false
+  BeforeElse: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+
+# 函数参数
+AlignAfterOpenBracket: Align
+BinPackParameters: false
+BinPackArguments: false
+
+# 命名空间
+FixNamespaceComments: true
+NamespaceIndentation: None
+
+# 在 C++11 风格是原始字符串字面量上使用括号
+RawStringFormats:
+  - Language: TextProto
+    Delimiters:
+      - 'llvm'
+
+# 空行保留
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# 注释相关的格式化
+ReflowComments: true
+AlignTrailingComments: true
+
+# 支持 C++20
+Standard: Latest
+Language: Cpp
