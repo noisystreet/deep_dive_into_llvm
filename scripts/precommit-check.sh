@@ -51,13 +51,25 @@ check_rst_inline_markup() {
             has_error=1
         fi
 
-        # 检查 **bold** 后紧跟中文括号/逗号（缺少空格）
-        if grep -Pn '\*\*[^*]*\*\*[（，]' "$f" &>/dev/null; then
+        # 检查 **bold** 后紧跟中文标点（缺少空格）
+        if grep -Pn '\*\*[^*]*\*\*[）。（），：；？！、]' "$f" &>/dev/null; then
             if [ $has_error -eq 0 ]; then
                 echo -e "${YELLOW}⚠  **bold** 后紧跟中文标点（缺少空格）:${NC}"
             fi
             echo -e "  ${YELLOW}$f${NC}"
-            grep -Pn '\*\*[^*]*\*\*[（，]' "$f" | while read -r line; do
+            grep -Pn '\*\*[^*]*\*\*[）。（），：；？！、]' "$f" | while read -r line; do
+                echo "    $line"
+            done
+            has_error=1
+        fi
+
+        # 检查 ``literal`` 后紧跟中文标点（缺少空格）
+        if grep -Pn '``[^`]*``[）。（），：；？！、]' "$f" &>/dev/null; then
+            if [ $has_error -eq 0 ]; then
+                echo -e "${YELLOW}⚠  ``literal`` 后紧跟中文标点（缺少空格）:${NC}"
+            fi
+            echo -e "  ${YELLOW}$f${NC}"
+            grep -Pn '``[^`]*``[）。（），：；？！、]' "$f" | while read -r line; do
                 echo "    $line"
             done
             has_error=1
