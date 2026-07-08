@@ -11,6 +11,33 @@ mlir-opt
 
    ``mlir-opt`` ≈ MLIR 中的 ``opt``——但它支持多 Dialect 和多 Pass Pipeline。
 
+.. admonition:: mlir-opt 的日常：MLIR 开发者的一天的"瑞士军刀"
+   :class: tip
+
+   对于一个 MLIR 开发者来说，``mlir-opt`` 就像瑞士军刀一样不可或缺。
+   以下是几个真实的使用场景：
+
+   **场景 1：验证降级的正确性**
+   开发了一个新的 Dialect 降级模式后：
+   ``mlir-opt --convert-my-dialect-to-arith input.mlir``
+   一行命令就能看到降级结果。
+
+   **场景 2：调试 Pass 间的影响**
+   ``mlir-opt --mlir-print-ir-after-all --pass-pipeline="builtin.module(canonicalize,cse)" input.mlir``
+   这里 ``--mlir-print-ir-after-all`` 是 MLIR 调试的神器——
+   每一步 Pass 之后都会 dump IR。
+
+   **场景 3：IR 合法性检查**
+   ``mlir-opt --verify-each --pass-pipeline="builtin.module(canonicalize,convert-scf-to-cf)" input.mlir``
+   每个 Pass 后都会运行验证器——这类似于 LLVM 中 ``opt -verify``，
+   但因为 MLIR 支持多 Dialect，验证器也支持多 Dialect 的合法性检查。
+
+   **场景 4：测试精简**
+   ``mlir-reduce`` 可以从一个数千行的 MLIR 程序中自动缩减到最小可以
+   触发 bug 的 IR。这对于复现和报告 bug 非常有帮助。
+
+   可以说，任何 MLIR 开发工作 90% 的时间都离不开 ``mlir-opt``。
+
 基本用法
 ==============
 

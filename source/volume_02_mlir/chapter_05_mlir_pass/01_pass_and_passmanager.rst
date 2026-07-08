@@ -13,6 +13,30 @@ MLIR 的 Pass 框架提供了在 IR 上进行**模块化分析和转换**的能�
    MLIR 的 Pass 框架是**多层级**的——同一个 Pipeline 可以同时操作
    多个 Dialect 的 Operation。
 
+.. admonition:: 为什么 MLIR 要"重新发明" Pass 框架？
+   :class: note
+
+   LLVM 已经有了一套成熟的 Pass 框架，为什么 MLIR 还要重新写一套？
+   
+   原因在于**多级 IR 的特性要求多级 Pass 管理**。LLVM 只有一种 IR，
+   所以它的 PassManager 只需要管理"一个 IR 上的 Pass 顺序"。
+   而 MLIR 的 Pass 需要同时管理：
+
+   1. **不同 Dialect 之间的降级 Pass** （如 ``convert-scf-to-cf`` ）
+   2. **同一个 Dialect 内的优化 Pass** （如 ``canonicalize`` ）
+   3. **跨 Dialect 的分析 Pass** （如检测 linalg 和 scf 之间的数据流）
+
+   想象一下，你要在一个 Pipeline 中同时运行：
+   ``canonicalize (all dialects) → convert-scf-to-cf → arith-optimize → convert-to-llvm``
+
+   MLIR 的 PassManager 需要能在不同的 IR 层级之间切换——这在 LLVM 的
+   Pass 框架中是做不到的（因为 LLVM 的 Pass 操作的都是同一种 IR）。
+
+   更关键的是，MLIR 的 Pass 框架支持**嵌套 PassManager**——可以在
+   特定 Operation 的 Region 内单独运行 Pass。例如，可以先在函数级别
+   运行 ``cse``，然后在循环级别运行 ``loop-unroll``，再回到函数级别
+   运行 ``inline``。这种"聚焦式"的 Pass 管理是 MLIR 独有的能力。
+
 Pass 类型
 ===============
 

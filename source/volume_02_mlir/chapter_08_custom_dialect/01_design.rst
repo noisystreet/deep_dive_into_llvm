@@ -11,6 +11,34 @@ MyDSL 设计
 
    从零开始构建一个 MLIR Dialect：设计 → 定义 → 降级 → 集成。
 
+.. admonition:: 自定义 Dialect 的成功案例：从 CIRCT 到 IREE
+   :class: tip
+
+   MLIR 的自定义 Dialect 能力催生了几个非常有影响力的项目：
+
+   **CIRCT（Circuit IR Compilers and Tools）**
+   CIRCT 是 LLVM 社区下的硬件设计编译器项目。它将 MLIR 引入到硬件
+   设计自动化领域，定义了多个用于表示数字电路的 Dialect：
+   - ``comb``：组合逻辑（AND、OR、XOR 等）
+   - ``seq``：时序逻辑（寄存器、触发器）
+   - ``hw``：硬件模块（模块定义、实例化、连线）
+   - ``sv``：SystemVerilog 输出
+
+   传统上，硬件设计工具链的各种内部格式（Verilog AST、EDIF、Blif）
+   互不兼容。CIRCT 通过 MLIR 统一了这些格式——正如 LLVM 统一了
+   编程语言编译器一样。
+
+   **IREE（Intermediate Representation Execution Environment）**
+   IREE 是 Google 推出的 ML 推理引擎，它使用 MLIR 作为唯一的中间表示
+   格式。IREE 定义了多个自定义 Dialect（ ``flow``、``hal``、``stream`` ）
+   来表示内存管理、设备分配和流式执行。
+
+   IREE 的架构是 MLIR "多级 IR" 概念的极致体现：从 StableHLO 到
+   ``flow`` （数据流图）到 ``hal`` （硬件抽象层）到 ``stream`` （流执行）
+   到 LLVM Dialect 到机器码——一共 6 层 IR，每层负责一个明确的抽象级别。
+
+   这些成功案例说明：**自定义 Dialect 是 MLIR 生态的核心竞争力**。
+
 MyDSL 的功能
 ==================
 

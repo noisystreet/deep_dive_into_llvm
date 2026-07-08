@@ -12,6 +12,32 @@ TOSA（Tensor Operator Set Architecture）是 MLIR 中一个**用于推理场景
    TOSA 的设计目标：一组稳定的、可预测性能的操作集，适合硬件加速器
    和推理引擎直接消费。
 
+.. admonition:: TOSA vs StableHLO：一"场"没有硝烟的 Dialect 之争
+   :class: note
+
+   在 MLIR 生态中，TOSA 和 StableHLO 是**两个最重要的机器学习 Dialect**。
+   它们都用于表示深度学习模型的计算图，但设计哲学截然不同。
+
+   **StableHLO** 是 Google 推出的，它是 XLA HLO 的"稳定版"。它的设计
+   目标是：能够表示 TensorFlow/JAX/PyTorch 的所有计算模式。所以它的
+   操作集很丰富（100+ 操作），支持动态形状和版本化序列化。
+
+   **TOSA** 是 Arm 和 Linaro 联合推出的，它的设计目标是：推理部署。
+   它只包含了可以在硬件上高效实现的操作，不支持动态形状，原生支持
+   量化（i8/int8）。
+
+   这场"争论"的本质是：**训练 vs 推理**。
+   - 训练需要灵活性（动态形状、丰富的操作集）→ StableHLO
+   - 推理需要效率（固定形状、量化支持、硬件友好）→ TOSA
+
+   实践中，很多 Pipeline 的做法是：训练时用 StableHLO，部署时先转换
+   为 TOSA（如果目标硬件支持），再降级到目标后端。这样既享受了
+   StableHLO 的表达能力，又获得了 TOSA 的硬件优化。
+
+   2023 年，Google 和 Arm 的合作进一步加强：StableHLO 可以将部分操作
+   降级到 TOSA，TOSA 也可以将缺失的操作提升到 StableHLO。两个生态
+   不再是竞争关系，而是互补关系。
+
 TOSA 的设计哲学
 ======================
 

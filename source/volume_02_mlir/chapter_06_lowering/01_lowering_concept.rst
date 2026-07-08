@@ -12,6 +12,32 @@ IR 逐步转换为更低层、更接近机器表示的 IR。
    一次性降级（One-shot Lowering）是一次将高层 IR 直接转换为 LLVM IR。
    渐进降级（Progressive Lowering）是通过多层 Dialect，逐层降低抽象级别。
 
+.. admonition:: Progressive Lowering：MLIR 最有影响力的设计哲学
+   :class: note
+
+   "一次性降级"（One-shot Lowering）是传统编译器的做法——Clang 一次将
+   C++ AST 降级到 LLVM IR，GCC 也是一次将 GIMPLE 降级到 RTL。
+
+   MLIR 提出了一个截然不同的思路：**不要一次降级到底，而是逐层降级**。
+   这样做有三大好处：
+
+   **1. 保留高层语义用于优化**
+   在 linalg Dialect 层面做循环分块（tiling）和融合（fusion），比在
+   LLVM IR 层面做要容易一百倍。因为 linalg 知道"这是一个矩阵乘法"，
+   而 LLVM IR 只看到一堆 load/mul/add/store。
+
+   **2. 减少跨层信息丢失**
+   当你把高层 IR 一次降级到底层时，丢失的信息无法恢复。逐层降级可以
+   在每一层完成该层的优化后再进入下一层。
+
+   **3. 分而治之的工程优势**
+   每层的降级逻辑是独立的——写 ``tosa-to-linalg`` 降级的工程师不需要
+   理解 LLVM 寄存器分配。这使得 MLIR 的降级管道可以由不同团队并行开发。
+
+   Progressive Lowering 被广泛认为是 MLIR 对编译器设计领域最重要的
+   学术贡献之一。今天，从 TensorFlow 到 PyTorch，从 CIRCT（硬件设计）
+   到 IREE（推理引擎），所有基于 MLIR 的项目都采用了这种设计哲学。
+
 一次性降级 vs 渐进降级
 ==============================
 

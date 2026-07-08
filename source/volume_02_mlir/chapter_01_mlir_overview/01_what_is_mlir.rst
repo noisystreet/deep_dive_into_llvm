@@ -11,6 +11,37 @@
 
 但 LLVM IR 有一个根本性的局限。
 
+.. admonition:: MLIR 的诞生：一场 Google 内部的"IR 起义"
+   :class: note
+
+   2019 年 4 月，LLVM 开发者大会上出现了一个引人注目的新项目：
+   **MLIR（Multi-Level Intermediate Representation）**。但它的故事
+   早在 2017 年就开始了。
+
+   当时 Google 的 TensorFlow 团队面临一个头疼的问题：TensorFlow 的
+   计算图需要通过 XLA 编译器编译到 GPU/TPU，而 XLA 内部使用的 HLO IR
+   （High-Level Operations）和 LLVM IR 之间存在着巨大的**语义鸿沟**。
+   为了填补这道鸿沟，Google 团队在 LLVM IR 之上堆了**多层**自定义的
+   IR 转换——结果就是代码越来越复杂、维护越来越困难。
+
+   Chris Lattner 在 2017 年加入 Google 后，很快就意识到问题的根源：
+   **不是 IR 不够好，而是 IR 的数量不够多**。传统编译器的架构假设
+   "一个 IR 就够了"，但现实中，不同的优化需要不同抽象层次的 IR。
+   他的解决方案很大胆：为什么不做一个**可以定义任意多 IR** 的框架？
+
+   这就是 MLIR 的核心理念——一个**IR 的 IR 框架**。你不是在使用一个
+   固定的 IR，而是使用 MLIR 的 Infrastructure 来**创造自己需要的 IR**。
+   每个 IR 被称作一个 Dialect，而 Dialect 本身也是 MLIR 中的一等公民。
+
+   有趣的是，LLVM 社区内部一开始对这个项目持保留态度——"又一个 IR？"
+   "为什么不能在 LLVM IR 上改进？" 但 Lattner 在 2019 年 LLVM 开发者
+   大会上的演讲 *"MLIR: A Compiler Infrastructure for the End of Moore's Law"*
+   改变了很多人看法。他展示了 MLIR 如何将 TensorFlow 的 100 多种操作
+   通过逐层降级，最终生成高效的 LLVM IR——整个过程完全模块化、可组合、
+   可验证。
+
+   今天，MLIR 已经成为 LLVM 生态中增长最快的子项目之一。
+
 .. rst-class:: center
 
    LLVM IR 是"最底层"的 IR——它离机器码很近，离源代码很远。

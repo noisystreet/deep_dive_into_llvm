@@ -12,6 +12,32 @@ Operation 与 Value
    LLVM IR 中 "Instruction" 和 "Function" 是不同的概念；在 MLIR 中，
    它们都统一为 **Operation**——唯一的区别是参数的构成方式不同。
 
+.. admonition:: "一切皆 Operation"——从 Lisp S 表达式到 MLIR
+   :class: note
+
+   MLIR 的 "一切皆 Operation" 设计哲学，在编译器的历史上并不新鲜。
+   早在 1958 年，John McCarthy 设计的 **Lisp** 就提出了"一切皆列表"
+   （code is data）的概念——程序和数据用同一种结构表示。
+
+   MLIR 把它复用到了编译器领域：**一个函数是一个 Operation、一条指令
+   是一个 Operation、一个循环是一个 Operation、甚至整个模块也是一个
+   Operation**。这种设计的最大好处是：你只需要**一套统一的工具**就能
+   操作所有东西——遍历、匹配、替换、验证。
+
+   这和 LLVM IR 形成鲜明对比：LLVM 中 Instruction、BasicBlock、Function、
+   Module 是**不同的 C++ 类**，各有各的 API。遍历 IR 需要根据不同层级
+   使用不同的方法（ ``inst_iterator``、``BasicBlock::iterator``、``Function::iterator`` ）。
+   而在 MLIR 中，无论什么层级，你都用同一个 ``Operation::getOperands()``、
+   ``Operation::getRegions()``、``OpBuilder`` 来操作。
+
+   这意味着你可以写出**通用的 IR 变换**——如"把 IR 中所有三地址码格式的
+   Operation 替换为 SSA 格式"——而不需要关心这个 Operation 来自哪个
+   Dialect。在 LLVM 中，这种"通用变换"几乎不可能写成通用的 Pass。
+
+   当然，这种设计也有代价：MLIR 的类型系统比 LLVM 更复杂，而且
+   "一切皆 Operation" 意味着即使是最简单的操作（如从某处加载一个值）
+   也有比 LLVM 更深的类层次结构。这是**通用性 vs 性能**之间的经典权衡。
+
 Operation 的结构
 ====================
 
@@ -29,12 +55,12 @@ Operation 的结构
 
 各部分含义：
 
-1. **结果值** （``%sum`` ）：Operation 的 SSA 输出（可选，有的 Operation 没有输出）
-2. **名称** （``arith.addi`` ）：由 Dialect 前缀（``arith`` ）和操作名（``addi`` ）组成
-3. **操作数** （``%a, %b`` ）：输入 SSA 值
+1. **结果值** （ ``%sum`` ）：Operation 的 SSA 输出（可选，有的 Operation 没有输出）
+2. **名称** （ ``arith.addi`` ）：由 Dialect 前缀（ ``arith`` ）和操作名（ ``addi`` ）组成
+3. **操作数** （ ``%a, %b`` ）：输入 SSA 值
 4. **属性字典** （可选）：编译期已知的元数据
 5. **区域列表** （可选）：嵌套的子程序结构（函数体、循环体等）
-6. **结果类型** （``: i32`` ）：输出值的类型
+6. **结果类型** （ ``: i32`` ）：输出值的类型
 
 一个更复杂的例子：
 

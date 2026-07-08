@@ -14,6 +14,34 @@ Operation 的结构和约束，然后由 ``mlir-tblgen`` 自动生成 C++ 代码
    将 TableGen 的能力发挥到了极致：从 Operation 定义、验证器、解析/打印、
    到序列化代码，全部自动生成。
 
+.. admonition:: 从 LLVM TableGen 到 MLIR ODS：一个 DSL 的进化
+   :class: note
+
+   LLVM 的 TableGen 是一个"通用数据描述语言"，它的设计哲学是：
+   给你最小的工具集（Record、Class、DAG），让你自己做任何事。
+
+   MLIR 的 ODS 在 TableGen 之上做了一层**领域专用的抽象**：
+   - 不用写 ``def`` 来定义 Operation，而是用 ``Op<>``
+   - 参数类型用 ``I32:$lhs`` 而不是 ``Field<I32>``
+   - 汇编格式用声明式字符串而不是 C++ 代码片段
+
+   这种"领域特化"带来的好处是惊人的：
+
+   对于 MLIR 内置的 Dialect，ODS 生成的代码量是手写代码的 **5-10 倍**。
+   以 ``arith`` Dialect 为例：``ArithOps.td`` 大约有 3000 行 TableGen，
+   而 ``mlir-tblgen -gen-op-defs`` 生成的 C++ 代码超过 30000 行。
+   换句话说，一顿饭吃 10 分钟，产生的能量够工作 1 小时。
+
+   更关键的是，ODS 生成的代码**不会有人为 bug**。编码表、验证函数、
+   解析/打印函数——这些代码的模式高度固定，最适合自动生成。
+   历史上 LLVM/MLIR 的很多 bug 都来自手写的解析器或验证器，
+   ODS 将这些 bug 类别彻底消灭了。
+
+   后来 MLIR 社区还开发了 **PDL（Pattern Definition Language）**——
+   一种用于定义 Rewrite Pattern 的 DSL。PDL 让 Pattern 的编写变得更加
+   声明式和可组合。Pattern 的"金矿"——InstCombine——在 MLIR 中有了更
+   优雅的写法。
+
 为什么需要 ODS？
 ====================
 
