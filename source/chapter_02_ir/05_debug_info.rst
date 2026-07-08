@@ -29,7 +29,7 @@ IR 中生成大量调试元数据，将 IR 指令与源代码位置、变量名�
 
 **!DIBuCompileUnit**
 
-.. code-block:: llvm
+.. code-block:: none
 
    !0 = !DIBuCompileUnit(
      language: DW_LANG_C99,
@@ -46,7 +46,7 @@ IR 中生成大量调试元数据，将 IR 指令与源代码位置、变量名�
 
 **!DISubprogram**
 
-.. code-block:: llvm
+.. code-block:: none
 
    !2 = !DISubprogram(
      name: "add", scope: !1, file: !1, line: 1,
@@ -61,7 +61,7 @@ IR 中生成大量调试元数据，将 IR 指令与源代码位置、变量名�
 
 **!DIBasicType**
 
-.. code-block:: llvm
+.. code-block:: none
 
    !5 = !DIBasicType(name: "int", size: 32, encoding: DW_ATE_signed)
 
@@ -98,7 +98,7 @@ IR 中生成大量调试元数据，将 IR 指令与源代码位置、变量名�
 
 当调试器需要的值与 IR 值不完全一致时，用 ``DIExpression`` 描述变换：
 
-.. code-block:: llvm
+.. code-block:: none
 
    call void @llvm.dbg.value(metadata i32 %x, metadata !4,
        metadata !DIExpression(DW_OP_plus_uconst, 1))

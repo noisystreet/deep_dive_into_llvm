@@ -228,7 +228,7 @@ GEP 详解
 
 **基本语法：**
 
-.. code-block:: llvm
+.. code-block:: none
 
    %result = getelementptr <elem_type>, ptr <base>, <index1>, <index2>, ...
 
