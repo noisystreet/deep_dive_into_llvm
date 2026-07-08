@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [master]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,20 +28,3 @@ jobs:
 
       - name: Build HTML
         run: make html SPHINXOPTS="-W"  # -W 将警告视为错误
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _build/html
-
-  deploy:
-    if: github.ref == 'refs/heads/master'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

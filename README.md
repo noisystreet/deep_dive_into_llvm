@@ -2,6 +2,10 @@
 
 LLVM 编译器基础设施的深入分析教程，从入门到源码实现。
 
+## 在线文档
+
+> **https://deep-dive-into-llvm.readthedocs.io**
+
 ## 目录结构
 
 ```
