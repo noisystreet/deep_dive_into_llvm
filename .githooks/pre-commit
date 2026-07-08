@@ -57,16 +57,16 @@ if [ -n "$STAGED_RST_FILES" ]; then
     HAS_ERROR=0
     for f in $STAGED_RST_FILES; do
         CONTENT=$(git show :"$f")
-        # 检查 **bold** 后紧跟中文标点（缺少空格）
-        if echo "$CONTENT" | grep -Pn '\*\*[^*]*\*\*[）。（），：；？！、]' &>/dev/null; then
-            echo -e "\033[0;31m✗ $f: **bold** 后缺少空格（紧跟中文标点）\033[0m"
-            echo "$CONTENT" | grep -Pn '\*\*[^*]*\*\*[）。（），：；？！、]' | head -5
+        # 检查 **bold** 后紧跟中文括号（缺少空格）
+        if echo "$CONTENT" | grep -Pn '\*\*[^*]*\*\*[（）]' &>/dev/null; then
+            echo -e "\033[0;31m✗ $f: **bold** 后缺少空格（紧跟中文括号）\033[0m"
+            echo "$CONTENT" | grep -Pn '\*\*[^*]*\*\*[（）]' | head -5
             HAS_ERROR=1
         fi
-        # 检查 ``literal`` 后紧跟中文标点（缺少空格）
-        if echo "$CONTENT" | grep -Pn '``[^`]*``[）。（），：；？！、]' &>/dev/null; then
-            echo -e "\033[0;31m✗ $f: ``literal`` 后缺少空格（紧跟中文标点）\033[0m"
-            echo "$CONTENT" | grep -Pn '``[^`]*``[）。（），：；？！、]' | head -5
+        # 检查 ``literal`` 后紧跟中文括号（缺少空格）
+        if echo "$CONTENT" | grep -Pn '``[^`]*``[（）]' &>/dev/null; then
+            echo -e "\033[0;31m✗ $f: ``literal`` 后缺少空格（紧跟中文括号）\033[0m"
+            echo "$CONTENT" | grep -Pn '``[^`]*``[（）]' | head -5
             HAS_ERROR=1
         fi
     done
