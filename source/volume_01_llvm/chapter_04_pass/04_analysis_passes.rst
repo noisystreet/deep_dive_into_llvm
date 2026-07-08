@@ -46,7 +46,7 @@ DominatorTree（支配树）
        // InstA 的结果在 InstB 处一定可用
    }
 
-在源码中的位置：`llvm/include/llvm/Analysis/Dominators.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/include/llvm/Analysis/Dominators.h>`__
+在源码中的位置：`llvm/include/llvm/IR/Dominators.h <file:///workspace/llvm-project/llvm/include/llvm/IR/Dominators.h>`__
 
 PostDominatorTree（后支配树）
 ================================
@@ -84,7 +84,7 @@ LoopInfo（循环分析）
 
 这些信息是 LICM（循环不变量外提）、循环展开、循环向量化等优化的基础。
 
-在源码中的位置：`llvm/include/llvm/Analysis/LoopInfo.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/include/llvm/Analysis/LoopInfo.h>`__
+在源码中的位置：`llvm/include/llvm/Analysis/LoopInfo.h <file:///workspace/llvm-project/llvm/include/llvm/Analysis/LoopInfo.h>`__
 
 AliasAnalysis（别名分析）
 ============================
@@ -122,7 +122,7 @@ AliasAnalysis（别名分析）
 
 每层都调用下一层做补充，最终给出精度最高的结果。
 
-在源码中的位置：`llvm/include/llvm/Analysis/AliasAnalysis.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/include/llvm/Analysis/AliasAnalysis.h>`__
+在源码中的位置：`llvm/include/llvm/Analysis/AliasAnalysis.h <file:///workspace/llvm-project/llvm/include/llvm/Analysis/AliasAnalysis.h>`__
 
 ScalarEvolution（标量演化分析）
 ====================================

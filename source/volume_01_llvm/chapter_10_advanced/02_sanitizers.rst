@@ -72,7 +72,7 @@ UBSan 捕获**未定义行为**：整数溢出、空指针解引用、除零、�
 
 UBSan 的性能开销很小（通常 <5%），适合在测试和开发阶段常开。
 
-在源码中的位置：`llvm/lib/Transforms/Instrumentation/ <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/Transforms/Instrumentation/>`__
+在源码中的位置：`llvm/lib/Transforms/Instrumentation/ <file:///workspace/llvm-project/llvm/lib/Transforms/Instrumentation/>`__
 
 ThreadSanitizer（TSan）
 ==============================

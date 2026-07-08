@@ -139,7 +139,7 @@ JIT 场景下的性能分析
 在源码中的位置
 ====================
 
-`llvm/tools/lli/lli.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/tools/lli/lli.cpp>`__
+`llvm/tools/lli/lli.cpp <file:///workspace/llvm-project/llvm/tools/lli/lli.cpp>`__
 
 ``lli`` 的源码演示了如何基于 LLJIT 构建一个最小化的 JIT 执行器——
 它比第 8 章中自定义 JIT 的示例还要简单。

@@ -41,7 +41,7 @@ SelectionDAG 指令选择的流程：
          ↓
    生成 MachineInstr: ADD32rr $dst, $src1, $src2
 
-在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/SelectionDAGISel.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/CodeGen/SelectionDAG/SelectionDAGISel.cpp>`__
+在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/SelectionDAGISel.cpp <file:///workspace/llvm-project/llvm/lib/CodeGen/SelectionDAG/SelectionDAGISel.cpp>`__
 
 FastISel：快速指令选择
 ============================
@@ -68,7 +68,7 @@ MachineInstr。它的优点是很快，缺点是无法处理复杂模式。
 
 如果 FastISel 遇到无法处理的指令，它会优雅地回退到完整的 SelectionDAG ISel。
 
-在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/FastISel.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/CodeGen/SelectionDAG/FastISel.cpp>`__
+在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/FastISel.cpp <file:///workspace/llvm-project/llvm/lib/CodeGen/SelectionDAG/FastISel.cpp>`__
 
 GlobalISel：新一代指令选择
 =================================
@@ -120,7 +120,7 @@ GlobalISel 的流水线分为四个阶段：
 GlobalISel 在 AArch64 后端已经成熟，并在逐步推广到其他架构。在未来，
 它有可能完全取代 SelectionDAG。
 
-在源码中的位置：`llvm/lib/CodeGen/GlobalISel/ <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/CodeGen/GlobalISel/>`__
+在源码中的位置：`llvm/lib/CodeGen/GlobalISel/ <file:///workspace/llvm-project/llvm/lib/CodeGen/GlobalISel/>`__
 
 指令选择后：MachineInstr
 ==============================

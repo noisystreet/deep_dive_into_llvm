@@ -200,10 +200,10 @@
 
 如果你真的想实现一个 LLVM 后端，以下资源是最有价值的：
 
-- **LLVM 官方文档**：`llvm/docs/WritingAnLLVMBackend.rst <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/docs/WritingAnLLVMBackend.rst>`__
+- **LLVM 官方文档**：`llvm/docs/WritingAnLLVMBackend.rst <file:///workspace/llvm-project/llvm/docs/WritingAnLLVMBackend.rst>`__
 - **Cpu0 后端教程**：一个完整的教学后端实现（网上搜索 "Cpu0 LLVM backend"）
-- **LLVM 源码中的 Target 目录**：`llvm/lib/Target/ <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/Target/>`__，每个 Target 都是一个可参考的实例
-- **TableGen 文档**：`llvm/docs/TableGen/ <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/docs/TableGen/>`__
+- **LLVM 源码中的 Target 目录**：`llvm/lib/Target/ <file:///workspace/llvm-project/llvm/lib/Target/>`__，每个 Target 都是一个可参考的实例
+- **TableGen 文档**：`llvm/docs/TableGen/ <file:///workspace/llvm-project/llvm/docs/TableGen/>`__
 
 --------
 

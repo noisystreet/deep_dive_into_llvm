@@ -44,7 +44,7 @@ IPO 的优势与挑战
 这个 Pass 很少引起注意，但它能显著减少输出文件的大小。特别是当模板元编程
 或代码生成产生了大量从未使用的函数时。
 
-在源码中的位置：`llvm/lib/Transforms/IPO/GlobalDCE.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/Transforms/IPO/GlobalDCE.cpp>`__
+在源码中的位置：`llvm/lib/Transforms/IPO/GlobalDCE.cpp <file:///workspace/llvm-project/llvm/lib/Transforms/IPO/GlobalDCE.cpp>`__
 
 死全局变量消除（DeadGlobalElimination）
 ===========================================
@@ -178,7 +178,7 @@ ThinLTO 的核心思想：**不合并 IR，只合并摘要信息** 。
 函数体），然后根据摘要为每个 Module 计算需要导入的函数，最后并行地做优化和
 代码生成。这样既获得了跨模块优化的收益，又保持了并行构建的优势。
 
-在源码中的位置：`llvm/lib/LTO/ <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/LTO/>`__
+在源码中的位置：`llvm/lib/LTO/ <file:///workspace/llvm-project/llvm/lib/LTO/>`__
 
 --------
 

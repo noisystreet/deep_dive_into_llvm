@@ -82,7 +82,7 @@ ScheduleDAG
 在 DAG 中，如果指令 B 依赖指令 A 的结果，则有一条从 A 到 B 的边。
 调度器在保持这些依赖关系的前提下，可以自由重排没有依赖关系的指令。
 
-在源码中的位置：`llvm/include/llvm/CodeGen/ScheduleDAG.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/include/llvm/CodeGen/ScheduleDAG.h>`__
+在源码中的位置：`llvm/include/llvm/CodeGen/ScheduleDAG.h <file:///workspace/llvm-project/llvm/include/llvm/CodeGen/ScheduleDAG.h>`__
 
 调度策略
 ============

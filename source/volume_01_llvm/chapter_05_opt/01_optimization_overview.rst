@@ -122,7 +122,7 @@ Pass Pipeline 的组织方式
 
 优化管道的实际定义在 LLVM 源码中。你可以在这里找到默认的 Pass 管道：
 
-`llvm/lib/Passes/PassBuilderPipelines.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/Passes/PassBuilderPipelines.cpp>`__
+`llvm/lib/Passes/PassBuilderPipelines.cpp <file:///workspace/llvm-project/llvm/lib/Passes/PassBuilderPipelines.cpp>`__
 
 这个文件中定义了 ``buildO0DefaultPipeline`` 、\ ``buildO1DefaultPipeline`` 、
 ``buildO2DefaultPipeline`` 、\ ``buildO3DefaultPipeline`` 等函数。

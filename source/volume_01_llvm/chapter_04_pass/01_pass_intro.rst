@@ -163,8 +163,8 @@ LLVM 有两代 Pass 管理器：**Legacy Pass Manager** （已弃用）和 **New
 
 Pass 的基类定义在 LLVM 源码中：
 
-- `llvm/include/llvm/IR/PassManager.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/include/llvm/IR/PassManager.h>`__ —— New PM 的核心接口
-- `llvm/include/llvm/Pass.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/include/llvm/Pass.h>`__ —— Legacy PM 的核心接口
+- `llvm/include/llvm/IR/PassManager.h <file:///workspace/llvm-project/llvm/include/llvm/IR/PassManager.h>`__ —— New PM 的核心接口
+- `llvm/include/llvm/Pass.h <file:///workspace/llvm-project/llvm/include/llvm/Pass.h>`__ —— Legacy PM 的核心接口
 
 .. code-block:: cpp
 

@@ -147,7 +147,7 @@ llc：LLVM 静态编译器
 对比同一份 IR 在不同平台上生成的代码，可以直观地感受 LLVM 的"一次编写 IR，
 处处代码生成"。
 
-在源码中的位置：`llvm/tools/llc/llc.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/tools/llc/llc.cpp>`__
+在源码中的位置：`llvm/tools/llc/llc.cpp <file:///workspace/llvm-project/llvm/tools/llc/llc.cpp>`__
 
 --------
 

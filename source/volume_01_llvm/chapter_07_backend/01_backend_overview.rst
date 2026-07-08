@@ -155,7 +155,7 @@ TargetMachine 的作用
 ``TargetMachine`` 本身是一个抽象基类，每个目标架构（X86、AArch64、RISCV 等）
 都有自己的实现。
 
-在源码中的位置：`llvm/include/llvm/Target/TargetMachine.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/include/llvm/Target/TargetMachine.h>`__
+在源码中的位置：`llvm/include/llvm/Target/TargetMachine.h <file:///workspace/llvm-project/llvm/include/llvm/Target/TargetMachine.h>`__
 
 后端的入口：llc
 ====================

@@ -171,7 +171,7 @@ opt 的源码位置
 
 ``opt`` 的源码是一个相对较小的文件，展示了如何创建 PassBuilder 和运行 Pass：
 
-`llvm/tools/opt/opt.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/tools/opt/opt.cpp>`__
+`llvm/tools/opt/opt.cpp <file:///workspace/llvm-project/llvm/tools/opt/opt.cpp>`__
 
 它的核心逻辑只有几十行：
 

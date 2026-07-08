@@ -134,7 +134,7 @@ Register Coalescing（寄存器合并）
 
 合并不只是优化，它还能**减少虚拟寄存器的数量**，从而降低寄存器分配的压力。
 
-在源码中的位置：`llvm/lib/CodeGen/RegisterCoalescer.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/CodeGen/RegisterCoalescer.cpp>`__
+在源码中的位置：`llvm/lib/CodeGen/RegisterCoalescer.cpp <file:///workspace/llvm-project/llvm/lib/CodeGen/RegisterCoalescer.cpp>`__
 
 寄存器提示（Hint）
 ======================

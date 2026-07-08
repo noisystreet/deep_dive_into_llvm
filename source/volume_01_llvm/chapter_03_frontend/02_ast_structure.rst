@@ -180,7 +180,7 @@ ASTContext 与 SourceManager
 - 可以通过 ``ASTContext::getIntTypeForBitWidth()`` 、``ASTContext::getPointerType()`` 等方法创建和查询类型
 
 ``ASTContext`` 的定义在源码位置：
-`clang/include/clang/AST/ASTContext.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/clang/include/clang/AST/ASTContext.h>`__
+`clang/include/clang/AST/ASTContext.h <file:///workspace/llvm-project/clang/include/clang/AST/ASTContext.h>`__
 
 **SourceManager** 负责管理**源码位置信息** （文件、行号、列号）。
 

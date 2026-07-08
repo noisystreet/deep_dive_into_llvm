@@ -178,7 +178,7 @@ TableGen 支持**多重继承**——一个 Record 可以从多个 Class 继承�
 
 TableGen 的核心数据结构定义在 LLVM 源码中：
 
-`llvm/include/llvm/TableGen/Record.h <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/include/llvm/TableGen/Record.h>`__
+`llvm/include/llvm/TableGen/Record.h <file:///workspace/llvm-project/llvm/include/llvm/TableGen/Record.h>`__
 
 ``Record`` 类和 ``RecordVal`` 类分别对应 Record 和其字段：
 

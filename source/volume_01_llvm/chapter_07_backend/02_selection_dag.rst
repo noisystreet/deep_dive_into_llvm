@@ -59,7 +59,7 @@ SelectionDAG 中的每个节点是一个 ``SDNode``，节点间的边代表数�
 整个过程由 ``SelectionDAGBuilder`` 类完成。它遍历 LLVM IR 的 BasicBlock，
 为每条 IR 指令创建对应的 ``SDNode``。
 
-在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/SelectionDAGBuilder.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/CodeGen/SelectionDAG/SelectionDAGBuilder.cpp>`__
+在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/SelectionDAGBuilder.cpp <file:///workspace/llvm-project/llvm/lib/CodeGen/SelectionDAG/SelectionDAGBuilder.cpp>`__
 
 DAGCombine：DAG 层面优化
 ==============================
@@ -78,7 +78,7 @@ DAGCombine：DAG 层面优化
 DAGCombine 还处理更复杂的模式，比如将多个操作合并为一个等效操作（如
 将 ``(and (shl x, C1), C2)`` 合并为更高效的形式）。
 
-在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/DAGCombiner.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/CodeGen/SelectionDAG/DAGCombiner.cpp>`__
+在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/DAGCombiner.cpp <file:///workspace/llvm-project/llvm/lib/CodeGen/SelectionDAG/DAGCombiner.cpp>`__
 
 Legalization：合法化
 =========================

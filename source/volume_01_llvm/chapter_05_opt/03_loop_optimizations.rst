@@ -67,7 +67,7 @@ LICM（Loop Invariant Code Motion）将循环内**不随迭代变化的计算** 
        store i32 %v, ptr %arr
        br i1 %cond, label %for.body, label %for.end
 
-LICM 的源码位置：`llvm/lib/Transforms/Scalar/LICM.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/Transforms/Scalar/LICM.cpp>`__
+LICM 的源码位置：`llvm/lib/Transforms/Scalar/LICM.cpp <file:///workspace/llvm-project/llvm/lib/Transforms/Scalar/LICM.cpp>`__
 
 归纳变量简化（IndVarSimplify）
 =================================
@@ -88,7 +88,7 @@ LICM 的源码位置：`llvm/lib/Transforms/Scalar/LICM.cpp <file:///home/gzz/cr
 
 规范化后的归纳变量更易于 SCEV 分析和后续优化（如循环展开、向量化）。
 
-在源码中的位置：`llvm/lib/Transforms/Scalar/IndVarSimplify.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/Transforms/Scalar/IndVarSimplify.cpp>`__
+在源码中的位置：`llvm/lib/Transforms/Scalar/IndVarSimplify.cpp <file:///workspace/llvm-project/llvm/lib/Transforms/Scalar/IndVarSimplify.cpp>`__
 
 循环展开（Loop Unrolling）
 ==============================

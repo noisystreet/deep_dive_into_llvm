@@ -128,7 +128,7 @@ SLP Vectorizer 通过以下步骤工作：
 2. 将这些指令组合成一个向量操作
 3. 检查组合后的收益是否超过开销
 
-在源码中的位置：`llvm/lib/Transforms/Vectorize/SLPVectorizer.cpp <file:///home/gzz/creativity/deep_dive_into_llvm/llvm-project/llvm/lib/Transforms/Vectorize/SLPVectorizer.cpp>`__
+在源码中的位置：`llvm/lib/Transforms/Vectorize/SLPVectorizer.cpp <file:///workspace/llvm-project/llvm/lib/Transforms/Vectorize/SLPVectorizer.cpp>`__
 
 TargetTransformInfo（TTI）
 ==============================
