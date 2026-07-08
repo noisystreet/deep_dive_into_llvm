@@ -155,6 +155,35 @@ MLIR 的 Type 和 Attribute 采用 **uniquing** （唯一化）存储——相�
 
 这是因为 MLIR 的 StorageUniquer 机制保证了同类型实例的唯一性。
 
---------
+源码走读：TypeDef 与 AttrDef
+======================================
+
+自定义 Type 和 Attribute 通过 ODS 的 ``TypeDef`` 和 ``AttrDef`` 类定义，
+生成逻辑与 ``Op`` 类似。内置类型的唯一化实现在
+`StorageUniquer.h <file:///workspace/llvm-project/mlir/include/mlir/Support/StorageUniquer.h>`__ 。
+
+LLVM Dialect 的 ``!llvm.struct<...>`` 类型就是参数化 Type 的典型应用——
+memref 降级时生成的描述符结构体，详见 :ref:`mlir-06-06-03` 。
+
+动手验证
+==========
+
+观察 LLVM Dialect 中的复合类型：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts
+
+输出中的 ``i32`` 是内置 Type，由 ``BuiltinTypes.h`` 定义。
+
+本章小结
+========
+
+ODS 不仅定义 Operation，也定义 Type 和 Attribute。
+三者在 ``mlir-tblgen`` 的生成体系中地位平等，共同构成一个 Dialect 的完整描述。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

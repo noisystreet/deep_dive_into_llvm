@@ -145,6 +145,37 @@ GPU 后端：
        %C = tensor.insert %sum into %C_init[%i, %j] : tensor<NxMxf32>
    }
 
---------
+源码走读：scf.parallel 的 ODS 语义
+======================================
+
+``scf.parallel`` 定义在
+`SCFOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/SCF/IR/SCFOps.td>`__ 。
+与 ``scf.for`` 的关键区别是：``iterator_types`` 标记为 ``parallel`` 的维度
+**没有跨迭代依赖**，优化器可以安全地映射为 OpenMP 的 ``#pragma omp parallel for``
+或 GPU 的线程网格。
+
+降级时，``scf.parallel`` 通常先展开为多个 ``scf.for`` ，
+再接入标准的 scf → cf → LLVM 管道。GPU 路径则通过
+:ref:`mlir-07-07-04` 的 ``convert-linalg-to-gpu`` 直接映射为 kernel launch。
+
+动手验证
+==========
+
+对比串行和并行循环的 IR 结构：
+
+.. code-block:: console
+
+   # 串行循环示例
+   mlir-opt examples/mlir/chapter_03_dialects/scf_sum.mlir
+
+``scf.for`` 有 ``iter_args`` 传递循环携带值；``scf.parallel`` 则要求
+迭代间无依赖，这是编译器判断能否并行的核心语义差异。
+
+本章小结
+========
+
+MLIR 的并行策略是**显式标记而非自动推断**——前端或优化器用 ``scf.parallel``
+声明并行性，后端负责映射到目标平台。这与 :ref:`chapter-05-05-vectorization`
+中 LLVM 自动向量化的思路形成互补。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

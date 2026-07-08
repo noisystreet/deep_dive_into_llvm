@@ -182,6 +182,37 @@ Op 的文档属性
 ``summary`` 和 ``description`` 被 Sphinx 文档生成工具使用，也可以被
 ``mlir-query`` 工具查询。
 
---------
+与 Toy Tutorial 的对照
+================================
+
+Toy Ch3 的 ``MulOp`` 是 ODS 定义 Operation 的标准范例，见
+`Ops.td <file:///workspace/llvm-project/mlir/examples/toy/Ch3/include/toy/Ops.td>`__ ：
+
+.. code-block:: text
+
+   def MulOp : Toy_Op<"mul", [Pure, SameOperandsAndResultType]> {
+     let arguments = (ins F64Tensor:$lhs, F64Tensor:$rhs);
+     let results = (outs F64Tensor:$result);
+     let assemblyFormat = "$lhs `,` $rhs attr-dict `:` type($lhs)";
+   }
+
+每个字段都有明确作用：``arguments`` 定义操作数，``results`` 定义返回值，
+``assemblyFormat`` 定义 IR 打印格式，``Pure`` Trait 标记无副作用。
+:ref:`mlir-08-08-02` 中 MyDSL 的 ``MacOp`` 遵循完全相同的模式。
+
+动手验证
+==========
+
+在本地浏览 Toy 的 ODS 定义，对照本文的字段说明：
+
+.. code-block:: console
+
+   head -30 llvm-project/mlir/examples/toy/Ch3/include/toy/Ops.td
+
+本章小结
+========
+
+ODS 让 Operation 定义从"手写数百行 C++"变为"声明十几个字段"。
+下一节 :ref:`mlir-04-04-03` 介绍 Trait 和 Interface 如何为 Operation 附加行为。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

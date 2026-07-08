@@ -142,6 +142,42 @@ MLIR 在每次降级步骤后会执行验证器：
    %0 = unrealized_conversion_cast %arg0 : tensor<4xf32> to memref<4xf32>
    // ^^^ 这个 cast 必须在最终降级完成后被消除
 
---------
+源码走读：降级管道的代码组织
+======================================
+
+MLIR 的每个降级步骤对应一个独立的 Conversion Pass，注册在
+`Conversion/Passes.td <file:///workspace/llvm-project/mlir/include/mlir/Conversion/Passes.td>`__ 。
+这种模块化组织正是前文"分而治之"工程优势的体现——
+``convert-scf-to-cf`` 的实现在 `SCFToControlFlow.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/SCFToControlFlow/SCFToControlFlow.cpp>`__ ，
+与 ``convert-arith-to-llvm`` 完全独立。
+
+Toy Tutorial Ch6 的 `LowerToLLVM.cpp <file:///workspace/llvm-project/mlir/examples/toy/Ch6/mlir/LowerToLLVM.cpp>`__
+文件头用 ASCII 图描述了多条降级路径的汇合关系——这是理解渐进降级的最佳源码注释之一。
+
+动手验证
+==========
+
+用项目 CI 验证的完整管道走一遍端到端流程：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/tensor_add.mlir \
+       --one-shot-bufferize=bufferize-function-boundaries \
+       --convert-linalg-to-loops \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --convert-memref-to-llvm \
+       --reconcile-unrealized-casts \
+     | mlir-translate --mlir-to-llvmir
+
+也可以运行 ``bash scripts/verify-mlir-examples.sh`` 分步验证各阶段。
+
+本章小结
+========
+
+渐进降级的本质是**在正确的抽象层次做正确的优化，然后逐层下沉**。
+理解这个概念后，:ref:`mlir-06-06-02` 至 :ref:`mlir-06-06-04` 的每一步
+都有了明确的定位——它们不是随意的 Pass 堆砌，而是精心设计的语义展开链。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

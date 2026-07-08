@@ -140,6 +140,36 @@ mlir-gpu-runner
    # 3. NVVM Dialect → LLVM IR + 设备代码（PTX）
    # 4. JIT 编译 + 执行
 
---------
+源码走读：GPU Dialect 与 NVVM
+================================
+
+GPU Dialect 的操作定义在
+`GPUBase.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/GPU/IR/GPUBase.td>`__ 。
+``gpu.launch`` 封装了 kernel 启动语义，``gpu.thread_id`` 等操作提供了
+与 CUDA 线程模型对应但不绑定具体后端的抽象。
+
+降级到 NVIDIA 时，``convert-gpu-to-nvvm`` 将 GPU 操作映射为 NVVM Dialect，
+最终通过 ``mlir-translate`` 生成含 PTX intrinsics 的 LLVM IR。
+Kernel Outlining 由 ``gpu-kernel-outlining`` Pass 完成，将 launch 体内的
+代码提取为独立的 ``gpu.func`` ——这与函数提取的编译器经典变换类似。
+
+动手验证
+==========
+
+GPU 管道需要 CUDA/ROCm 运行时，在 CPU-only 环境中可用以下命令
+验证 MLIR 解析和 Pass 注册是否正常：
+
+.. code-block:: console
+
+   mlir-opt --help | grep -E "gpu|nvvm" | head -10
+
+确认 ``--convert-gpu-to-nvvm`` 和 ``--gpu-kernel-outlining`` 等 Pass 可用。
+
+本章小结
+========
+
+MLIR-GPU 实现了"写一次 Dialect，生成多个 GPU 后端"的目标。
+其降级路径在 LLVM Dialect 处与 CPU 管道汇合——最终都通过
+:ref:`mlir-06-06-04` 的 ``mlir-translate`` 生成 LLVM IR。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -204,6 +204,46 @@ Operation 的验证
 
 验证器保证了 IR 的正确性——不合法的 Operation 无法被构建或写入文件。
 
---------
+源码走读：Operation 类的内存布局
+======================================
+
+``Operation`` 是 MLIR 最核心的类，定义在
+`Operation.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Operation.h>`__ 。
+
+源码注释揭示了一个精巧的内存布局设计：
+
+.. code-block:: text
+
+   // 对于 3 个结果的 Operation，内存布局为：
+   // [Result2, Result1, Result0, Operation]
+   //                          ^ this is where Operation* points to
+
+结果值紧邻 Operation 对象之前存储，使得遍历和操作都非常高效。
+操作名中的 ``.`` 分隔 Dialect 前缀和操作名——这不是语法糖，
+而是 MLIR 框架识别 Dialect 归属的正式机制。
+
+对比第一卷 :ref:`chapter-02-03-module-function-basicblock` 中
+LLVM IR 的 Instruction/Function 分层设计，MLIR 用统一的 Operation
+类消除了层级差异，代价是单对象内存开销略大。
+
+动手验证
+==========
+
+观察 Operation 在 IR 文本中的结构：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir
+
+输出中每一行都是一个 Operation：``func.func`` 是 Operation，
+``arith.addi`` 是 Operation，``func.return`` 也是 Operation——
+唯一的区别是有无 Region 和属性。
+
+本章小结
+========
+
+Operation 是 MLIR 的万能积木，Value 是 SSA 数据流的基本单元。
+理解 Operation 的结构后，下一节 :ref:`mlir-02-02-02` 的类型与属性
+系统就有了附着的基础。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

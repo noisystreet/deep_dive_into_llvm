@@ -140,6 +140,56 @@ mlir-cpu-runner
 
    // 输出：42
 
---------
+源码走读：ModuleTranslation 的翻译流程
+======================================
+
+前文示例代码的路径需要更正——实际实现位于
+`ModuleTranslation.cpp <file:///workspace/llvm-project/mlir/lib/Target/LLVMIR/ModuleTranslation.cpp>`__ ，
+而非 ``llvm/lib/Target/`` 。
+
+文件头注释明确了职责：
+
+.. code-block:: text
+
+   This file implements the translation between an MLIR LLVM dialect module and
+   the corresponding LLVMIR module.
+
+翻译器的工作方式是**逐 Operation 分发**：对每个 ``llvm.func`` 内的
+``llvm.add``、``llvm.load`` 等操作，调用对应的 ``LLVMTranslationInterface``
+生成 ``llvm::Instruction``。类型映射由 ``TypeToLLVM.h`` 统一处理，
+确保 ``!llvm.ptr`` 等 MLIR 类型正确转为 LLVM IR 类型。
+
+这与 :ref:`chapter-09-04-llvm-dis-and-asm` 讨论的 LLVM bitcode/IR 文本
+形成闭环：MLIR 管道产出标准 ``.ll`` 文件后，后续工具链与第一卷完全一致。
+
+动手验证
+==========
+
+用项目示例走通 MLIR → LLVM IR → 优化的完整链路：
+
+.. code-block:: console
+
+   # 降级到 LLVM Dialect
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+       -o /tmp/llvm_dialect.mlir
+
+   # 翻译为 LLVM IR
+   mlir-translate --mlir-to-llvmir /tmp/llvm_dialect.mlir -o /tmp/output.ll
+
+   # 用 LLVM opt 优化（第一卷工具链）
+   opt -O2 -S /tmp/output.ll
+
+对比 ``opt`` 前后的 IR，观察 ``add`` 指令是否被保留或进一步优化。
+
+本章小结
+========
+
+LLVM Dialect → LLVM IR 是 MLIR 管道的终点站。``mlir-translate`` 完成最后
+的格式转换，之后 ``opt``、``llc``、``lli`` 接管——MLIR 与 LLVM 的边界
+就在这一步。第 6 章降级管道至此完整闭环。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

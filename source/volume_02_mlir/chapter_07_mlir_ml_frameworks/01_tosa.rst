@@ -149,4 +149,33 @@ TOSA 的降级路径：
      - Arm 后端、嵌入式
      - TensorFlow、JAX、PyTorch
 
----------END *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
+源码走读：TOSA 的 ODS 定义
+================================
+
+TOSA Dialect 的操作定义在
+`TosaOpBase.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Tosa/IR/TosaOpBase.td>`__ 。
+其设计强调**推理部署**——操作集小而稳定，每个 Op 的 ``summary`` 和
+``description`` 都明确标注了量化支持和形状约束。
+
+TOSA 到 linalg 的降级 Pass 位于 ``mlir/lib/Conversion/TosaToLinalg/`` ，
+这使得 TOSA 可以接入 :ref:`mlir-06-06-02` 描述的标准 tensor → scf 管道，
+而不需要为 TOSA 单独实现到底层的降级。
+
+动手验证
+==========
+
+观察 TOSA 降级管道中共享的后半段，用项目 linalg 示例模拟：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/tensor_add.mlir \
+       --one-shot-bufferize=bufferize-function-boundaries \
+       --convert-linalg-to-loops
+
+TOSA 前端降到 linalg 后，走的就是这条路径。
+
+本章小结
+========
+
+TOSA 面向推理部署，StableHLO 面向训练灵活性，两者通过降级管道在 linalg 层汇合。
+下一节 :ref:`mlir-07-07-02` 深入 StableHLO 的版本化设计。

@@ -204,6 +204,38 @@ Traits vs Interfaces 的选择
        auto ivs = loopOp.getLoopInductionVars();
    }
 
---------
+源码走读：Trait 与 Interface 的生成
+======================================
+
+Trait 的 ODS 定义在
+`OpBase.td <file:///workspace/llvm-project/mlir/include/mlir/IR/OpBase.td>`__ 中，
+Interface 通过 ``OpInterface`` 类在 ``.td`` 文件中声明方法签名，
+由 ``mlir-tblgen`` 生成 C++ 虚接口。
+
+以 ``NoMemoryEffect`` Trait 为例，它告诉优化器该 Operation 没有副作用，
+可以被自由 CSE 和 DCE——:ref:`mlir-03-03-02` 中 ``Arith_Op`` 基类
+就附加了这个 Trait。
+
+``LoopLikeOpInterface`` 则抽象了所有"类循环"操作的公共方法
+（``getLoopInductionVars()``、``getLoopBounds()`` 等），
+定义见
+`LoopLikeInterface.td <file:///workspace/llvm-project/mlir/include/mlir/Interfaces/LoopLikeInterface.td>`__ ，
+使得循环优化 Pass 可以统一处理 ``scf.for``、``affine.for`` 等不同 Op。
+
+动手验证
+==========
+
+检查 arith Dialect 中 Trait 的使用：
+
+.. code-block:: console
+
+   rg "NoMemoryEffect|Commutative" \
+       llvm-project/mlir/include/mlir/Dialect/Arith/IR/ArithOps.td | head -5
+
+本章小结
+========
+
+Trait 标记编译期属性，Interface 定义运行时行为契约——两者让 MLIR 的 Operation
+既有多态性，又保持高效。ODS 自动生成这些机制的 C++ 代码，是 MLIR 可扩展性的关键。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

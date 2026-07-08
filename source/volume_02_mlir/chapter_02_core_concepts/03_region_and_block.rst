@@ -168,6 +168,37 @@ Region 在 Lowering 过程中的变化
 
 这种转换由 **LoopToStandard Lowering** 等 Pass 完成。
 
---------
+源码走读：Region 与 Block 的实现
+======================================
+
+Region 定义在 `Region.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Region.h>`__ ，
+Block 定义在 `Block.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Block.h>`__ 。
+
+Region 是 Block 的容器，一个 Operation 可以拥有零个或多个 Region。
+``func.func`` 有一个 Region 包含函数体；``scf.for`` 有一个 Region 包含循环体；
+``scf.if`` 有两个 Region 分别包含 then/else 分支。
+
+Block 内的 Operation 按顺序排列，Block 参数等价于 LLVM IR 的 PHI 节点——
+:ref:`mlir-03-03-03` 中 scf → cf 降级时，循环携带值就是通过 Block 参数传递的。
+
+动手验证
+==========
+
+观察 Region 结构：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_03_dialects/scf_sum.mlir
+
+``scf.for`` 的循环体就是一个 Region，内含 Block 和若干 Operation。
+对比 :ref:`mlir-06-06-03` 中降级后的 ``cf.br`` / ``^bb1`` 结构，
+可以直观看到 Region 如何被展开为显式 CFG。
+
+本章小结
+========
+
+Region 和 Block 让 MLIR 在保持 SSA 的同时支持结构化控制流。
+这是 scf Dialect 的基础，也是 MLIR 相比 LLVM IR 的核心优势之一。
+下一节 :ref:`mlir-02-02-04` 介绍位置信息与诊断系统。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

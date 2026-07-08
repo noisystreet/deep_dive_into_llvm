@@ -143,6 +143,40 @@ One-Shot Bufferization 是 MLIR 的一种**一次性缓冲化**策略。它不�
        --convert-arith-to-llvm \
        input.mlir
 
---------
+源码走读：Tiling 实现
+================================
+
+Tiling 的核心实现在
+`Tiling.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Linalg/Transforms/Tiling.cpp>`__ 。
+它将 ``linalg.generic`` 或 ``linalg.matmul`` 的外层循环拆分为 tile 循环 +
+内部小矩阵计算，利用 ``indexing_maps`` 计算每个 tile 的索引偏移。
+
+Fusion 则将相邻的 ``linalg`` 操作合并为单个 ``linalg.generic`` ，
+减少中间 tensor 的分配。One-Shot Bufferization 的三阶段分析见
+:ref:`mlir-06-06-02` 中对 `OneShotAnalysis.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Bufferization/Transforms/OneShotAnalysis.cpp>`__ 的解读。
+
+三者的执行顺序通常是 **Tile → Fuse → Bufferize → LowerToLoops**：
+先优化张量计算的访问模式，再解决内存分配，最后展开为循环。
+
+动手验证
+==========
+
+用项目 tensor 示例验证 bufferize + 循环展开管道：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/tensor_add.mlir \
+       --one-shot-bufferize=bufferize-function-boundaries \
+       --convert-linalg-to-loops
+
+观察输出中 ``scf.for`` 循环内的 ``memref.load`` / ``memref.store`` 模式——
+这正是 tiling 和 fusion 优化后最终展开的命令式形态。
+
+本章小结
+========
+
+Tiling 优化数据局部性，Fusion 减少中间结果，Bufferization 解决内存分配——
+三者共同构成 MLIR 张量计算的性能引擎。它们都在 linalg 层操作，
+完成后接入标准的 scf → LLVM 降级管道。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

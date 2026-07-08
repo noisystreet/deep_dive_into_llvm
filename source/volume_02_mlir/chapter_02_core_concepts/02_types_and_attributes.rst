@@ -174,6 +174,37 @@ MLIR 框架内置了一些常用类型（如 ``IntegerType``、``FloatType`` ）
 自定义类型的注册方式和 Operation 类似——通过 ODS 定义，由 ``mlir-tblgen``
 生成代码。
 
---------
+源码走读：Type 与 Attribute 的存储
+======================================
+
+MLIR 的类型系统定义在
+`Types.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Types.h>`__ 和
+`BuiltinTypes.h <file:///workspace/llvm-project/mlir/include/mlir/IR/BuiltinTypes.h>`__ 。
+
+Attribute 定义在
+`Attributes.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Attributes.h>`__ 。
+
+关键设计是 **StorageUniquer** 机制：相同的 Type 或 Attribute 在内存中
+只存一份，通过指针比较即可判等——这与 LLVM 的 ``Type`` 唯一化策略一致。
+``IntegerType::get(context, 32)`` 无论调用多少次，返回的都是同一个实例。
+
+动手验证
+==========
+
+观察 IR 中类型和属性的实际使用：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_03_dialects/scf_sum.mlir
+
+注意 ``%c0 = arith.constant 0 : i32`` 中，``i32`` 是 Type，
+``0`` 是 Attribute 值，``%c0`` 是 Operation 产生的 Value——
+三者在 MLIR 中有严格的分工。
+
+本章小结
+========
+
+Type 描述"是什么"，Attribute 描述"编译期常量元数据"，Value 描述"运行时的 SSA 值"。
+下一节 :ref:`mlir-02-02-03` 将介绍 Region 和 Block 如何组织 Operation 的控制流结构。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

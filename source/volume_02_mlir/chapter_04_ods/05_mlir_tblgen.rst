@@ -178,6 +178,51 @@ ODS 定义，然后根据不同的命令行选项生成对应的 C++ 代码。
    # 4. 编译
    $ clang++ main.cpp $(llvm-config --cxxflags --ldflags --libs)
 
---------
+源码走读：mlir-tblgen 的生成器
+================================
+
+``mlir-tblgen`` 是 MLIR 专用的 TableGen 后端，实现位于
+`MlirTblgenMain.cpp <file:///workspace/llvm-project/mlir/tools/mlir-tblgen/MlirTblgenMain.cpp>`__ ，
+与第一卷
+:ref:`chapter-06-05-code-generation` 中的 ``llvm-tblgen`` 一脉相承。
+
+常用生成目标：
+
+.. list-table:: mlir-tblgen 生成目标
+   :header-rows: 1
+
+   * - 命令行参数
+     - 生成内容
+   * - ``-gen-op-decls``
+     - Operation 类声明 ``.h.inc``
+   * - ``-gen-op-defs``
+     - Operation 类实现 ``.cpp.inc``
+   * - ``-gen-dialect-decls``
+     - Dialect 注册声明
+   * - ``-gen-typedef-decls``
+     - 自定义 Type 声明
+   * - ``-gen-enum-decls``
+     - 枚举类型声明
+
+Toy Tutorial 的 CMake 构建自动调用这些生成器——
+查看
+`Ch3/CMakeLists.txt <file:///workspace/llvm-project/mlir/examples/toy/Ch3/CMakeLists.txt>`__
+可以看到完整的集成方式。
+
+动手验证
+==========
+
+统计 arith Dialect 的 ODS 规模，感受自动生成的威力：
+
+.. code-block:: console
+
+   wc -l llvm-project/mlir/include/mlir/Dialect/Arith/IR/ArithOps.td
+
+本章小结
+========
+
+``mlir-tblgen`` 将 ODS 声明转化为 C++ 代码，是 MLIR 开发工作流的核心工具。
+掌握它的生成目标，就掌握了自定义 Dialect 的构建流程。
+第 5 章 :ref:`mlir-05-index` 将在此基础上介绍如何用 Pass 变换这些 Operation。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
