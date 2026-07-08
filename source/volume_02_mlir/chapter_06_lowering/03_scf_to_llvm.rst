@@ -138,6 +138,97 @@ LLVM 的**结构化类型**：
 ``UnrealizedConversionCastOp``，如果有则报错——这是确保降级完整性的
 安全检查。
 
---------
+源码走读：scf.for 如何变成 CFG
+======================================
+
+``--convert-scf-to-cf`` 的实现位于
+`SCFToControlFlow.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/SCFToControlFlow/SCFToControlFlow.cpp>`__。
+
+这个文件最值得读的不是某个函数，而是第 43–61 行的**设计注释**。
+它用 ASCII 图描述了 ``scf.for`` 降级后的 CFG 结构，并维护三个不变量：
+
+1. 生成的 CFG 子图有**单一入口**和**单一出口**
+2. 入口块是父 Region 的第一个块，出口块是最后一个块
+3. 循环携带值通过条件块的参数在所有块中可见
+
+理解了这段注释，就能明白为什么降级后的 ``cf.cond_br`` 需要携带
+``(%iv, %init...)`` 这样的参数列表——它们就是原来 ``scf.for`` 的
+归纳变量和 ``iter_args``。
+
+这与第一卷 :ref:`chapter-02-03-module-function-basicblock` 讨论的
+LLVM IR 基本块和 PHI 节点有异曲同工之妙：MLIR 用 Region 保留了结构化信息，
+降级时才展开为显式 CFG。
+
+源码走读：arith → LLVM 的模式匹配
+======================================
+
+``--convert-arith-to-llvm`` 由
+`ArithToLLVM.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/ArithToLLVM/ArithToLLVM.cpp>`__
+实现。它的核心是一组 **Pattern**——每个 Pattern 匹配一个 ``arith`` 操作，
+替换为对应的 ``llvm`` 操作。
+
+以 ``arith.addi`` 为例，转换逻辑大致为：
+
+.. code-block:: cpp
+
+   rewriter.replaceOpWithNewOp<LLVM::AddOp>(op, adaptor.getOperands());
+
+标量算术几乎是 1:1 映射，但向量版本的 ``arith.addf`` 需要处理
+LLVM 向量类型和 rounding mode 属性——文件中 ``ConstrainedVectorConvertToLLVMPattern``
+模板就是为此存在的。
+
+这种"一个 Pattern 管一种 Op"的组织方式，与 :ref:`mlir-05-05-02` 讨论的
+Pattern Rewrite 框架完全一致。
+
+func 与 memref 的降级要点
+==============================
+
+**func → llvm**：`FuncToLLVM.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/FuncToLLVM/FuncToLLVM.cpp>`__
+将 ``func.func`` 转为 ``llvm.func``，调用约定由 ``LLVMConversionTarget`` 统一管理。
+
+**memref → llvm**：``memref`` 在 LLVM Dialect 中被表示为描述符结构体
+（指针 + 对齐指针 + offset + sizes），而非裸指针。
+这让 MLIR 在降级过程中保留了对齐、偏移和形状信息，到 LLVM IR 时才进一步展开。
+
+动手验证
+==========
+
+用项目示例走一遍完整降级：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts
+
+预期输出：
+
+.. code-block:: text
+
+   llvm.func @add(%arg0: i32, %arg1: i32) -> i32 {
+     %0 = llvm.add %arg0, %arg1 : i32
+     llvm.return %0 : i32
+   }
+
+若要 JIT 执行，可接上 ``mlir-cpu-runner`` ，详见 :ref:`mlir-10-10-04` 。
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+     | mlir-cpu-runner -entry-point-result=i32 -e add 3 5
+
+本章小结
+========
+
+scf/arith → LLVM Dialect 是 MLIR 降级管道中**最成熟**的一段。
+scf 展开为 CFG，arith 映射为 LLVM 指令，func/memref 处理函数边界和内存描述符。
+全部完成后，模块中只剩 LLVM Dialect 的操作，可以交给
+:ref:`mlir-06-06-04` 描述的 ``ModuleTranslation`` 导出为 LLVM IR。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

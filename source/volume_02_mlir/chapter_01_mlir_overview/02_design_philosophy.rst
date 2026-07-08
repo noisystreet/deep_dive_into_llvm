@@ -158,6 +158,71 @@ MLIR 的哲学总结
    5. 可插拔 Pass：优化 Pass 可以在任意抽象级别上定义和运行
    6. 降级至 LLVM：最终可以到达 LLVM Dialect，利用 LLVM 后端
 
---------
+源码走读：Dialect 注册与操作命名
+======================================
+
+上一节列出了 MLIR 的四大构建块，它们在源码中的落点非常集中。
+
+**Operation** 的命名规则直接编码了 Dialect 归属。``Operation.h`` 中的注释说明：
+如果操作名包含 ``.``，点号前是 Dialect 名，点号后是操作名
+（`Operation.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Operation.h>`__）。
+这就是为什么 ``scf.for`` 和 ``arith.addi`` 不需要额外的"所属方言"字段——
+名字本身就携带了类型信息。
+
+**Dialect** 则是 Operation 的"命名空间"和行为容器。
+``Dialect.h`` 将其定义为"一组 MLIR 操作、类型和属性，以及整个组关联的行为"
+（`Dialect.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Dialect.h>`__）。
+每个 Dialect 可以向框架注册：
+
+- 自定义操作的解析/打印逻辑
+- 常量折叠、DCE 等接口
+- 与其他 Dialect 的 Lowering 模式
+
+这种设计让"内置 Dialect"和"用户 Dialect"走同一套注册路径——
+第一类 Dialect 不是口号，而是 `DialectRegistry` 里的平等条目。
+
+渐进降级在源码中的体现
+==============================
+
+降级不是某个单一函数完成的，而是**一串 Pass** 串联而成。
+以 ``scf.for`` → 控制流图为例，``SCFToControlFlow.cpp`` 的文件头注释
+写得很直白：这个 Pass 将 ``scf.for``、``scf.if`` 转换为标准 CFG 操作
+（`SCFToControlFlow.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/SCFToControlFlow/SCFToControlFlow.cpp>`__）。
+
+文件中用 ASCII 图详细描述了降级后 CFG 的结构——条件块、循环体块、出口块
+如何拼接。读懂这段注释，就理解了为什么上一节的 ``scf.for`` 示例
+在降级后会变成 ``cf.br`` / ``cf.cond_br`` 的组合。
+
+这与第一卷 :ref:`chapter-04-03-new-pm` 讨论的 Pass Pipeline 思想一脉相承：
+MLIR 的 ``PassManager`` 同样按序调度变换，只不过操作对象从 ``llvm::Function``
+变成了 ``mlir::Operation``。
+
+动手验证
+==========
+
+用 MLIR 打印一个混合 Dialect 的模块，观察操作命名：
+
+.. code-block:: console
+
+   cat > /tmp/mixed.mlir << 'EOF'
+   func.func @main(%a: i32, %b: i32) -> i32 {
+     %sum = arith.addi %a, %b : i32
+     func.return %sum : i32
+   }
+   EOF
+   mlir-opt /tmp/mixed.mlir
+
+输出中 ``func.func``、``arith.addi``、``func.return`` 分属三个 Dialect，
+却共存于同一模块——这正是"第一类 Dialect"的实际表现。
+
+本章小结
+========
+
+MLIR 的设计哲学可以归结为一句话：**在正确的抽象层次做正确的事**。
+渐进降级保证每层 IR 都保留足够的语义；第一类 Dialect 保证任何人都能
+在框架上搭建自己的 IR 层。
+
+带着这些原则，下一章 :ref:`mlir-02-index` 将逐一拆解
+Operation、Value、Block、Region 四大构建块。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

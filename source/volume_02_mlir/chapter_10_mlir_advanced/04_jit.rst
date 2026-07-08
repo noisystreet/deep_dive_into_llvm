@@ -119,6 +119,76 @@ JIT 中的性能优化
    # 使用更大的代码缓存
    $ LLD_FORCE_DEBUG_PACKRAT=1 mlir-cpu-runner ...
 
---------
+源码走读：ExecutionEngine 与 ORC JIT
+======================================
+
+``mlir-cpu-runner`` 的核心是 ``ExecutionEngine`` 类，定义在
+`ExecutionEngine.h <file:///workspace/llvm-project/mlir/include/mlir/ExecutionEngine/ExecutionEngine.h>`__，
+实现在 `ExecutionEngine.cpp <file:///workspace/llvm-project/mlir/lib/ExecutionEngine/ExecutionEngine.cpp>`__。
+
+文件头注释写得很清楚：
+
+.. code-block:: text
+
+   This file implements the execution engine for MLIR modules based on LLVM Orc
+   JIT engine.
+
+``ExecutionEngineOptions`` 结构体暴露了三个关键定制点：
+
+1. ``llvmModuleBuilder`` —— 自定义 MLIR → LLVM IR 的翻译逻辑
+2. ``transformer`` —— JIT 编译前对 LLVM Module 运行优化 Pass
+3. ``sharedLibPaths`` —— 链接外部共享库以解析符号
+
+其中 ``transformer`` 回调正是文档前文示例中插入 ``InstCombine`` 的入口。
+这与第一卷 :ref:`chapter-08-04-lljit-and-lazy` 讨论的 LLJIT 架构一脉相承——
+MLIR 的 ExecutionEngine 本质上是在 MLIR Module 和 LLVM ORC JIT 之间
+加了一层翻译和符号管理。
+
+JitRunner 的角色
+======================
+
+除了库 API，``mlir/lib/ExecutionEngine/JitRunner.cpp`` 实现了
+``mlir-cpu-runner`` 的命令行逻辑：解析参数、构建降级管道、创建
+ExecutionEngine、调用入口函数并打印结果。阅读这个文件可以理解
+"一条 mlir-opt | mlir-cpu-runner 命令"在源码层面的完整执行路径。
+
+动手验证
+==========
+
+用项目示例走通 JIT 执行：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+     | mlir-cpu-runner -entry-point-result=i32 -e add 10 32
+
+预期输出 ``42`` 。这条命令串联了：
+
+1. MLIR → LLVM Dialect 降级，由 ``mlir-opt`` 完成
+2. LLVM Dialect → LLVM IR 翻译，在 ``mlir-cpu-runner`` 内部完成
+3. ORC JIT 编译 + 执行，由 ``ExecutionEngine`` 驱动
+
+若要观察生成的 LLVM IR 而不执行，可以改用 ``mlir-translate`` 。
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+     | mlir-translate --mlir-to-llvmir
+
+本章小结
+========
+
+MLIR JIT Pipeline 的价值在于**缩短验证循环**：修改 Dialect 或 Pass 后，
+无需走完整的 ``llc`` + ``clang`` 流程，一行命令就能编译执行。
+``ExecutionEngine`` 把 MLIR 的降级成果对接到第一卷介绍的 ORC JIT 引擎，
+完成从 MLIR 到可执行机器码的最后一公里。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

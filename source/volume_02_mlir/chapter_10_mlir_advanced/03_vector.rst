@@ -132,6 +132,64 @@ Vector Dialect 最终映射为 LLVM IR 中的向量类型：
    // 最终可能生成（x86）：
    // vaddps %ymm0, %ymm1, %ymm2
 
---------
+源码走读：向量降级的两阶段策略
+======================================
+
+Vector Dialect 的降级不是一步完成的，源码中明确拆为两个阶段：
+
+**阶段 1：多维向量合法化** —— ``VectorToSCF.cpp``
+（`VectorToSCF.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/VectorToSCF/VectorToSCF.cpp>`__）
+
+将 ``vector<2x4xf32>`` 这样的多维向量拆为嵌套循环 + 一维向量操作。
+这是因为大多数硬件 SIMD 指令面向一维向量。
+
+**阶段 2：向量 → LLVM** —— ``ConvertVectorToLLVM.cpp``
+（`ConvertVectorToLLVM.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/VectorToLLVM/ConvertVectorToLLVM.cpp>`__）
+
+将一维 ``vector<4xf32>`` 映射为 LLVM IR 的 ``<4 x float>`` 类型，
+最终由 LLVM 后端的向量化 Pass 或指令选择生成 ``vaddps`` 等机器指令。
+
+这条路径与第一卷 :ref:`chapter-05-05-vectorization` 讨论的 LLVM 自动向量化
+形成互补：MLIR Vector Dialect 让开发者**显式**控制向量形状和操作，
+而不完全依赖 LLVM 的 LoopVectorize 启发式分析。
+
+向量 load/store 与内存对齐
+==============================
+
+``vector.load`` 和 ``vector.store`` 在降级时需要处理对齐要求。
+如果 memref 的对齐信息不足，``VectorToLLVM`` 会插入额外的对齐断言或
+降级为标量循环——这是手写向量化时必须注意的陷阱。
+
+动手验证
+==========
+
+.. code-block:: console
+
+   cat > /tmp/vector_add.mlir << 'EOF'
+   func.func @vec_add(%a: memref<8xf32>, %b: memref<8xf32>, %c: memref<8xf32>) {
+     %c0 = arith.constant 0 : index
+     %v1 = vector.load %a[%c0] : memref<8xf32>, vector<4xf32>
+     %v2 = vector.load %b[%c0] : memref<8xf32>, vector<4xf32>
+     %sum = arith.addf %v1, %v2 : vector<4xf32>
+     vector.store %sum, %c[%c0] : memref<8xf32>, vector<4xf32>
+     return
+   }
+   EOF
+
+   mlir-opt /tmp/vector_add.mlir \
+       --convert-vector-to-llvm \
+       --convert-arith-to-llvm \
+       --convert-memref-to-llvm \
+       --convert-func-to-llvm
+
+检查输出中是否出现 LLVM 向量类型。若要对比 LLVM 自动向量化的结果，
+可将同一逻辑用 C 编写，运行 ``clang -S -emit-llvm -O2`` 比较 IR 差异。
+
+本章小结
+========
+
+Vector Dialect 填补了"高层循环向量化"和"底层 SIMD 指令"之间的空白。
+通过显式向量类型和操作，编译器管道可以精确控制向量宽度、shuffle 模式和
+归约方式——这在 GPU kernel 和 CPU SIMD 库的实现中尤为重要。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

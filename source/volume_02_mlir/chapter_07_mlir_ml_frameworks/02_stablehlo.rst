@@ -119,6 +119,70 @@ StableHLO 使用 **MLIR Bytecode** 格式进行序列化：
        // ...
    }
 
---------
+与 MLIR 生态的关系
+======================
+
+StableHLO 是独立仓库，项目地址见 `stablehlo <https://github.com/openxla/stablehlo>`__ ，
+不在 ``llvm-project`` 主仓库内。但它遵循 MLIR 的 Dialect 规范，通过
+``stablehlo-translate`` 和一系列 MLIR Pass 接入降级管道。
+
+对读者来说，理解 StableHLO 的关键不是记住每个 Op，而是看清它在
+渐进降级链路中的位置：
+
+.. mermaid::
+
+   flowchart LR
+       A[框架计算图] --> B[StableHLO]
+       B --> C[linalg / tensor]
+       C --> D[scf / arith]
+       D --> E[LLVM Dialect]
+       E --> F[LLVM IR]
+
+PyTorch 的 ``torch.compile`` 和 JAX 的 XLA 编译路径，本质上都是把
+框架内部的图表示降到这条链路的某一站，再交给 MLIR 管道处理。
+
+CHLO 与 StableHLO 的分工
+==============================
+
+``chlo`` （Custom HLO）是 StableHLO 的超集，包含尚未稳定的操作。
+典型工作流是：
+
+1. 前端生成 CHLO（可以使用便捷的组合操作）
+2. ``--chlo-legalize-to-stablehlo`` 将 CHLO 降为 StableHLO 核心集
+3. 后续 Pass 再将 StableHLO 降为 linalg
+
+这种"宽松前端 + 严格核心 + 渐进收紧"的设计，与 MLIR 整体的
+渐进降级哲学完全一致。
+
+动手验证
+==========
+
+如果你没有安装 ``stablehlo-translate``，仍可以用纯 MLIR Dialect
+模拟降级管道的后半段。以前文的矩阵乘法为例，在 linalg 层走通
+:ref:`mlir-06-06-02` 描述的 tensor → scf 路径，即 StableHLO 降级的
+最终落点之一。
+
+.. code-block:: console
+
+   # 验证 MLIR 降级管道（StableHLO 之后的标准路径）
+   mlir-opt examples/mlir/chapter_06_lowering/tensor_add.mlir \
+       --one-shot-bufferize="bufferize-function-boundaries" \
+       --convert-linalg-to-loops \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --convert-memref-to-llvm \
+       --reconcile-unrealized-casts
+
+这条命令展示了：无论前端是 StableHLO、TOSA 还是手写 linalg，
+**后半段降级管道是共享的**——这正是 MLIR 框架的价值所在。
+
+本章小结
+========
+
+StableHLO 解决了 ML 前端 IR 的**稳定性和版本化**问题，但它只是
+MLIR 多层降级中的起点。理解它的最好方式，是把它放进
+:ref:`mlir-06-06-01` 描述的 Progressive Lowering 全景中，
+看清"从计算图到机器码"的完整链路。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

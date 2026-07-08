@@ -173,6 +173,57 @@ MLIR 与 LLVM IR 的对比
 MLIR 不是要取代 LLVM，而是**建立在 LLVM 之上的抽象层**。MLIR 的最后一层
 （LLVM Dialect）可以精确映射为 LLVM IR，然后继续走 LLVM 的优化和代码生成。
 
+同一函数，两种 IR 长什么样？
+==================================
+
+光看对比表还不够直观。下面这个求和函数，帮你看清 MLIR 和 LLVM IR 的抽象差异。
+
+**MLIR（scf + arith，保留循环结构）**
+
+.. code-block:: text
+
+   func.func @sum(%n: index) -> i32 {
+     %c0 = arith.constant 0 : i32
+     %c1 = arith.constant 1 : index
+     %result = scf.for %i = %c0 to %n step %c1
+         iter_args(%acc = %c0) -> i32 {
+       %next = arith.addi %acc, %i : i32
+       scf.yield %next : i32
+     }
+     func.return %result : i32
+   }
+
+优化器一眼就能看出：这是一个带归纳变量的循环，``%acc`` 是循环携带值（loop-carried value）。
+在 ``linalg`` 或 ``tensor`` 层次，你甚至能看到"矩阵乘法"这样的高层语义——不必从 ``load/add`` 反推。
+
+**LLVM IR（phi + br，循环结构需分析恢复）**
+
+.. code-block:: text
+
+   define i32 @sum(i64 %n) {
+   entry:
+     br label %cond
+   cond:
+     %i = phi i64 [ 0, %entry ], [ %i.next, %body ]
+     %acc = phi i32 [ 0, %entry ], [ %acc.next, %body ]
+     %cmp = icmp slt i64 %i, %n
+     br i1 %cmp, label %body, label %exit
+   body:
+     %acc.next = add i32 %acc, %i
+     %i.next = add i64 %i, 1
+     br label %cond
+   exit:
+     ret i32 %acc
+   }
+
+这段 IR 在语义上等价，但"循环"已经变成了 ``phi``/``br`` 的组合。
+要做循环分块或向量化，编译器得先跑 ``LoopInfo`` 分析把结构找回来——这正是
+:ref:`chapter-05-03-loop-optimizations` 中讨论的问题。
+
+MLIR 的做法不是抛弃 LLVM IR，而是在它**上方**再铺几层语义更丰富的 IR，
+让每一层都在合适的粒度上做优化，最后再降到 LLVM IR 走成熟的后端。
+这与第一卷 :ref:`chapter-07-01-backend-overview` 描述的 CodeGen 管道形成上下衔接。
+
 谁在用 MLIR？
 ====================
 
@@ -182,6 +233,55 @@ MLIR 不是要取代 LLVM，而是**建立在 LLVM 之上的抽象层**。MLIR �
 - **CIRCT** （Circuit IR Compilers and Tools）：用 MLIR 做硬件设计和 EDA
 - **Polygeist**：将 C/C++ 转换为 MLIR，结合 Polyhedral 优化
 
---------
+源码走读：MLIR 框架的入口
+==============================
+
+MLIR 所有 Dialect 的操作最终都建立在 ``Operation`` 类之上。源码注释直接点明了
+它的角色——"MLIR 中执行的基本单元"：
+
+`mlir/include/mlir/IR/Operation.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Operation.h>`__
+
+其中有一段关键说明：操作名如果包含 ``.``，点号前面是 Dialect 名，后面是操作名。
+这就是为什么我们在 IR 中看到 ``arith.addi``、``scf.for`` 这样的命名格式——
+它不是语法糖，而是 MLIR 框架对 Dialect 的**一等公民**支持的直接体现。
+
+Dialect 本身的定义在 `mlir/include/mlir/IR/Dialect.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Dialect.h>`__：
+
+.. code-block:: cpp
+
+   /// Dialects are groups of MLIR operations, types and attributes, as well as
+   /// behavior associated with the entire group.
+
+一组 Operation、Type、Attribute 加上统一的行为钩子，就构成一个 Dialect。
+内置的 ``arith``、``scf`` 和你将来自定义的 Dialect，在框架眼里没有高低之分。
+
+动手验证
+==========
+
+确认本地 MLIR 工具链可用，并观察一次最简降级：
+
+.. code-block:: console
+
+   # 确认 mlir-opt 可用
+   mlir-opt --version
+
+   # 将 arith/func 降级到 LLVM Dialect（示例见 examples/mlir/chapter_06_lowering/）
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts
+
+输出中应出现 ``llvm.func`` 和 ``llvm.add``——这说明 MLIR 已经走到了
+连接 LLVM 后端的最后一站。JIT 执行这条路径的细节将在
+:ref:`mlir-10-10-04` 展开。
+
+本章小结
+========
+
+本节回答了"MLIR 是什么"：它不是又一个固定 IR，而是一套**可定义多层 IR** 的
+基础设施。LLVM IR 擅长贴近机器的优化，MLIR 擅长在更高层次保留源程序的语义结构。
+
+下一节 :ref:`mlir-01-01-02` 将深入其两大设计支柱——渐进降级与第一类 Dialect 机制。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

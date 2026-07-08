@@ -120,6 +120,68 @@ Async Dialect 在 MLIR 管道中的典型位置：
 - **流水线执行**：将一个计算划分为不同阶段，阶段间异步传递数据
 - **I/O 与计算的交叠**：在计算进行的同时异步加载数据
 
---------
+源码走读：async.execute 的语义
+======================================
+
+``async.execute`` 是 Async Dialect 的核心操作，其定义在
+`AsyncOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Async/IR/AsyncOps.td>`__。
+
+TableGen 中的描述非常关键：
+
+.. code-block:: text
+
+   The `body` region attached to the `async.execute` operation semantically
+   can be executed concurrently with the successor operation.
+
+注意 "semantically"（语义上）这个词——``async.execute`` 并不承诺真正的并行，
+实际执行策略由后续降级决定。注释列出了三种可能：
+
+1. 完全顺序执行（body 完成后才执行后继）
+2. 多线程并行（body 在独立线程上运行）
+3. 协程式交错执行
+
+这种"语义与执行策略分离"的设计，让高层优化可以在 Async Dialect 层
+识别并行机会，而不必过早绑定到某个运行时。
+
+源码走读：降级到运行时
+======================================
+
+``--async-to-async-runtime`` 由
+`AsyncToAsyncRuntime.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Async/Transforms/AsyncToAsyncRuntime.cpp>`__
+实现。它将 ``async.execute`` 降级为对 ``_mlir_async_runtime_*`` 函数的调用，
+最终通过 ``--convert-async-runtime-to-llvm`` 映射到 LLVM IR。
+
+降级路径与第一卷 :ref:`chapter-08-03-orc-jit-architecture` 讨论的
+异步执行模型形成对照：MLIR 在 Dialect 层表达"可并发"，在运行时层
+落地为线程池或内联执行。
+
+动手验证
+==========
+
+观察 Async Dialect 的 IR 结构（无需完整运行时）：
+
+.. code-block:: console
+
+   cat > /tmp/async_demo.mlir << 'EOF'
+   func.func @compute(%a: i32, %b: i32) -> i32 {
+     %token = async.execute -> !async.value<i32> {
+       %sum = arith.addi %a, %b : i32
+       async.yield %sum : i32
+     }
+     %result = async.await %token : !async.value<i32>
+     func.return %result : i32
+   }
+   EOF
+   mlir-opt /tmp/async_demo.mlir
+
+输出中 ``async.execute`` 的 body region 和 ``async.await`` 的同步语义
+清晰可见。若要进一步降级，需要加上 ``--async-to-async-runtime`` 等 Pass。
+
+本章小结
+========
+
+Async Dialect 在 MLIR 中扮演"结构化并发"的角色：它用 Region 封装可并发任务，
+用 Token/Group 管理同步，把执行策略推迟到降级阶段决定。
+在端到端管道中，它通常位于 linalg 并行化之后、LLVM 运行时之前。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

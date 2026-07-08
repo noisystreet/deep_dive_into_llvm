@@ -127,6 +127,80 @@ linalg.generic 到 scf.for 的降级
 降级顺序很重要——先展开命名操作（如 ``linalg.matmul`` → ``linalg.generic`` ），
 然后将通用操作降级为循环。
 
---------
+源码走读：Bufferization 的三阶段
+======================================
+
+``tensor`` 是不可变值语义，``memref`` 是可变内存引用。二者之间的转换由
+One-Shot Bufferize Pass 完成，其实现分布在：
+
+- `OneShotAnalysis.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Bufferization/Transforms/OneShotAnalysis.cpp>`__ —— 分析阶段
+- `Bufferize.h <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Bufferization/Transforms/Bufferize.h>`__ —— 对外接口
+
+``OneShotAnalysis.cpp`` 的文件头注释把流程拆为三个阶段，值得精读：
+
+1. **分析**：判断哪些操作数可以就地缓冲（in-place），无需插入拷贝
+2. **插入拷贝**：为不能就地缓冲的操作数在 tensor 世界插入 ``tensor.insert_slice`` 等
+3. **Bufferize**：调用各操作的 ``BufferizableOpInterface::bufferize`` 完成转换
+
+其中第 1 步是性能关键。注释明确指出分析依赖 ``BufferizableOpInterface``——
+每个支持 bufferization 的 Op 都要声明自己的读写语义。如果分析失败，
+bufferization 会拒绝生成"需要返回新分配缓冲区"的函数（除非显式允许）。
+
+这就是为什么 ``one-shot-bufferize`` 不只是一个类型替换 Pass，而是带有
+**别名分析** 和 **就地更新判断** 的完整算法。
+
+源码走读：linalg → scf 循环展开
+======================================
+
+``linalg.generic`` 降级为 ``scf.for`` 的核心逻辑在
+`Loops.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Linalg/Transforms/Loops.cpp>`__。
+
+文件开头的 ``inlineRegionAndEmitStore`` 函数揭示了降级的本质：
+
+.. code-block:: cpp
+
+   // 克隆 linalg.generic 的 region 体，用当前循环索引处的元素替换 block 参数
+   for (auto &op : block.without_terminator()) {
+     auto *newOp = b.clone(op, map);
+     map.map(op.getResults(), newOp->getResults());
+   }
+
+对每个循环索引，Pass 从输入 tensor/memref 中 ``load`` 元素，克隆 ``linalg.generic``
+region 内的计算，再把结果 ``store`` 到输出。三重嵌套循环的矩阵乘法，
+不过是这个模式在三个维度上各执行一次。
+
+动手验证
+==========
+
+项目提供了可运行的降级示例，文件路径为 ``examples/mlir/chapter_06_lowering/tensor_add.mlir`` 。
+
+.. code-block:: console
+
+   # 第一步：bufferize（tensor → memref）
+   mlir-opt examples/mlir/chapter_06_lowering/tensor_add.mlir \
+       --one-shot-bufferize="bufferize-function-boundaries"
+
+   # 第二步：展开为 scf.for 循环
+   mlir-opt examples/mlir/chapter_06_lowering/tensor_add.mlir \
+       --one-shot-bufferize="bufferize-function-boundaries" \
+       --convert-linalg-to-loops
+
+第二步的输出应包含 ``scf.for`` 循环体，内有 ``memref.load`` / ``memref.store``
+和 ``arith.addf``——这正是前文"张量计算 → 标量循环"的文字描述在 IR 中的对应物。
+
+.. note::
+
+   ``--convert-linalg-to-loops`` 要求输入已经是 ``memref`` 形式。
+   直接对 ``tensor`` 运行该 Pass 不会有效果——这印证了 bufferization
+   是 tensor → scf 降级的必要前置步骤。
+
+本章小结
+========
+
+tensor → scf 降级的本质是**语义展开**：把声明式的张量操作翻译为命令式的循环。
+Bufferization 解决"tensor 不可变"与"循环需要读写内存"之间的矛盾；
+linalg → loops 则利用 ``indexing_maps`` 和 ``iterator_types`` 自动生成正确的循环嵌套。
+
+下一节 :ref:`mlir-06-06-03` 将继续把 scf/arith 降级到 LLVM Dialect。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
