@@ -11,6 +11,35 @@ opt：LLVM 优化器驱动
 
    ``opt`` 是一个"Pass 运行器"——你把 IR 和 Pass 列表给它，它帮你跑完。
 
+.. admonition:: opt 的实用场景：生产环境中的 LLVM 工具链
+   :class: tip
+
+   虽然 ``opt`` 最常见的用途是学习和测试 Pass，但它在生产环境中也有
+   意想不到的应用：
+
+   **场景 1：定制化 -O 等级**
+   Apple 的 Xcode 默认的 ``-O2`` 实际上不是 LLVM 的默认 ``-O2``，
+   而是苹果自己调过参数的管道。通过 ``opt -pass-pipeline`` 可以精确
+   控制哪些 Pass 运行、什么顺序运行。
+
+   **场景 2：调试优化器**
+   ``opt -print-after-all`` 这个选项被 LLVM 开发者称为"最强大的调试武器"。
+   它在每个 Pass 之后都打印 IR，让你看到 IR 从输入到输出的**每一帧变化**。
+   加上 ``-debug-only=pass-name`` 可以只看特定 Pass 的调试日志。
+
+   **场景 3：LLVM 测试基础设施**
+   LLVM 的回归测试套件（``test/Transforms/`` 目录下数千个 ``.ll`` 文件）
+   几乎全部通过 ``opt`` 驱动。一个典型的测试文件是这样：
+   
+   ``; RUN: opt -pass-name < %s | FileCheck %s``
+
+   这意味着 ``opt`` 是 LLVM 质量保证体系的核心——每天运行数百万次。
+
+   **场景 4：优化考古**
+   想知道某个 Pass 在某个版本做了什么优化？用 ``opt -print-before=pass-name``
+   和 ``opt -print-after=pass-name`` 可以对比优化前后的 IR。这在
+   性能调优和 Pass 开发中非常有用。
+
 基本用法
 ============
 

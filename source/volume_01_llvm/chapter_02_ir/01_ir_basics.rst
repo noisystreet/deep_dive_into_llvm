@@ -11,6 +11,27 @@ IR 基础语法
 LLVM IR 的三种形式
 ========================
 
+.. admonition:: SSA 形式的革命
+   :class: note
+
+   今天 LLVM IR 最核心的设计——**SSA（Static Single Assignment）形式**——
+   最初是 IBM 的 Ron Cytron 等人在 1989 年一篇 POPL 论文中提出的理论概念。
+   这篇论文的标题是 *"An Efficient Method of Computing Static Single Assignment Form"*，
+   它解决了传统数据流分析中变量多次赋值导致的复杂性。
+
+   2000 年，Chris Lattner 选择 SSA 作为 LLVM IR 的基础形式时，这是个冒险的决定。
+   当时的编译器要么使用更简单的三地址码（如 Java bytecode、C--），要么使用
+   更复杂的程序依赖图（PDG）。SSA 虽然理论优雅，但**实际编译器中成功应用**
+   的案例还不多。
+
+   SSA 最终被证明是 LLVM 最成功的设计决策之一：
+   - **简化优化**：每个变量只赋值一次，数据流分析变得直截了当
+   - **phi 节点**：优雅地处理控制流汇合点的值合并
+   - **内存升级**：内存上的 SSA 形式（MemorySSA）进一步将优化范围扩展到堆操作
+
+   今天，从 LLVM IR 到 MLIR，从 WebAssembly 到 GPU 中间表示——SSA 已经
+   成为现代编译器的标准设计。回过头来看，Lattner 当年的"冒险"其实押对了宝。
+
 LLVM IR 有**三种等价的表示形式** ，它们在语义上完全一致，只是用途不同：
 
 .. list-table::

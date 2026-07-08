@@ -214,6 +214,20 @@ IR 库和 Pass 框架，不用管前端和后端，就能实验自己的优化�
    的核心贡献者列表。Vikram Adve 的描述是 "provider of much wisdom, and motivator for LLVM"，
    这恰好说明了 LLVM 从学术研究起步、逐步走向工业统治地位的历程。
 
+.. admonition:: 你知道吗？LLVM 名字的由来
+   :class: note
+
+   **LLVM** 最初是 **Low Level Virtual Machine** （底层虚拟机）的缩写。
+   这个名字来自 Chris Lattner 在 2000 年 UIUC 的硕士论文——他当时想做一个
+   "可以在运行时优化任何语言的虚拟机"。
+
+   但讽刺的是，随着 LLVM 的发展，它越来越不像一个"虚拟机"了——它没有
+   自己的字节码格式，也不强制沙箱执行。2011 年，LLVM 正式宣布
+   **LLVM 不再是缩写**，它只是一个品牌名。
+
+   所以今天的 LLVM 是一个"名字已经不代表原意的项目"——有点像 GNU，但至少
+   GNU 还有个递归定义（GNU's Not Unix）。
+
 .. raw:: html
 
    <hr>
