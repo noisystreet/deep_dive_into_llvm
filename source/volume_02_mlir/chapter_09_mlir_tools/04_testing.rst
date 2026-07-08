@@ -149,6 +149,42 @@ FileCheck 最佳实践
 4. **尽量用具体值** 而非通配符
 5. **多个 Run 行** 测试不同的 Pass 组合
 
---------
+源码走读：MLIR 测试基础设施
+======================================
+
+MLIR 的测试框架建立在 LLVM 的 ``lit`` 之上。每个测试文件的 ``// RUN:`` 指令
+指定运行命令和 FileCheck 验证，与第一卷 :ref:`chapter-09-05-filecheck` 完全一致。
+
+``mlir-reduce`` 的实现在
+`mlir/lib/Reducer/ <file:///workspace/llvm-project/mlir/lib/Reducer/>`__ 目录下，
+它通过二分删除 Operation 来最小化触发 bug 的 IR——
+类似 LLVM 的 ``llvm-reduce`` 。
+
+Toy Tutorial 的每个 Chapter 都包含 ``test/`` 目录下的 ``.mlir`` 测试文件，
+是编写 FileCheck 测试的最佳参考。例如 Ch6 的降级测试验证了
+``toy.print`` → loop → ``printf`` 的完整路径。
+
+动手验证
+==========
+
+对项目示例运行基本 FileCheck 风格的验证：
+
+.. code-block:: console
+
+   # 确认降级输出包含预期指令
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-arith-to-llvm --convert-func-to-llvm \
+       --reconcile-unrealized-casts | grep -c "llvm.add"
+   # 应输出 1
+
+   # 运行项目 CI 中的完整示例验证
+   bash scripts/verify-mlir-examples.sh
+
+本章小结
+========
+
+MLIR 的测试体系与 LLVM 一脉相承：lit + FileCheck 验证 IR 变换，
+mlir-reduce 最小化 bug 复现。编写自定义 Dialect 时，应为每个 Pass
+和降级路径配套 ``.mlir`` 测试文件。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

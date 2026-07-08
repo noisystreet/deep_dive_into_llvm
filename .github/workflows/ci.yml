@@ -28,3 +28,19 @@ jobs:
 
       - name: Build HTML
         run: make html SPHINXOPTS="-W"  # -W 将警告视为错误
+
+  verify-mlir-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install MLIR tools
+        run: |
+          wget -q https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 18 all
+          echo "/usr/lib/llvm-18/bin" >> "$GITHUB_PATH"
+
+      - name: Verify MLIR examples
+        run: bash scripts/verify-mlir-examples.sh

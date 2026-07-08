@@ -128,6 +128,39 @@ mlir-cpu-runner
    mlir-opt ... input.mlir \
        | mlir-cpu-runner -e main -entry-point-result=i32
 
---------
+源码走读：JitRunner 与 ExecutionEngine
+======================================
+
+``mlir-cpu-runner`` 的实现在
+`JitRunner.cpp <file:///workspace/llvm-project/mlir/lib/ExecutionEngine/JitRunner.cpp>`__ 。
+它内部调用 ``ExecutionEngine::create`` （`ExecutionEngine.cpp <file:///workspace/llvm-project/mlir/lib/ExecutionEngine/ExecutionEngine.cpp>`__），
+完成 MLIR → LLVM IR → ORC JIT → 执行的完整链路。
+
+Toy Ch7 的 ``toyc.cpp`` （:ref:`mlir-08-08-04`）使用同一套 API，
+区别是 Toy 从前端源码生成 MLIR，而 ``mlir-cpu-runner`` 直接接收
+已降级到 LLVM Dialect 的 MLIR 输入。
+
+这与第一卷 :ref:`chapter-09-03-lli-and-jit-tools` 中的 ``lli`` 工具类比：
+``lli`` 解释执行 LLVM IR ，``mlir-cpu-runner`` 先翻译再 JIT 执行。
+
+动手验证
+==========
+
+确认降级管道可为 JIT 准备输入：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+     | mlir-translate --mlir-to-llvmir | opt -O2 -S
+
+本章小结
+========
+
+``mlir-cpu-runner`` 缩短了 MLIR 程序的验证循环，是开发降级管道时的利器。
+:ref:`mlir-10-10-04` 有更详细的 JIT Pipeline 分析。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

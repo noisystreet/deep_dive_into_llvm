@@ -208,6 +208,42 @@ Pass 的统计和调试
 PassManager 会在每个 Pass 之后自动运行验证器。如果 IR 不合法，
 会立即报错。
 
---------
+源码走读：PassManager 与嵌套调度
+======================================
+
+MLIR Pass 框架的核心接口在
+`Pass.h <file:///workspace/llvm-project/mlir/include/mlir/Pass/Pass.h>`__ 和
+`PassManager.h <file:///workspace/llvm-project/mlir/include/mlir/Pass/PassManager.h>`__ 。
+
+与第一卷 :ref:`chapter-04-03-new-pm` 的 LLVM ``PassManager`` 对比，MLIR 版
+的关键扩展是 ``nest<OpType>()`` ——允许在特定 Operation 的 Region 内
+运行子 PassManager。例如 ``pm.nest<func::FuncOp>().addPass(...)`` 只在
+每个函数体内执行，而不影响 Module 级别的其他 Operation。
+
+``mlir-opt`` 工具的入口在
+`mlir-opt.cpp <file:///workspace/llvm-project/mlir/tools/mlir-opt/mlir-opt.cpp>`__ ，
+它通过 ``MlirOptMain`` 解析命令行中的 ``--pass-pipeline`` 字符串，
+构建并运行 PassManager——详见 :ref:`mlir-09-09-01` 。
+
+动手验证
+==========
+
+用项目示例观察 Pass 管道效果：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --mlir-print-ir-after-all 2>&1 | head -40
+
+``--mlir-print-ir-after-all`` 会在每个 Pass 后 dump IR，
+是调试 Pass 顺序和效果的常用手段。
+
+本章小结
+========
+
+MLIR PassManager 是多层级、可嵌套的变换调度器，是连接各 Dialect 降级 Pass 的枢纽。
+下一节 :ref:`mlir-05-05-02` 介绍其底层机制：Pattern Rewrite 。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

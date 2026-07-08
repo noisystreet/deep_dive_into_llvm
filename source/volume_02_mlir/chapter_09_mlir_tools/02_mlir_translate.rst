@@ -122,6 +122,43 @@ MLIR Bytecode 格式比文本格式更紧凑，适合生产环境部署。
            registry.insert<MyDSLDialect>();
        });
 
---------
+源码走读：ModuleTranslation
+================================
+
+``--mlir-to-llvmir`` 通道的核心是
+`ModuleTranslation.cpp <file:///workspace/llvm-project/mlir/lib/Target/LLVMIR/ModuleTranslation.cpp>`__ 。
+文件头注释：
+
+.. code-block:: text
+
+   This file implements the translation between an MLIR LLVM dialect module and
+   the corresponding LLVMIR module.
+
+翻译器遍历 MLIR Module 中的 LLVM Dialect Operation，逐一生成
+``llvm::Instruction`` 。生成的 ``llvm::Module`` 可交给第一卷介绍的
+``opt`` 和 ``llc`` 继续处理——详见 :ref:`chapter-09-02-llc` 。
+
+动手验证
+==========
+
+用项目示例走通 MLIR → LLVM IR 翻译：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+     | mlir-translate --mlir-to-llvmir
+
+输出应包含 ``define i32 @add`` 。可将结果保存为 ``.ll`` 文件，
+再用 ``opt -S`` 查看优化后的 IR。
+
+本章小结
+========
+
+``mlir-translate`` 是 MLIR 降级管道的最后一环翻译工具，将 LLVM Dialect 固化为
+标准 LLVM IR。它与 ``mlir-opt`` 配合，完成从 MLIR 到机器码的衔接。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -159,6 +159,83 @@ CMake 配置
        func.return %2 : i32
    }
 
---------
+与 Toy Tutorial 的集成对照
+================================
+
+MyDSL 的 ``mydsl-opt`` 集成模式与 Toy Ch7 的 ``toyc.cpp`` 完全对应。
+Toy 编译器入口在
+`toyc.cpp <file:///workspace/llvm-project/mlir/examples/toy/Ch7/toyc.cpp>`__ ，
+其核心流程：
+
+.. code-block:: text
+
+   1. 注册 Dialect（Toy + Func + LLVM 等）
+   2. 构建 PassManager，添加降级 Pipeline
+   3. pm.run(module) 执行管道
+   4. ExecutionEngine::create(module) 创建 JIT
+   5. engine->invoke("main") 执行
+
+MyDSL 的 ``mydsl-opt`` 只覆盖前两步——它是**开发调试工具**；
+Toy 的 ``toyc`` 则覆盖全部五步，是**端到端编译器**。
+
+源码走读：MlirOptMain
+================================
+
+``mlir-opt`` 的入口函数是 ``MlirOptMain`` ，定义在
+`MlirOptMain.h <file:///workspace/llvm-project/mlir/include/mlir/Tools/mlir-opt/MlirOptMain.h>`__ 。
+官方 ``mlir-opt`` 工具在
+`mlir-opt.cpp <file:///workspace/llvm-project/mlir/tools/mlir-opt/mlir-opt.cpp>`__
+中调用它，传入 ``DialectRegistry`` 和已注册的 Pass。
+
+自定义 ``mydsl-opt`` 只需多做两件事：
+
+1. ``registry.insert<MyDSLDialect>()`` 注册自定义 Dialect
+2. ``PassPipelineRegistration`` 注册自定义 Pass
+
+其余命令行解析、Pass 调度、IR 验证全部由 ``MlirOptMain`` 处理——
+这与第一卷 :ref:`chapter-09-01-opt` 中 ``opt`` 工具的架构完全类比。
+
+源码走读：Toy Ch7 的 JIT 集成
+================================
+
+Toy Ch7 在降级后调用 ``ExecutionEngine`` 执行程序，详见
+:ref:`mlir-10-10-04` 中对 ``ExecutionEngine.h`` 的分析。
+``toyc.cpp`` 中的关键代码：
+
+.. code-block:: cpp
+
+   auto engine = mlir::ExecutionEngine::create(module);
+   if (!engine) return ...;
+   auto error = engine->invoke("main");
+
+将 MyDSL 扩展到可执行编译器，只需在 ``mydsl-opt`` 管道之后
+接上 ``mlir-translate`` + ``ExecutionEngine`` ，或直接使用 ``mlir-cpu-runner`` 。
+
+动手验证
+==========
+
+用项目示例走通等价的端到端管道：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+     | mlir-translate --mlir-to-llvmir
+
+这条命令等价于 ``mydsl-opt`` 完成降级后接 ``mlir-translate`` 的效果。
+项目 CI 通过 ``scripts/verify-mlir-examples.sh`` 自动验证所有 ``examples/mlir/`` 示例。
+
+本章小结
+========
+
+自定义 Dialect 开发的最后一步是**工具集成**：注册 Dialect 和 Pass，
+让用户能通过命令行驱动编译管道。MyDSL 的 ``mydsl-opt`` 是最小集成；
+Toy 的 ``toyc`` 是完整编译器。掌握前者是理解后者的基础。
+
+第二卷至此完结。附录 :ref:`mlir-appendix` 提供了源码阅读指南和 Dialect 速查表，
+供后续深入时查阅。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

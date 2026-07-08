@@ -154,6 +154,35 @@ Pass Pipeline 的高级用法
            argc, argv, "My custom optimizer", registry);
    }
 
---------
+源码走读：mlir-opt 的实现
+================================
+
+官方 ``mlir-opt`` 源码在
+`mlir-opt.cpp <file:///workspace/llvm-project/mlir/tools/mlir-opt/mlir-opt.cpp>`__ 。
+它调用 ``MlirOptMain`` （`MlirOptMain.h <file:///workspace/llvm-project/mlir/include/mlir/Tools/mlir-opt/MlirOptMain.h>`__），
+完成三件事：
+
+1. 通过 ``registerAllPasses()`` 注册所有内置 Pass
+2. 解析 ``--pass-pipeline`` 或单个 ``--pass-name`` 参数
+3. 构建 PassManager 并运行
+
+这与第一卷 :ref:`chapter-09-01-opt` 中的 LLVM ``opt`` 工具形成直接对照——
+``opt`` 操作 ``llvm::Module`` ，``mlir-opt`` 操作 ``mlir::Operation`` 。
+
+动手验证
+==========
+
+验证项目示例可通过标准 mlir-opt 管道：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir --help | head -5
+   bash scripts/verify-mlir-examples.sh
+
+本章小结
+========
+
+``mlir-opt`` 是 MLIR 开发者的核心工具，所有 Pass 开发和降级调试都从这里开始。
+下一节 :ref:`mlir-09-09-02` 介绍其搭档工具 ``mlir-translate`` 。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

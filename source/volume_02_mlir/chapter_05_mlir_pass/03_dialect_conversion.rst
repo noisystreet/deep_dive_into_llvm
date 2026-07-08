@@ -194,6 +194,47 @@ Partial Conversion 适用于分阶段降级——每个阶段只转换一部分 
            return op.getType().isInteger(32);
        });
 
---------
+源码走读：DialectConversion 框架
+======================================
+
+Dialect Conversion 的核心实现在
+`DialectConversion.cpp <file:///workspace/llvm-project/mlir/lib/Transforms/Utils/DialectConversion.cpp>`__ 。
+接口头文件为
+`DialectConversion.h <file:///workspace/llvm-project/mlir/include/mlir/Transforms/DialectConversion.h>`__ 。
+
+``applyFullConversion`` 与 ``applyPartialConversion`` 的区别在于
+**合法化检查的时机和严格程度**：
+
+- Full Conversion：目标 Dialect 之外的 Operation 必须全部被转换，否则失败
+- Partial Conversion：允许保留部分未转换的 Operation，适合分阶段降级
+
+:ref:`mlir-06-06-03` 中的 arith/func → LLVM 降级就是 Full Conversion 的典型场景。
+Toy Ch6 的 ``ToyToLLVMLoweringPass`` （:ref:`mlir-08-08-03`）也使用同一框架。
+
+``TypeConverter`` 负责跨 Dialect 的类型映射——例如 ``memref`` 描述符
+到 ``!llvm.struct<...>`` 的转换，由 ``LLVMTypeConverter`` 统一管理。
+
+动手验证
+==========
+
+观察 Dialect Conversion 的完整降级：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts
+
+输出应只含 ``llvm`` Dialect 的操作。若遗漏某个 Pass，
+``--reconcile-unrealized-casts`` 会报告未消除的 cast——
+这正是 Conversion 框架的完整性检查。
+
+本章小结
+========
+
+Dialect Conversion 处理跨 Dialect 的类型变化和 Operation 替换，
+是 MLIR 渐进降级管道的核心机制。下一节 :ref:`mlir-05-05-04` 介绍
+如何将多个 Pass 编排为 Pipeline 。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

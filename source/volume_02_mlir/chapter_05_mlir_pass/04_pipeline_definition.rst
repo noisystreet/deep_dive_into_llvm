@@ -189,6 +189,43 @@ MLIR 内置的常用 Pass
        return failure();
    }
 
---------
+源码走读：Pipeline 注册机制
+======================================
+
+Pass Pipeline 的 TableGen 定义遵循 ``Passes.td`` 模式，生成的注册代码
+由 ``mlir-tblgen`` 自动产出。MLIR 内置的 Conversion Pipeline 定义在
+`Conversion/Passes.td <file:///workspace/llvm-project/mlir/include/mlir/Conversion/Passes.td>`__ 。
+
+Toy Ch7 的 ``toyc.cpp`` 展示了手写 Pipeline 的完整范例——
+先 ``createCanonicalizerPass()`` ，再 Toy 自定义降级 Pass，
+最后 arith/func/memref → LLVM 的一系列 Conversion Pass，
+最终接 ``ExecutionEngine`` 执行。
+
+这与前文 ``buildMLIRToLLVMPipeline`` 的结构完全一致，区别仅在于
+Toy 还包含领域特定的 Toy → Affine/SCF 降级步骤。
+
+动手验证
+==========
+
+用命令行模拟 Pipeline 执行，等价于 ``buildMLIRToLLVMPipeline`` ：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/tensor_add.mlir \
+       --one-shot-bufferize=bufferize-function-boundaries \
+       --convert-linalg-to-loops \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --convert-memref-to-llvm \
+       --reconcile-unrealized-casts
+
+项目 CI 通过 ``scripts/verify-mlir-examples.sh`` 自动验证此类管道。
+
+本章小结
+========
+
+Pipeline 将离散的 Pass 编排为可复用的编译阶段，是 MLIR 工具链的骨架。
+第 6 章 :ref:`mlir-06-06-01` 的渐进降级概念在此落地为具体的 Pass 序列。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

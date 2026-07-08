@@ -171,6 +171,72 @@
        func.return %1 : i32
    }
 
---------
+与 Toy Tutorial 的降级对照
+================================
+
+MyDSL 的 ``OpRewritePattern`` 写法与 Toy Ch6 的 ``OpConversionPattern`` 一脉相承。
+Toy 的 ``PrintOpLowering`` 定义在
+`LowerToLLVM.cpp <file:///workspace/llvm-project/mlir/examples/toy/Ch6/mlir/LowerToLLVM.cpp>`__ ：
+
+.. code-block:: text
+
+   // Toy 文件头注释描述了完整降级链路：
+   // Arithmetic + Func --> LLVM (Dialect)
+   // 'toy.print' --> Loop (SCF) --> printf
+
+Toy 使用 ``OpConversionPattern`` 而非 ``OpRewritePattern`` ，因为它走的是
+**Dialect Conversion** 框架 （:ref:`mlir-05-05-03`），需要配合 ``TypeConverter``
+处理类型变化。MyDSL 在同一类型内降级到 arith，用更轻量的 RewritePattern 即可。
+
+Toy Ch6 的 ``ToyToLLVMLoweringPass`` 展示了完整管道的注册方式：
+
+.. code-block:: cpp
+
+   target.addLegalDialect<LLVM::LLVMDialect>();
+   target.addIllegalDialect<arith::ArithDialect, func::FuncDialect>();
+   // ... populate patterns ...
+   if (failed(applyFullConversion(module, target, std::move(patterns))))
+       signalPassFailure();
+
+这与前文 MyDSL 的 ``applyPatternsAndFoldGreedily`` 形成对比：
+- **Greedy Rewrite** — 同类型替换，适合 MyDSL → arith
+- **Full Conversion** — 跨 Dialect 类型转换，适合 arith → LLVM
+
+源码走读：GreedyPatternRewriteDriver
+======================================
+
+``applyPatternsAndFoldGreedily`` 的实现在
+`GreedyPatternRewriteDriver.cpp <file:///workspace/llvm-project/mlir/lib/Transforms/Utils/GreedyPatternRewriteDriver.cpp>`__ 。
+它反复遍历 IR，对每个 Operation 尝试匹配已注册的 Pattern，直到不动点。
+
+MyDSL 的 ``MacOpLowering::matchAndRewrite`` 遵循标准三步：
+
+1. ``rewriter.create`` 创建替换 Operation
+2. ``rewriter.replaceOp`` 用新结果替换旧 Op
+3. ``return success()`` 告知 driver 匹配成功
+
+动手验证
+==========
+
+用项目示例模拟 MyDSL 降级后的 arith 管道：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir \
+       --convert-scf-to-cf \
+       --convert-arith-to-llvm \
+       --convert-func-to-llvm \
+       --reconcile-unrealized-casts \
+     | mlir-translate --mlir-to-llvmir
+
+输出应包含 ``define i32 @add`` 和 ``add i32`` 指令——
+这正是 MyDSL 完整降级链路的最终落点。
+
+本章小结
+========
+
+降级 Pattern 是自定义 Dialect 的核心工程产物。MyDSL 用 RewritePattern 降到 arith，
+后续管道与 :ref:`mlir-06-06-03` 的标准路径完全共享。
+下一节 :ref:`mlir-08-08-04` 将把 Dialect 和 Pass 集成到独立的 ``mydsl-opt`` 工具中。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

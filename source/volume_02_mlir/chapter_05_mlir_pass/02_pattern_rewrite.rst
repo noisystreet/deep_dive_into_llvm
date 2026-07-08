@@ -206,6 +206,42 @@ Canonicalizer Pass 中被自动应用。
        results.add<MyOpFolder>(getContext());
    }
 
---------
+源码走读：GreedyPatternRewriteDriver
+======================================
+
+Pattern Rewrite 的贪心驱动器实现在
+`GreedyPatternRewriteDriver.cpp <file:///workspace/llvm-project/mlir/lib/Transforms/Utils/GreedyPatternRewriteDriver.cpp>`__ 。
+Pattern 基类定义在
+`PatternMatch.h <file:///workspace/llvm-project/mlir/include/mlir/IR/PatternMatch.h>`__ 。
+
+工作流程：
+
+1. 从 ``RewritePatternSet`` 取出所有 Pattern
+2. 按 ``benefit`` 排序，优先尝试高优先级 Pattern
+3. 匹配成功后调用 ``matchAndRewrite`` ，更新 IR
+4. 重复直到没有 Pattern 能再匹配
+
+Canonicalizer Pass 的实现在
+`Canonicalizer.cpp <file:///workspace/llvm-project/mlir/lib/Transforms/Canonicalizer.cpp>`__ ，
+它收集所有 Dialect 注册的 Canonicalization Pattern 并交给贪心驱动器执行。
+
+动手验证
+==========
+
+观察 canonicalize 对项目示例的效果：
+
+.. code-block:: console
+
+   mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir --canonicalize
+
+对于仅含 ``arith.addi`` 的简单函数，输出应与输入相同——
+说明没有可应用的规范化 Pattern。加入冗余 ``arith.addi %a, 0`` 后再运行，
+canonicalize 应将其消除。
+
+本章小结
+========
+
+Pattern Rewrite 是 MLIR 局部 IR 变换的核心机制，降级 Pattern 和优化 Pattern
+都建立在此之上。:ref:`mlir-08-08-03` 中 MyDSL 的降级就是典型应用。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
