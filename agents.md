@@ -2,11 +2,15 @@
 
 ## 项目概述
 
-本项目编写一本 **浅入深出 LLVM** 技术文档，使用 reStructuredText（`.rst`）格式，基于 Sphinx 构建。
+本项目编写一本 **浅入深出 LLVM** 技术文档，分为两卷：
 
-- 文档源目录：`source/`
+- **第一卷：LLVM** — 编译器基础设施（`source/volume_01_llvm/`）
+- **第二卷：MLIR** — 多层中间表示（`source/volume_02_mlir/`）
+
+使用 reStructuredText（`.rst`）格式，基于 Sphinx 构建。
+
 - 构建输出：`./_build/html/`（`make html` 后生成）
-- 目标读者：有 C/C++ 使用经验、希望了解 LLVM 编译器内部机制的开发者
+- 目标读者：有 C/C++ 使用经验、希望了解 LLVM/MLIR 编译器内部机制的开发者
 - 参考实现：**LLVM/Clang** 22.x（``llvmorg-22.1.8``）
 - 平台：Linux x86_64
 - 源码目录：``llvm-project/``（被 ``.gitignore`` 忽略，需要单独克隆）

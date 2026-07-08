@@ -6,31 +6,18 @@
 
    .. rst-class:: center
 
-      深入理解 LLVM 编译器基础设施的设计与实现
-
-.. toctree::
-   :maxdepth: 2
-
-   preface/index
+      深入了解 LLVM 与 MLIR — 编译器基础设施的设计与实现
 
 .. toctree::
    :maxdepth: 2
    :numbered:
-   :caption: 目录
+   :caption: 第一卷：LLVM
 
-   chapter_01_intro/index
-   chapter_02_ir/index
-   chapter_03_frontend/index
-   chapter_04_pass/index
-   chapter_05_opt/index
-   chapter_06_tablegen/index
-   chapter_07_backend/index
-   chapter_08_jit/index
-   chapter_09_tools/index
-   chapter_10_advanced/index
+   volume_01_llvm/index
 
 .. toctree::
-   :maxdepth: 1
-   :caption: 附录
+   :maxdepth: 2
+   :numbered:
+   :caption: 第二卷：MLIR
 
-   appendix/index
+   volume_02_mlir/index

@@ -8,6 +8,7 @@ from datetime import datetime
 project = '浅入深出 LLVM'
 author = 'noisystreet'
 copyright = f'{datetime.now().year}, {author}'
+html_title = '浅入深出 LLVM — 第一卷: LLVM 核心 | 第二卷: MLIR'
 
 # The short X.Y version
 version = '0.1'
