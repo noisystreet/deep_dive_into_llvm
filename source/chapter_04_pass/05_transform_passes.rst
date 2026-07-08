@@ -116,7 +116,7 @@
 第三步：添加 IRBuilder 使用
 =============================
 
-有时我们需要的变换不只是"替换"指令，而是"插入"新指令。此时用到 ``IRBuilder``。
+有时我们需要的变换不只是"替换"指令，而是"插入"新指令。此时用到 ``IRBuilder`` 。
 
 假设我们要实现一个更复杂的变换：**将 ``a * 2`` 替换为 ``a + a``** （加法通常比乘法快）：
 
@@ -261,7 +261,7 @@ LLVM 社区推荐使用 ``FileCheck`` 工具来测试 Pass 的正确性：
        I.eraseFromParent();
    }
 
-更简洁的方式是用 ``RecursivelyDeleteTriviallyDeadInstructions``：
+更简洁的方式是用 ``RecursivelyDeleteTriviallyDeadInstructions`` ：
 
 .. code-block:: cpp
 

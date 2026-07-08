@@ -25,7 +25,7 @@ New PM 要解决的核心问题：
 New PM 的核心接口
 ====================
 
-New PM 不再使用继承体系（不再有 ``FunctionPass`` 基类），而是使用 **CRTP mixin**：
+New PM 不再使用继承体系（不再有 ``FunctionPass`` 基类），而是使用 **CRTP mixin** ：
 
 .. code-block:: cpp
    :caption: llvm/include/llvm/IR/PassManager.h
@@ -99,13 +99,13 @@ PreservedAnalyses 机制
        }
    };
 
-注意：**不需要 ID**，**不需要 RegisterPass 宏**，**不需要匿名命名空间**。
+注意：**不需要 ID** ，**不需要 RegisterPass 宏** ，**不需要匿名命名空间** 。
 代码简洁了很多。
 
 分析 Pass 的编写
 ====================
 
-分析 Pass 需要额外定义一个 **Key** 和 **Result**：
+分析 Pass 需要额外定义一个 **Key** 和 **Result** ：
 
 .. code-block:: cpp
 

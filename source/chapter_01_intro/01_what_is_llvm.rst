@@ -16,13 +16,13 @@ LLVM 自身是一个**编译器基础设施**——它不是某个单一的语�
 
 .. rst-class:: center
 
-   从一种语言到另一种语言——LLVM 的核心理念是**语言无关的中间表示（IR）**。
+   从一种语言到另一种语言——LLVM 的核心理念是**语言无关的中间表示（IR）** 。
 
 LLVM 项目的历史与演进
 ========================
 
-LLVM 始于 **2000 年**，是伊利诺伊大学厄巴纳-香槟分校（UIUC）的 Vikram Adve 和 Chris Lattner
-主持的研究项目。最初的动机很朴素：当时大多数编译器（如 GCC）的中间表示是**语言相关**且**紧耦合**的，
+LLVM 始于 **2000 年** ，是伊利诺伊大学厄巴纳-香槟分校（UIUC）的 Vikram Adve 和 Chris Lattner
+主持的研究项目。最初的动机很朴素：当时大多数编译器（如 GCC）的中间表示是**语言相关** 且**紧耦合** 的，
 这意味着如果你想为一种新语言构建编译器，或者想在一个新的硬件平台上做代码生成实验，
 往往需要从头写大量代码。
 
@@ -33,7 +33,7 @@ Chris Lattner 在 2002 年的硕士论文中提出了 LLVM 的核心设计 —�
 
 "LLVM" 最初是 **Low Level Virtual Machine**\ （底层虚拟机）的缩写。但这个名称很快
 就显得过时了——"Virtual Machine" 这个后缀容易让人联想到 Java 虚拟机，而 LLVM 的
-核心贡献在于**编译器基础设施**而非虚拟机。到 2011 年左右，LLVM 官方正式宣布
+核心贡献在于**编译器基础设施** 而非虚拟机。到 2011 年左右，LLVM 官方正式宣布
 "LLVM" 不再是缩写，而是项目的品牌名称，它代表的是整个编译器生态。
 
 LLVM 的重要里程碑：
@@ -62,7 +62,7 @@ LLVM 的重要里程碑：
    * - 2025
      - LLVM 22.x 发布，支持更多后端架构与优化技术
 
-为什么 LLVM 能成功？关键在于它解决了传统编译器中的一个痛点：**中间表示的可复用性**。
+为什么 LLVM 能成功？关键在于它解决了传统编译器中的一个痛点：**中间表示的可复用性** 。
 在 GCC 中，每个前端（C、C++、Fortran、Ada 等）都有自己的中间表示（GENERIC、GIMPLE、
 RTL 等），优化器和后端需要为每种中间表示分别实现。这意味着每增加一种语言前端，
 优化器和后端的工作量就成倍增加。这就是编译器的 **N × M 问题**——N 种语言前端 ×
@@ -103,13 +103,13 @@ JIT 编译——都建立在这个前提之上。
 LLVM 生态全景
 ================
 
-今天的 LLVM 已经远不止是编译器基础设施，它形成了一套完整的**开源编译器生态**。
+今天的 LLVM 已经远不止是编译器基础设施，它形成了一套完整的**开源编译器生态** 。
 核心项目包括：
 
 Clang — C/C++/Objective-C 前端
     最广为人知的 LLVM 子项目。Clang 的设计目标是替代 GCC，提供更快的编译速度、
     更清晰的诊断信息（错误提示）和更模块化的代码结构。
-    Clang 的入口在 ``clang/tools/driver/driver.cpp``，
+    Clang 的入口在 ``clang/tools/driver/driver.cpp`` ，
     整个前端包括词法分析、语法分析、语义分析和代码生成，我们在第 3 章会详细分析。
 
 LLDB — 调试器
@@ -124,7 +124,7 @@ libc++ / libc++abi — C++ 标准库实现
 compiler-rt — 运行时库
     提供编译器所需的运行时支持函数，包括：
 
-    - 软浮点模拟（``__addsf3``、``__muldf3`` 等）
+    - 软浮点模拟（``__addsf3`` 、``__muldf3`` 等）
     - 地址消毒剂（AddressSanitizer）和线程消毒剂（ThreadSanitizer）
     - 覆盖率检测（SanitizerCoverage）
 
@@ -140,8 +140,8 @@ LLD — 链接器
 OpenMP — 并行编程支持
     Clang 中的 OpenMP 实现，支持 ``#pragma omp parallel for`` 等并行指令。
 
-这些子项目的源码都在同一个 ``llvm-project`` 仓库中，按目录组织：\ ``clang/``、
-``lldb/``、``libcxx/``、``compiler-rt/``、``mlir/``、``lld/`` 等。
+这些子项目的源码都在同一个 ``llvm-project`` 仓库中，按目录组织：\ ``clang/`` 、
+``lldb/`` 、``libcxx/`` 、``compiler-rt/`` 、``mlir/`` 、``lld/`` 等。
 这种单仓库（monorepo）的组织方式保证了各子项目之间的版本一致性。
 
 以 LLVM 22.1.8 为例，版本号定义在 ``cmake/Modules/LLVMVersion.cmake`` 中：
@@ -154,11 +154,11 @@ OpenMP — 并行编程支持
    set(LLVM_VERSION_PATCH 8)
 
 这个版本号在构建时被嵌入到 ``llvm-config.h`` 中（生成自
-``llvm/include/llvm/Config/llvm-config.h.cmake``），工具可以通过
+``llvm/include/llvm/Config/llvm-config.h.cmake`` ），工具可以通过
 ``LLVM_VERSION_STRING`` 宏获取。当我们运行 ``clang --version`` 时，
 看到的版本号就来自这里。
 
-LLVM 的许可证是 Apache 2.0 with LLVM Exceptions（见 ``llvm/LICENSE.TXT``），
+LLVM 的许可证是 Apache 2.0 with LLVM Exceptions（见 ``llvm/LICENSE.TXT`` ），
 它比纯 Apache 2.0 多了一个例外条款：允许你直接用 LLVM 编译出来的目标代码
 （如 .o 文件、可执行文件）不受许可证限制，无需因"衍生作品"而开源你的代码。
 这是 LLVM 能在工业界广泛采用的重要因素之一——商业软件可以放心使用 LLVM 编译
@@ -204,7 +204,7 @@ LLVM 的应用场景远超传统的"编译代码"：
 - 每年举办 LLVM Developers' Meeting，汇集全球的编译器开发者
 - LLVM 的论文被引用超过 10000 次
 
-为什么 LLVM 在学术界也如此流行？原因在于它的**模块化设计**：你可以只取 LLVM 的
+为什么 LLVM 在学术界也如此流行？原因在于它的**模块化设计** ：你可以只取 LLVM 的
 IR 库和 Pass 框架，不用管前端和后端，就能实验自己的优化算法。这种"即插即用"的
 特性让 LLVM 成了编译器领域的 **Linux 内核**——它不是唯一的，但它是事实上的标准。
 

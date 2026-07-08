@@ -30,13 +30,13 @@ Pass 框架概述
    # 查看所有可用的 Pass
    $ opt --print-passes
 
-每个 Pass 做一件**具体且可组合的事**：
+每个 Pass 做一件**具体且可组合的事** ：
 
-- ``mem2reg``：把栈上的 ``alloca`` 提升为 SSA 寄存器
-- ``instcombine``：合并/简化指令
+- ``mem2reg`` ：把栈上的 ``alloca`` 提升为 SSA 寄存器
+- ``instcombine`` ：合并/简化指令
 - ``gvn`` （Global Value Numbering）：消除冗余计算
 - ``dce`` （Dead Code Elimination）：删除死代码
-- ``inliner``：函数内联
+- ``inliner`` ：函数内联
 
 这些 Pass 可以像搭积木一样组合起来，形成优化管道。这就是 LLVM 优化系统的核心思想。
 
@@ -85,7 +85,7 @@ Pass 可以在三个粒度上运行：
      - 在每个 Loop 上各运行一次
      - 循环优化（LICM、IndVarSimplify）
 
-执行顺序：**Module → Function → Loop**，外层的 Pass 可以包含内层的 Pass 管道。
+执行顺序：**Module → Function → Loop** ，外层的 Pass 可以包含内层的 Pass 管道。
 
 一个简单的 Pass 示例
 =========================
@@ -124,10 +124,10 @@ Pass 管理器的职责
 
 Pass 管理器（Pass Manager）负责：
 
-1. **调度**：按正确的顺序执行 Pass
-2. **依赖管理**：在执行变换 Pass 之前，先运行其依赖的分析 Pass
-3. **缓存**：如果多个变换 Pass 依赖同一个分析结果，避免重复计算
-4. **失效**：当变换 Pass 修改了 IR，通知相关的分析 Pass 结果已失效
+1. **调度** ：按正确的顺序执行 Pass
+2. **依赖管理** ：在执行变换 Pass 之前，先运行其依赖的分析 Pass
+3. **缓存** ：如果多个变换 Pass 依赖同一个分析结果，避免重复计算
+4. **失效** ：当变换 Pass 修改了 IR，通知相关的分析 Pass 结果已失效
 
 LLVM 有两代 Pass 管理器：**Legacy Pass Manager** （已弃用）和 **New Pass Manager** （当前标准）。
 下一节我们详细讲解它们的差异。

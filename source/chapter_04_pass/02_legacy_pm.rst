@@ -132,7 +132,7 @@ Legacy PM 在设计上有几个根本问题，这也是 New PM 被创造出来�
 
 **1. 类型不安全**
 
-``getAnalysis`` 返回的是 ``Pass*``，需要手动 ``cast`` 到正确类型：
+``getAnalysis`` 返回的是 ``Pass*`` ，需要手动 ``cast`` 到正确类型：
 
 .. code-block:: cpp
 
@@ -143,7 +143,7 @@ Legacy PM 在设计上有几个根本问题，这也是 New PM 被创造出来�
 
 **2. 分析结果无法高效缓存**
 
-如果三个 Pass 都依赖 ``DominatorTree``，Legacy PM 会运行三次分析。
+如果三个 Pass 都依赖 ``DominatorTree`` ，Legacy PM 会运行三次分析。
 它缺少"分析结果缓存 + 失效标记"的机制。
 
 **3. 无法处理 IR 更新**

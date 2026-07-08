@@ -5,7 +5,7 @@ Clang 编译过程详解
 ==========================
 
 前三节我们分别看了 Clang 的总体设计、AST 结构和代码生成流程。现在把它们串起来，
-走一遍从源码到 LLVM IR 的**完整流水线**。
+走一遍从源码到 LLVM IR 的**完整流水线** 。
 
 .. rst-class:: center
 
@@ -42,13 +42,13 @@ Clang 编译过程详解
 
 预处理主要做这几件事：
 
-1. **头文件展开**：将 ``#include`` 替换为对应头文件的内容
-2. **宏展开**：将 ``#define`` 定义的宏替换为展开后的代码
-3. **条件编译**：处理 ``#if`` / ``#ifdef`` / ``#endif`` 等指令
-4. **行号标记**：插入 ``#line`` 指令，告诉编译器后面的代码来自哪个文件和行号
-5. **删除注释**：将 ``/* ... */`` 和 ``//`` 注释替换为空格
+1. **头文件展开** ：将 ``#include`` 替换为对应头文件的内容
+2. **宏展开** ：将 ``#define`` 定义的宏替换为展开后的代码
+3. **条件编译** ：处理 ``#if`` / ``#ifdef`` / ``#endif`` 等指令
+4. **行号标记** ：插入 ``#line`` 指令，告诉编译器后面的代码来自哪个文件和行号
+5. **删除注释** ：将 ``/* ... */`` 和 ``//`` 注释替换为空格
 
-预处理的结果是一个**纯文本文件**，不再包含任何预处理器指令。你可以用 ``-E``
+预处理的结果是一个**纯文本文件** ，不再包含任何预处理器指令。你可以用 ``-E``
 选项查看预处理后的结果，这对调试宏非常有用：
 
 .. code-block:: console
@@ -62,7 +62,7 @@ Clang 编译过程详解
    # 1 "<built-in>"
    int main() { return ((1) > (2) ? (1) : (2)); }
 
-注意 ``MAX(1, 2)`` 被展开成了 ``((1) > (2) ? (1) : (2))``。
+注意 ``MAX(1, 2)`` 被展开成了 ``((1) > (2) ? (1) : (2))`` 。
 
 词法分析（Lexing）
 ========================
@@ -93,13 +93,13 @@ Lexer 会依次输出以下 Token：
 - **内容** （ IdentifierInfo 或 LiteralData）：具体的文本或值
 - **位置** （SourceLocation）：在源码中的位置（文件、行、列）
 
-Clang 的 Lexer 实现位于 ``clang/lib/Lex/``，核心类是 ``clang::Lexer``。
+Clang 的 Lexer 实现位于 ``clang/lib/Lex/`` ，核心类是 ``clang::Lexer`` 。
 
 语法分析（Parsing）
 =========================
 
 Parser（语法分析器）从 Lexer 获取 Token 流，根据语言的语法规则，
-将其组织成**抽象语法树（AST）**。
+将其组织成**抽象语法树（AST）** 。
 
 .. code-block:: text
 
@@ -130,22 +130,22 @@ Parser 的核心是**递归下降解析**——每个语法结构对应一个解
 4. ``ParseAssignmentExpression`` 解析 ``42`` → 创建 ``IntegerLiteral`` 节点
 5. 将 ``VarDecl`` 节点挂到 ``TranslationUnitDecl`` 下
 
-Clang 的 Parser 实现位于 ``clang/lib/Parse/``，核心类是 ``clang::Parser``。
+Clang 的 Parser 实现位于 ``clang/lib/Parse/`` ，核心类是 ``clang::Parser`` 。
 
 语义分析（Sema）
 =========================
 
-AST 建好了，但此时它只反映了**代码长什么样**，还不清楚**代码含义是否正确**。
+AST 建好了，但此时它只反映了**代码长什么样** ，还不清楚**代码含义是否正确** 。
 语义分析（Semantic Analysis）负责：
 
-1. **类型检查**：确保操作数类型与操作符匹配
-2. **名字查找**：找到每个名字对应的声明（变量、函数、类型等）
-3. **重载决议**：在多个同名的函数中选出最匹配的一个
-4. **隐式转换插入**：在需要的地方插入 ``ImplicitCastExpr``、``ImplicitConversionSequence``
-5. **模板实例化**：在需要时触发模板的实例化
+1. **类型检查** ：确保操作数类型与操作符匹配
+2. **名字查找** ：找到每个名字对应的声明（变量、函数、类型等）
+3. **重载决议** ：在多个同名的函数中选出最匹配的一个
+4. **隐式转换插入** ：在需要的地方插入 ``ImplicitCastExpr`` 、``ImplicitConversionSequence``
+5. **模板实例化** ：在需要时触发模板的实例化
 
-以 ``int x = 3.14;`` 为例——Sema 会发现右侧是 ``double`` 而左侧是 ``int``，
-在 AST 中插入一个 ``ImplicitCastExpr``：
+以 ``int x = 3.14;`` 为例——Sema 会发现右侧是 ``double`` 而左侧是 ``int`` ，
+在 AST 中插入一个 ``ImplicitCastExpr`` ：
 
 .. code-block:: text
 
@@ -153,7 +153,7 @@ AST 建好了，但此时它只反映了**代码长什么样**，还不清楚**�
    └── ImplicitCastExpr <FloatingToIntegral>  ← Sema 插入的
        └── FloatingLiteral '3.14'
 
-Sema 的实现在 ``clang/lib/Sema/``，这是一个非常庞大的模块。每个 Sema 函数
+Sema 的实现在 ``clang/lib/Sema/`` ，这是一个非常庞大的模块。每个 Sema 函数
 处理一种语法结构的语义检查：
 
 .. code-block:: cpp
@@ -193,7 +193,7 @@ AST 转换为 LLVM IR。
    # 查看各阶段的时间分布
    $ clang -ccc-print-phases hello.c
 
-CodeGen 的入口是 ``CodeGenModule::EmitTopLevelDecl()``，它会遍历 ``TranslationUnitDecl``
+CodeGen 的入口是 ``CodeGenModule::EmitTopLevelDecl()`` ，它会遍历 ``TranslationUnitDecl``
 下的所有顶级声明，逐个生成 IR。
 
 前面第 3.3 节已经详细介绍了 CodeGen 的内部机制，这里不再重复。重要的是理解：
@@ -239,7 +239,7 @@ Clang 提供了丰富的选项来观察每个阶段的输出，这是理解编�
 实战练习：观察一个简单函数的编译全过程
 ==========================================
 
-创建一个 ``add.c``：
+创建一个 ``add.c`` ：
 
 .. code-block:: c
 

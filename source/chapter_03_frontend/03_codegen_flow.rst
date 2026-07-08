@@ -49,7 +49,7 @@ Clang 的代码生成器位于 ``clang/lib/CodeGen/`` 目录下。两个核心�
        // ... 类型转换、全局变量、构造函数等
    };
 
-``CodeGenFunction`` 的职责更聚焦——它负责为一个 ``FunctionDecl`` 生成 ``llvm::Function``：
+``CodeGenFunction`` 的职责更聚焦——它负责为一个 ``FunctionDecl`` 生成 ``llvm::Function`` ：
 
 .. code-block:: cpp
    :caption: clang/lib/CodeGen/CodeGenFunction.h
@@ -61,7 +61,7 @@ Clang 的代码生成器位于 ``clang/lib/CodeGen/`` 目录下。两个核心�
        // ... 局部变量分配、控制流结构等
    };
 
-简单来说：**CGM 管"全局"，CGF 管"当前函数"**。
+简单来说：**CGM 管"全局"，CGF 管"当前函数"** 。
 
 表达式生成
 =========================
@@ -69,7 +69,7 @@ Clang 的代码生成器位于 ``clang/lib/CodeGen/`` 目录下。两个核心�
 表达式生成是最核心的部分之一，因为它涉及递归地将 AST 表达式子树
 转换为 LLVM IR 指令。
 
-假设我们有表达式 ``a + b``：
+假设我们有表达式 ``a + b`` ：
 
 .. mermaid::
 
@@ -87,8 +87,8 @@ Clang 的代码生成器位于 ``clang/lib/CodeGen/`` 目录下。两个核心�
 
 Clang 的表达式生成分为两个主要 emitter：
 
-- **ScalarExprEmitter**：生成标量值（整数、浮点数、指针等）
-- **AggExprEmitter**：生成聚合值（结构体、数组等）
+- **ScalarExprEmitter** ：生成标量值（整数、浮点数、指针等）
+- **AggExprEmitter** ：生成聚合值（结构体、数组等）
 
 以最简单的 ``IntegerLiteral`` 为例：
 
@@ -100,7 +100,7 @@ Clang 的表达式生成分为两个主要 emitter：
        return llvm::ConstantInt::get(ConvertType(E->getType()), E->getValue());
    }
 
-而对于 ``BinaryOperator``：
+而对于 ``BinaryOperator`` ：
 
 .. code-block:: cpp
    :caption: clang/lib/CodeGen/CGExprScalar.cpp（简化）
@@ -120,7 +120,7 @@ Clang 的表达式生成分为两个主要 emitter：
        }
    }
 
-注意这里**递归下降**的模式——``VisitBinaryOperator`` 先递归调用 ``Visit`` 处理
+注意这里**递归下降** 的模式——``VisitBinaryOperator`` 先递归调用 ``Visit`` 处理
 左右子表达式，然后根据操作符类型创建不同的 LLVM 指令。这个模式贯穿了整个代码生成器。
 
 语句生成
@@ -144,7 +144,7 @@ Clang 的表达式生成分为两个主要 emitter：
        }
    }
 
-控制流语句（``if``、``for``、``while``）会创建 LLVM 的 basic block 和分支指令：
+控制流语句（``if`` 、``for`` 、``while`` ）会创建 LLVM 的 basic block 和分支指令：
 
 .. code-block:: cpp
    :caption: clang/lib/CodeGen/CGStmt.cpp（简化）
@@ -182,12 +182,12 @@ Clang 的表达式生成分为两个主要 emitter：
 
 一个完整的函数生成流程包括：
 
-1. **创建函数签名**：根据 ``FunctionDecl`` 的信息（返回类型、参数类型）创建 ``llvm::FunctionType``
-2. **创建 LLVM Function**：在 ``llvm::Module`` 中创建 ``llvm::Function``
-3. **创建入口基本块**：为函数体创建第一个 basic block
-4. **处理参数**：将 LLVM 函数的参数与 AST 中的 ``ParmVarDecl`` 关联
-5. **生成函数体**：用 ``CodeGenFunction`` 遍历函数体内的语句
-6. **设置调用约定和属性**：设置 ``nobuiltin``、``optnone``、``inline`` 等属性
+1. **创建函数签名** ：根据 ``FunctionDecl`` 的信息（返回类型、参数类型）创建 ``llvm::FunctionType``
+2. **创建 LLVM Function** ：在 ``llvm::Module`` 中创建 ``llvm::Function``
+3. **创建入口基本块** ：为函数体创建第一个 basic block
+4. **处理参数** ：将 LLVM 函数的参数与 AST 中的 ``ParmVarDecl`` 关联
+5. **生成函数体** ：用 ``CodeGenFunction`` 遍历函数体内的语句
+6. **设置调用约定和属性** ：设置 ``nobuiltin`` 、``optnone`` 、``inline`` 等属性
 
 ABI 处理
 =========================
@@ -217,7 +217,7 @@ Clang 的 CodeGen 需要一个中间层来处理 ABI 相关的转换。
    // 在 x86_64 下，超过 4 个 8 字节的结构体通过内存传递：
    //   define void @process(ptr %b)
 
-Clang 中 ABI 处理的代码位于 ``clang/lib/CodeGen/TargetInfo.cpp``，不同架构
+Clang 中 ABI 处理的代码位于 ``clang/lib/CodeGen/TargetInfo.cpp`` ，不同架构
 有不同的 ``ABIInfo`` 实现：
 
 - ``X86_64ABIInfo``

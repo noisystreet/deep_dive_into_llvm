@@ -51,7 +51,7 @@ Hello World
    export PATH=$PWD/build/bin:$PATH
 
 源码构建的好处是你可以获得完整的调试信息（RelWithDebInfo），并且可以配置
-只构建你需要的目标架构（通过 ``LLVM_TARGETS_TO_BUILD``），从而节省编译时间。
+只构建你需要的目标架构（通过 ``LLVM_TARGETS_TO_BUILD`` ），从而节省编译时间。
 
 从 C 源码到可执行文件
 ==========================
@@ -98,8 +98,8 @@ LLVM 各阶段的产物。
 
 这个命令告诉 Clang：
 
-- ``-S``：只编译到汇编，不汇编
-- ``-emit-llvm``：输出 LLVM IR 而不是机器汇编
+- ``-S`` ：只编译到汇编，不汇编
+- ``-emit-llvm`` ：输出 LLVM IR 而不是机器汇编
 
 生成的 ``hello.ll`` 内容如下（简化版）：
 
@@ -203,10 +203,10 @@ LLVM 各阶段的产物。
 使用 opt 运行优化 Pass
 ==========================
 
-Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独**运行某个 Pass 来观察
+Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独** 运行某个 Pass 来观察
 它对 IR 的影响，就需要 ``opt`` 工具。
 
-``opt`` 是 LLVM 的**优化器驱动程序**，它以 LLVM IR 作为输入，应用指定的 Pass 后
+``opt`` 是 LLVM 的**优化器驱动程序** ，它以 LLVM IR 作为输入，应用指定的 Pass 后
 输出优化后的 IR。它的源码在 ``llvm/tools/opt/`` 中。
 
 **1. 单 Pass 运行：mem2reg**
@@ -222,7 +222,7 @@ Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独*
    opt -S -passes=mem2reg hello.unopt.ll -o hello.mem2reg.ll
 
 ``-passes=mem2reg`` 告诉 opt 运行 ``mem2reg`` 这个 Pass。运行后，原来的
-``alloca``、``store``、``load`` 指令被替换为直接使用 SSA 寄存器：
+``alloca`` 、``store`` 、``load`` 指令被替换为直接使用 SSA 寄存器：
 
 .. code-block:: llvm
 
@@ -233,7 +233,7 @@ Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独*
      ret i32 0
    }
 
-看到区别了吗？优化前，``x``、``y``、``result`` 变量都通过 ``alloca`` 分配栈空间
+看到区别了吗？优化前，``x`` 、``y`` 、``result`` 变量都通过 ``alloca`` 分配栈空间
 然后 ``store``/``load`` 读写。``mem2reg`` 分析后发现这些变量可以安全地提升为
 SSA 值，直接传参给 ``add`` 函数——栈分配和内存读写都被消除了。
 
@@ -247,7 +247,7 @@ SSA 值，直接传参给 ``add`` 函数——栈分配和内存读写都被消�
 
    opt -S -passes="mem2reg,instcombine,simplifycfg" hello.unopt.ll -o hello.opt.ll
 
-``instcombine`` 会将冗余的指令模式合并为更简单的形式（比如 ``add x, 0`` → ``x``），
+``instcombine`` 会将冗余的指令模式合并为更简单的形式（比如 ``add x, 0`` → ``x`` ），
 ``simplifycfg`` 会合并冗余的基本块、消除不可达代码。三个 Pass 叠加的效果是：
 原来十几行的 IR 可能被压缩到只有几行核心逻辑。
 
@@ -292,7 +292,7 @@ SSA 值，直接传参给 ``add`` 函数——栈分配和内存读写都被消�
 使用 lli 直接运行 IR
 =======================
 
-LLVM 提供一个 JIT 编译器 ``lli``，可以直接执行 LLVM IR 而不需要经过机器码生成
+LLVM 提供一个 JIT 编译器 ``lli`` ，可以直接执行 LLVM IR 而不需要经过机器码生成
 和链接过程：
 
 .. code-block:: bash
@@ -303,7 +303,7 @@ LLVM 提供一个 JIT 编译器 ``lli``，可以直接执行 LLVM IR 而不需�
 ``lli`` 内部做了什么？它在运行时将 IR 编译为当前 CPU 架构的机器码，然后直接
 调用执行。这比静态编译少了两步：汇编和链接。对于快速原型验证非常方便。
 
-``lli`` 的源码在 ``llvm/tools/lli/lli.cpp``，它使用 LLVM 的 ORC JIT API
+``lli`` 的源码在 ``llvm/tools/lli/lli.cpp`` ，它使用 LLVM 的 ORC JIT API
 （第 8 章会详细介绍）。
 
 构建一个最小的 LLVM 项目
@@ -418,9 +418,9 @@ LLVM 的库采用模块化设计，每个组件对应一个库：
 
 .. note::
 
-   从 ``llvm::Module`` 的定义（``llvm/include/llvm/IR/Module.h``）可以看到，
-   Module 是一个编译单元的顶层容器，包含 ``GlobalList``（全局变量列表）、
-   ``FunctionList``（函数列表）等。当你创建一个 ``Module`` 对象时，你已经在
+   从 ``llvm::Module`` 的定义（``llvm/include/llvm/IR/Module.h`` ）可以看到，
+   Module 是一个编译单元的顶层容器，包含 ``GlobalList`` （全局变量列表）、
+   ``FunctionList`` （函数列表）等。当你创建一个 ``Module`` 对象时，你已经在
    构造 LLVM IR 的内存表示——这是所有后续操作（优化、代码生成）的起点。
 
 .. raw:: html

@@ -16,13 +16,13 @@ IR 中生成大量调试元数据，将 IR 指令与源代码位置、变量名�
 调试信息的结构层次
 ========================
 
-调试信息组织为树状结构，每个编译单元（``!DIBuCompileUnit``）对应一个源文件：
+调试信息组织为树状结构，每个编译单元（``!DIBuCompileUnit`` ）对应一个源文件：
 
-- **文件信息**\ （\ ``!DIFile``）：文件名、目录路径
-- **子程序信息**\ （\ ``!DISubprogram``）：函数名、返回类型、参数列表
-- **局部变量信息**\ （\ ``!DILocalVariable``）：变量名、类型、参数序号
-- **类型信息**\ （\ ``!DIBasicType``、\ ``!DICompositeType``）：基本类型和复合类型
-- **位置信息**\ （\ ``!DILocation``）：行号和列号
+- **文件信息**\ （\ ``!DIFile`` ）：文件名、目录路径
+- **子程序信息**\ （\ ``!DISubprogram`` ）：函数名、返回类型、参数列表
+- **局部变量信息**\ （\ ``!DILocalVariable`` ）：变量名、类型、参数序号
+- **类型信息**\ （\ ``!DIBasicType`` 、\ ``!DICompositeType`` ）：基本类型和复合类型
+- **位置信息**\ （\ ``!DILocation`` ）：行号和列号
 
 核心调试节点
 ================
@@ -107,7 +107,7 @@ IR 中生成大量调试元数据，将 IR 指令与源代码位置、变量名�
 源码实现
 ================
 
-调试信息对应的类位于 ``llvm/include/llvm/IR/DebugInfoMetadata.h``：
+调试信息对应的类位于 ``llvm/include/llvm/IR/DebugInfoMetadata.h`` ：
 
 .. code-block:: cpp
 

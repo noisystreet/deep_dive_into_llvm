@@ -8,7 +8,7 @@ IR 指令集详解
 指令类型、它们的语义和典型用法。
 
 LLVM IR 的指令在 ``llvm/include/llvm/IR/Instructions.h`` 中定义，
-每条指令对应一个 C++ 类，继承自 ``Instruction``。
+每条指令对应一个 C++ 类，继承自 ``Instruction`` 。
 
 内存指令
 ================
@@ -22,7 +22,7 @@ LLVM IR 的指令在 ``llvm/include/llvm/IR/Instructions.h`` 中定义，
    %arr = alloca [10 x i32]    ; 分配数组
 
 ``alloca`` 在函数栈帧上分配空间，函数返回时自动释放。在 ``-O0`` 下 Clang
-为每个局部变量生成一个 ``alloca``；优化后 ``mem2reg`` Pass 会将其提升为
+为每个局部变量生成一个 ``alloca`` ；优化后 ``mem2reg`` Pass 会将其提升为
 SSA 寄存器。
 
 **load -- 从内存读取**
@@ -196,7 +196,7 @@ SSA 寄存器。
 类型转换指令
 ================
 
-LLVM 要求所有类型转换都**显式**写出：
+LLVM 要求所有类型转换都**显式** 写出：
 
 .. list-table::
    :header-rows: 1
@@ -224,7 +224,7 @@ GEP 详解
 ================
 
 **GetElementPtr（GEP）** 是 LLVM IR 中最容易被误解的指令。
-它**不访问内存**，只计算指针经过若干索引后的地址。
+它**不访问内存** ，只计算指针经过若干索引后的地址。
 
 **基本语法：**
 
@@ -232,7 +232,7 @@ GEP 详解
 
    %result = getelementptr <elem_type>, ptr <base>, <index1>, <index2>, ...
 
-GEP 的索引是**从外层到内层**的。第一个索引作用于指针本身，后续索引依次深入。
+GEP 的索引是**从外层到内层** 的。第一个索引作用于指针本身，后续索引依次深入。
 
 **例 1：一维数组**
 
