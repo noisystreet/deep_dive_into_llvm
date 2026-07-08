@@ -10,14 +10,14 @@
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
+   :numbered: 1
    :caption: 第一卷：LLVM
 
    volume_01_llvm/index
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
+   :numbered: 1
    :caption: 第二卷：MLIR
 
    volume_02_mlir/index
