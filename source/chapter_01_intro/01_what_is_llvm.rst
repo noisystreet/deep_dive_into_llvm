@@ -63,9 +63,42 @@ LLVM 的重要里程碑：
      - LLVM 22.x 发布，支持更多后端架构与优化技术
 
 为什么 LLVM 能成功？关键在于它解决了传统编译器中的一个痛点：**中间表示的可复用性**。
-在 GCC 中，每个前端（C、C++、Fortran、Ada 等）都有自己的中间表示，优化器和后端
-需要为每种中间表示写适配代码。而 LLVM 提供了一个统一的 IR，让所有前端和后端
-通过 IR 这个"通用接口"解耦。这一点我们在下一节架构概览中会深入展开。
+在 GCC 中，每个前端（C、C++、Fortran、Ada 等）都有自己的中间表示（GENERIC、GIMPLE、
+RTL 等），优化器和后端需要为每种中间表示分别实现。这意味着每增加一种语言前端，
+优化器和后端的工作量就成倍增加。这就是编译器的 **N × M 问题**——N 种语言前端 ×
+M 种目标后端 = N × M 个"翻译对"需要维护。
+
+.. rst-class:: center
+
+   传统编译器：N × M 种语言-目标组合，需要维护 N × M 个翻译对
+
+.. mermaid::
+
+   flowchart TD
+       subgraph 传统方案[传统方案: 紧耦合]
+           C1[C Frontend] --> GIMPLE1[GIMPLE IR]
+           C2[C++ Frontend] --> GIMPLE2[GIMPLE IR]
+           F1[Fortran Frontend] --> GIMPLE3[GENERIC IR]
+           GIMPLE1 --> X861[x86 Backend]
+           GIMPLE2 --> X861
+           GIMPLE3 --> X862[x86 Backend]
+       end
+
+       subgraph LLVM方案[LLVM 方案: 统一 IR]
+           C3[C/C++ Frontend] --> IR[LLVM IR]
+           C4[Rust Frontend] --> IR
+           F2[Fortran Frontend] --> IR
+           IR --> X863[x86 Backend]
+           IR --> ARM[ARM Backend]
+           IR --> RISCV[RISC-V Backend]
+       end
+
+LLVM 的解法很简洁：统一 IR = N + M。你只需要实现 N 个前端（生成 IR）和 M 个后端
+（消费 IR），优化器在 IR 上无论做多少变换，都和前端、后端无关。这个设计看似简单，
+却是 LLVM 成功的最核心原因。你在书中看到的所有后续技术——Pass 框架、指令选择、
+JIT 编译——都建立在这个前提之上。
+
+这一点我们在下一节架构概览中会深入展开。
 
 LLVM 生态全景
 ================
@@ -110,6 +143,26 @@ OpenMP — 并行编程支持
 这些子项目的源码都在同一个 ``llvm-project`` 仓库中，按目录组织：\ ``clang/``、
 ``lldb/``、``libcxx/``、``compiler-rt/``、``mlir/``、``lld/`` 等。
 这种单仓库（monorepo）的组织方式保证了各子项目之间的版本一致性。
+
+以 LLVM 22.1.8 为例，版本号定义在 ``cmake/Modules/LLVMVersion.cmake`` 中：
+
+.. code-block:: cmake
+   :caption: cmake/Modules/LLVMVersion.cmake
+
+   set(LLVM_VERSION_MAJOR 22)
+   set(LLVM_VERSION_MINOR 1)
+   set(LLVM_VERSION_PATCH 8)
+
+这个版本号在构建时被嵌入到 ``llvm-config.h`` 中（生成自
+``llvm/include/llvm/Config/llvm-config.h.cmake``），工具可以通过
+``LLVM_VERSION_STRING`` 宏获取。当我们运行 ``clang --version`` 时，
+看到的版本号就来自这里。
+
+LLVM 的许可证是 Apache 2.0 with LLVM Exceptions（见 ``llvm/LICENSE.TXT``），
+它比纯 Apache 2.0 多了一个例外条款：允许你直接用 LLVM 编译出来的目标代码
+（如 .o 文件、可执行文件）不受许可证限制，无需因"衍生作品"而开源你的代码。
+这是 LLVM 能在工业界广泛采用的重要因素之一——商业软件可以放心使用 LLVM 编译
+自己的代码，而不用担心被强制开源。
 
 LLVM 在工业界和学术界的应用
 ==============================

@@ -69,7 +69,37 @@ LLVM IR — 统一中间表示
 ==============================
 
 LLVM IR 是整个架构的**基石**。它是一种**静态单赋值（SSA, Static Single Assignment）**
-形式的低级中间表示，同时具备三个形态：
+形式的低级中间表示。
+
+**为什么是 SSA？**
+
+SSA 的核心约束是：**每个变量（在 LLVM IR 中称为"值"）只被赋值一次**。你可能会问：
+这难道不会让编程很不方便吗？事实恰恰相反——SSA 极大地简化了编译器的优化工作。
+
+举个例子，在非 SSA 形式中，如果我们要分析一段代码中变量 ``x`` 的取值来源：
+
+.. code-block:: c
+
+   // 非 SSA: x 被赋值了两次
+   int x = a + b;   // 定义 1
+   x = x * c;       // 定义 2（覆盖了定义 1）
+
+要判断 ``x * c`` 中的 ``x`` 来自哪个定义，优化器需要做**定值-引用链**
+（def-use chain）分析。在有多个控制流路径时，这个分析会变得非常复杂。
+
+但在 SSA 形式中，每个变量只有唯一的定义点，def-use 关系天然清晰：
+
+.. code-block:: llvm
+
+   ; SSA: 每个 % 值只定义一次
+   %1 = add i32 %a, %b    ; 定义 %1
+   %2 = mul i32 %1, %c    ; 使用 %1
+
+优化器看到 ``%2`` 时立即知道它的来源是 ``%1``，不需要额外的数据流分析。
+这就是 SSA 的威力——**让 def-use 链变成局部信息**。常量传播、死代码消除、
+循环不变式外提等 Pass 的实现在 SSA 形式上都会简化很多。
+
+除了 SSA 特性，LLVM IR 还同时具备**三个形态**：
 
 **三种形态的 IR：**
 
@@ -97,13 +127,36 @@ LLVM IR 是整个架构的**基石**。它是一种**静态单赋值（SSA, Stat
 做链接时优化（bitcode），还是在代码中操控 IR（API），同一个程序在不同形态间转换
 是完全无损的。
 
-核心数据结构：
+核心数据结构（都在 ``llvm/include/llvm/IR/`` 中定义）：
 
 - ``llvm::Module`` （`:file:///workspace/llvm-project/llvm/include/llvm/IR/Module.h`）— 
   一个编译单元（通常对应一个源文件）的顶层容器，包含函数、全局变量、元数据等
-- ``llvm::Function`` — 表示一个函数，包含多个 BasicBlock
+- ``llvm::Function`` （`:file:///workspace/llvm-project/llvm/include/llvm/IR/Function.h`）— 
+  表示一个函数，包含多个 BasicBlock。函数可以有参数、属性（如 ``noreturn``、``readonly``）
 - ``llvm::BasicBlock`` — 基本块，包含一系列指令序列，以控制流终止指令结束
-- ``llvm::Instruction`` — 单条指令的操作码和操作数
+- ``llvm::Instruction``\ — 单条指令的操作码和操作数。Instruction 有大量子类，
+  如 ``BinaryOperator``\ （二元运算）、\ ``LoadInst``\ （加载）、\ ``StoreInst``\ （存储）、
+  ``CallInst``\ （函数调用）、\ ``BranchInst``\ （分支）等。每个子类定义了对应指令的
+  语义和验证逻辑
+
+这些类的继承关系构成了 IR 的类型体系：
+
+.. code-block:: text
+
+   llvm::Value          # 所有 SSA 值的基类
+     +-- llvm::User     # 有操作数的值
+     |     +-- llvm::Instruction   # 指令（Opcode + Operands）
+     |     |     +-- BinaryOperator  # add, sub, mul 等
+     |     |     +-- LoadInst        # load
+     |     |     +-- StoreInst       # store
+     |     |     +-- CallInst        # call
+     |     |     +-- BranchInst      # br
+     |     |     +-- ...
+     |     +-- llvm::Constant        # 常量（编译时已知的值）
+     |     +-- llvm::GlobalVariable  # 全局变量
+     |     +-- llvm::Function        # 函数
+     +-- llvm::BasicBlock
+     +-- llvm::Argument             # 函数参数
 
 举个具体的例子。一个 C 函数:
 
@@ -182,8 +235,28 @@ Pass 分为两类：
 - **变换 Pass**\ （Transform Pass）：修改 IR 来优化它，如函数内联（``InlinerPass``）、
   常量传播（``SCCPPass``）、循环向量化（``LoopVectorizePass``）
 
+**优化等级的设计哲学：**
+
+LLVM 定义了多个优化等级（``-O0``、\ ``-O1``、\ ``-O2``、\ ``-O3``、\ ``-Os``、\ ``-Oz``），
+每个等级对应一组 Pass 的集合（称为 Pass Pipeline）。为什么需要多个等级？
+
+.. code-block:: bash
+
+   # 不同优化等级生成的 IR 差异巨大
+   clang -S -emit-llvm -O0 hello.c -o hello.O0.ll   # 不做优化，方便调试
+   clang -S -emit-llvm -O2 hello.c -o hello.O2.ll   # 标准优化，适合生产
+   clang -S -emit-llvm -O3 hello.c -o hello.O3.ll   # 激进优化，可能增大代码体积
+
+- **-O0**：不做任何优化，生成的 IR 和源代码结构一一对应，适合调试（``-g`` 调试信息
+  在 -O0 下最准确）。所有的 ``alloca``/``store``/``load`` 都保留，变量名可读
+- **-O1**：基本优化，在编译速度和代码质量之间平衡
+- **-O2**：生产环境推荐等级，启用大多数标准优化（内联、循环优化、全局优化等）
+- **-O3**：比 -O2 更激进，启用向量化等可能增加代码体积的优化
+- **-Os**：以代码体积为首要目标，-O2 基础上做体积优化
+- **-Oz**：进一步压缩代码体积，即使牺牲一些性能
+
 优化器的入口是 ``opt`` 工具（源码在 ``llvm/tools/opt/``），我们会在第 5 章深入
-讨论各优化算法。
+讨论各优化算法和 Pass Pipeline 的具体构成。
 
 **后端阶段（llc 工具）：**
 

@@ -207,11 +207,15 @@ Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独*
 它对 IR 的影响，就需要 ``opt`` 工具。
 
 ``opt`` 是 LLVM 的**优化器驱动程序**，它以 LLVM IR 作为输入，应用指定的 Pass 后
-输出优化后的 IR。我们来看一个例子：
+输出优化后的 IR。它的源码在 ``llvm/tools/opt/`` 中。
+
+**1. 单 Pass 运行：mem2reg**
+
+我们来看一个具体的例子。先编译到未优化的 IR：
 
 .. code-block:: bash
 
-   # 先编译到未优化的 IR（-O0 禁用优化）
+   # 编译到未优化的 IR（-O0 禁用优化）
    clang -S -emit-llvm -O0 hello.c -o hello.unopt.ll
 
    # 用 opt 运行 mem2reg Pass（将 alloca/store/load 提升为 SSA 寄存器）
@@ -232,6 +236,55 @@ Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独*
 看到区别了吗？优化前，``x``、``y``、``result`` 变量都通过 ``alloca`` 分配栈空间
 然后 ``store``/``load`` 读写。``mem2reg`` 分析后发现这些变量可以安全地提升为
 SSA 值，直接传参给 ``add`` 函数——栈分配和内存读写都被消除了。
+
+**2. 多 Pass 链式运行**
+
+``opt`` 支持在 ``-passes`` 参数中指定多个 Pass, 用逗号分隔, 它们会按顺序依次执行。
+例如，先在 ``mem2reg`` 提升 SSA 后，再做 ``instcombine`` （指令合并）和
+``simplifycfg`` （简化控制流）：
+
+.. code-block:: bash
+
+   opt -S -passes="mem2reg,instcombine,simplifycfg" hello.unopt.ll -o hello.opt.ll
+
+``instcombine`` 会将冗余的指令模式合并为更简单的形式（比如 ``add x, 0`` → ``x``），
+``simplifycfg`` 会合并冗余的基本块、消除不可达代码。三个 Pass 叠加的效果是：
+原来十几行的 IR 可能被压缩到只有几行核心逻辑。
+
+**3. 运行完整优化 Pipeline**
+
+如果你想模拟 Clang 的 ``-O2`` 优化行为，可以运行 opt 的默认优化 Pipeline：
+
+.. code-block:: bash
+
+   opt -S -O2 hello.unopt.ll -o hello.O2.ll
+
+这等价于 Clang 的 ``-O2`` 编译选项，会运行数十个 Pass 组成的优化 Pipeline，
+包括内联、循环优化、全局优化、指令合并、死代码消除等。查看 ``hello.O2.ll`` 的
+内容，你会发现 ``add`` 函数很可能已经被内联到 ``main`` 中了——因为 ``-O2``
+启用了函数内联 Pass。
+
+**4. IR 验证**
+
+在运行 Pass 之前，建议先用 ``-verify`` 验证 IR 的合法性：
+
+.. code-block:: bash
+
+   opt -S -passes=verify hello.unopt.ll -o /dev/null
+
+如果 IR 有语法错误或语义问题（如类型不匹配、SSA 违反等），``verify`` Pass 会
+输出诊断信息。这个 Pass 在你编写 Pass 或手动修改 IR 时尤其有用。
+
+**5. 查看可用 Pass 列表**
+
+``opt`` 支持超过 100 个 Pass。你可以通过以下命令查看所有可用的 Pass：
+
+.. code-block:: bash
+
+   opt -print-passes
+
+输出会列出所有注册的 Pass 名称，如 ``adce``\ （积极死代码消除）、\ ``gvn``
+（全局值编号）、\ ``licm``\ （循环不变式外提）等。
 
 这就是 LLVM Pass 的威力：它可以在不改变程序语义的前提下，对 IR 进行各种变换。
 我们会在第 4 章和第 5 章系统学习 Pass 框架和各类优化算法。
@@ -341,6 +394,27 @@ IR。这是 LLVM 作为"编译器基础设施"的真正价值——你可以把 
 生成经过优化的机器码。这正是 Julia、Rust、Swift 等语言依赖 LLVM 的原因——
 它们通过 LLVM 的 C++ API 将各自语言的 IR 翻译到 LLVM IR，然后由 LLVM 处理
 后续的优化和代码生成。
+
+**如何找到 LLVM 库？**
+
+上面 CMake 中的 ``find_package(LLVM REQUIRED CONFIG)`` 用于查找 LLVM 的 CMake 配置。
+LLVM 构建完成后，会在 ``build/lib/cmake/llvm/`` 目录下生成
+``LLVMConfig.cmake`` 。这个文件定义了 ``LLVM_INCLUDE_DIRS`` （头文件路径）和
+``LLVM_LIBS`` （需要链接的库列表）。
+
+LLVM 的库采用模块化设计，每个组件对应一个库：
+
+.. code-block:: text
+
+   libLLVMCore.so     # IR 核心（Module, Function, Instruction 等）
+   libLLVMAnalysis.so # 分析框架（DominatorTree, LoopInfo 等）
+   libLLVMTransformUtils.so # 变换工具
+   libLLVMCodeGen.so  # 代码生成器
+   libLLVMTarget.so   # 目标描述抽象
+   ...
+
+当你链接 ``${LLVM_LIBS}`` 时，CMake 会自动添加所有需要的库。你也可以手动只
+链接你需要的库，但通常链接全部是最简单的做法。
 
 .. note::
 
