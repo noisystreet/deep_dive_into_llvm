@@ -4,9 +4,153 @@
 什么是 MLIR？
 =============
 
-.. TODO:
+如果你读完了本书的第一卷，你已经熟悉了 LLVM IR——一种语言无关的、基于 SSA 的
+中间表示。LLVM IR 成功地统一了编译器前端的多样性和后端的多样性：**无论你用什么
+语言（C、C++、Rust、Swift），无论你 targeting 什么架构（x86、ARM、RISC-V），
+都可以用 LLVM IR 作为桥梁**。
 
-- MLIR 的诞生动机
-- 传统编译器 IR 的局限
-- MLIR 的设计目标
-- 与 LLVM IR 的对比
+但 LLVM IR 有一个根本性的局限。
+
+.. rst-class:: center
+
+   LLVM IR 是"最底层"的 IR——它离机器码很近，离源代码很远。
+   如果要在 LLVM IR 上做高级优化（如循环分块、内存融合），你需要
+   先将近乎源码级的信息从 IR 中"反向推导"出来。
+
+传统编译器的 IR 困境
+==========================
+
+.. mermaid::
+
+   flowchart LR
+       A["Python / Julia / ML 框架模型"] --> B[高级语言语义]
+       B --> C[LLVM IR]
+       C --> D[机器码]
+
+       style B fill:#e91e63,color:#fff
+       style C fill:#ff9800,color:#fff
+       style D fill:#4caf50,color:#fff
+
+在 LLVM IR 成为行业标准之后，出现了一些新的需求，LLVM IR 难以很好支持：
+
+**1. 高级抽象的缺失**
+
+LLVM IR 是低级 IR——它没有 ``for`` 循环、没有张量（tensor）、没有多维数组的概念。
+如果你想优化一个矩阵乘法，在 LLVM IR 层面你看不到"矩阵"——你只看到一堆
+``load``、``store``、``add``、``mul`` 指令。你需要通过模式匹配来"猜测"
+源代码的结构。
+
+**2. 降级（Lowering）过程中的信息丢失**
+
+当 Clang 将 ``for (int i = 0; i < n; i++)`` 编译为 LLVM IR 时，它变成了
+``phi``、``icmp``、``br`` 指令的组合——循环结构信息丢失了。之后想恢复这个
+信息做循环优化，需要运行 ``LoopInfo`` 分析 Pass 重新推导。
+
+**3. 多种 IR 之间的转换成本**
+
+在一个复杂系统中（如 TensorFlow 的 XLA 编译器、Julia 的编译器），同一个程序
+可能需要经过多个不同层次的 IR：源码 AST → 高级中间表示 → 中端 IR → LLVM IR →
+机器码。每次转换都需要编写和维护转换代码。
+
+MLIR 的诞生
+================
+
+MLIR（Multi-Level Intermediate Representation）是 LLVM 项目中为了解决上述问题
+而发起的新项目。它在 2019 年的 LLVM 开发者大会上首次公开发布，由 Google、Apple
+等公司的工程师共同推动。
+
+MLIR 的核心思想很简单：**不要试图用一个 IR 覆盖所有需求，而是让用户定义
+自己需要的 IR**。
+
+.. mermaid::
+
+   flowchart LR
+       A["Python / ML 框架模型"] --> B["HLO / TOSA\n（高级操作数）"]
+       B --> C["linalg / scf\n（结构化控制流）"]
+       C --> D["arith / memref\n（底层原语）"]
+       D --> E["LLVM Dialect\n（LLVM IR 映射）"]
+       E --> F[机器码]
+
+       style A fill:#e91e63,color:#fff
+       style F fill:#4caf50,color:#fff
+
+这就是 **Progressive Lowering** （渐进降级）的哲学：不是一步跳到 LLVM IR，
+而是通过多个层次的 IR，逐步降低抽象级别。每一层都在合适的抽象级别上做优化。
+
+MLIR 不是一种 IR
+=====================
+
+MLIR 官方的定位是："MLIR is not a particular IR——it's an infrastructure for
+building and working with IRs。"
+
+这意味着：
+
+- MLIR 提供了一**套框架**来定义 IR（Operation、Type、Attribute、Dialect）
+- 你可以用 MLIR 框架定义自己需要的 IR（称为 **Dialect** ）
+- 不同 Dialect 之间可以互相转换（通过 Lowering Pass）
+- 最终可以降级到 LLVM Dialect，然后翻译为 LLVM IR，接着走 LLVM 后端的代码生成
+
+.. code-block:: text
+
+   MLIR Framework（基础设施层）
+   ├── Operation / Value / Block / Region（基本构造块）
+   ├── Dialect 注册机制
+   ├── Type / Attribute 系统
+   ├── Pass 框架 / Pattern Rewrite 系统
+   ├── ODS（Operation Definition Spec）
+   └── 文件 I/O（.mlir 格式）
+
+   User-defined Dialects（用户定义的方言）
+   ├── builtin（内置基础方言）
+   ├── func / arith / math / scf / cf
+   ├── tensor / linalg / memref
+   ├── LLVM Dialect
+   ├── TOSA / StableHLO（机器学习）
+   └── 你自己定义的 Dialect
+
+MLIR 与 LLVM IR 的对比
+==============================
+
+.. list-table:: MLIR vs LLVM IR
+   :header-rows: 1
+
+   * - 特征
+     - LLVM IR
+     - MLIR
+   * - 抽象层次
+     - 单一低级 IR
+     - 多层 IR（从高级到低级）
+   * - IR 定义
+     - 固定（由 LLVM 定义）
+     - 可扩展（用户定义 Dialect）
+   * - 类型系统
+     - 固定基本类型（i32, ptr, ...）
+     - 可扩展（用户定义 Type）
+   * - 操作集
+     - 固定（add, load, store, ...）
+     - 可扩展（用户定义 Operation）
+   * - SSA 形式
+     - 强制
+     - 可选（Dialect 自行决定）
+   * - 优化
+     - 统一优化 Pass
+     - Dialect 专属优化 + 跨 Dialect 降级
+   * - 主要用途
+     - 传统编译器的 IR
+     - 编译器框架 + 机器学习编译器
+
+MLIR 不是要取代 LLVM，而是**建立在 LLVM 之上的抽象层**。MLIR 的最后一层
+（LLVM Dialect）可以精确映射为 LLVM IR，然后继续走 LLVM 的优化和代码生成。
+
+谁在用 MLIR？
+====================
+
+- **TensorFlow / JAX** ：使用 MHLO / StableHLO 作为 ML 编译器的前端 IR
+- **PyTorch**：PyTorch 2.0 的 torch.compile 使用 MLIR 作为中间表示
+- **Julia**：使用 MLIR 进行高性能科学计算
+- **CIRCT** （Circuit IR Compilers and Tools）：用 MLIR 做硬件设计和 EDA
+- **Polygeist**：将 C/C++ 转换为 MLIR，结合 Polyhedral 优化
+
+--------
+
+*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
