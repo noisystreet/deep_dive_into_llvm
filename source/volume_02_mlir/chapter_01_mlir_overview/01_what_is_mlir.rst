@@ -139,6 +139,51 @@ building and working with IRs。"
    ├── TOSA / StableHLO（机器学习）
    └── 你自己定义的 Dialect
 
+MLIR 命名中的"多重含义"
+==============================
+
+"MLIR" 这四个字母到底代表什么？官方的 `Rationale.md <file:///workspace/llvm-project/mlir/docs/Rationale/Rationale.md>`__
+开篇就给出了一个坦诚的回答：
+
+.. code-block:: text
+
+   MLIR stands for one of "Multi-Level IR" or "Multi-dimensional Loop IR"
+   or "Machine Learning IR" or "Mid Level IR" — we prefer the first.
+
+**官方首选的是 "Multi-Level IR"**（多级中间表示），因为这个名字最准确地
+反映了 MLIR 的核心设计：不只有一种 IR，而是有**多层 IR**，每层在不同的
+抽象级别上工作。
+
+至于其他几个候选名字也各有渊源：
+- **Multi-dimensional Loop IR**：点出了 MLIR 的多面体编译（polyhedral）基因
+- **Machine Learning IR**：反映了 MLIR 最初的驱动场景（TensorFlow/XLA）
+- **Mid Level IR**：强调了它在编译流程中的"中端"定位
+
+这种"名字不止一个含义"的模糊性，恰恰说明了 MLIR 的定位——它不是一个
+为单一目的设计的 IR，而是一个**框架**，不同的使用者看到不同的侧面。
+
+多面体编译的基因
+========================
+
+MLIR 不仅继承了 LLVM 的 SSA 传统，还吸收了**多面体编译**（polyhedral
+compilation）的核心思想。`Rationale.md <file:///workspace/llvm-project/mlir/docs/Rationale/Rationale.md>`__
+中这样描述：
+
+.. code-block:: text
+
+   MLIR 是一种混合设计：结合了传统三地址 SSA 表示与多面体循环优化
+   表示中的概念，旨在表达、分析和变换高层数据流图以及面向高性能
+   数据并行系统的目标代码。
+
+多面体模型用**整数映射、集合和关系**来描述循环嵌套和多维数组访问。
+这使得 MLIR 能够以**数学形式**紧凑地表达循环分块、循环融合、循环交换
+等所有传统循环变换，而不需要像 LLVM IR 那样先通过 ``LoopInfo`` 分析
+"逆向推导"循环结构。
+
+与 LLVM 的 Polly 项目不同，Polly 只能处理满足仿射约束的"规则"循环，
+MLIR 的设计允许**不规则控制流和数据访问**与多面体表示共存——只不过
+不规则部分无法应用多面体优化，但不影响 IR 的合法性。
+
 MLIR 与 LLVM IR 的对比
 ==============================
 
@@ -254,6 +299,48 @@ Dialect 本身的定义在 `mlir/include/mlir/IR/Dialect.h <file:///workspace/ll
 
 一组 Operation、Type、Attribute 加上统一的行为钩子，就构成一个 Dialect。
 内置的 ``arith``、``scf`` 和你将来自定义的 Dialect，在框架眼里没有高低之分。
+
+MLIRContext：一切的中心
+==============================
+
+所有 Dialect、Operation、Type 的"存活"离不开一个顶层容器——
+`MLIRContext <file:///workspace/llvm-project/mlir/include/mlir/IR/MLIRContext.h>`__。
+源码注释这样描述它：
+
+.. code-block:: cpp
+
+   /// MLIRContext is the top-level object for a collection of MLIR operations.
+   /// It holds immortal uniqued objects like types, and the tables used to
+   /// unique them.
+
+MLIRContext 扮演着 **"MLIR 的操作系统"** 的角色：
+
+- **Dialect 注册中心**：所有加载的 Dialect 都注册在 Context 中
+- **类型/属性的唯一化表**：相同的类型（如 ``i32``）在 Context 中只存一份
+- **多线程支持**：Context 封装了线程池，可以并行处理 IR
+
+.. code-block:: cpp
+
+   // 创建 Context 并注册 Dialect
+   MLIRContext context;
+   context.getOrLoadDialect<arith::ArithDialect>();
+   context.getOrLoadDialect<scf::SCFDialect>();
+
+Context 的另一个重要设计是**可配置的线程模式**。注释中给出了一个典型的
+使用场景：对于长时间运行、会反复创建和销毁 Context 的进程，可以显式
+禁用内置线程池，注入外部线程池来避免线程爆炸：
+
+.. code-block:: cpp
+
+   llvm::DefaultThreadPool myThreadPool;
+   while (auto *request = nextCompilationRequests()) {
+     MLIRContext ctx(registry, MLIRContext::Threading::DISABLED);
+     ctx.setThreadPool(myThreadPool);
+     processRequest(request, ctx);
+   }
+
+这种设计让 MLIR 既能服务于一次性编译（如 ``mlir-opt`` 工具），也能服务
+于长期运行的 JIT 服务（如 TensorFlow 的 XLA 编译器）。
 
 动手验证
 ==========

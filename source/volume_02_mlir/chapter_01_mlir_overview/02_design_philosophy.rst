@@ -113,6 +113,72 @@ LLVM IR 要求严格遵循 SSA 形式——每个值恰好定义一次。MLIR �
 这个设计既保留了 SSA 的优点（明确的 def-use 链），又允许更自然地表达
 控制流结构（Region 中的 Block 可以有自己的参数）。
 
+Block Arguments 优于 PHI 节点
+============================================
+
+MLIR 选择用 **Block Arguments**\ （块参数）而非 LLVM 的 **PHI 节点**\ 来
+表示 SSA 中的控制流汇合。`Rationale.md <file:///workspace/llvm-project/mlir/docs/Rationale/Rationale.md>`__
+中列出了 5 个具体优势：
+
+**1. 消除"必须在顶部"的人为限制**
+
+LLVM 的 PHI 节点必须始终位于 BasicBlock 的顶部，所有变换都需要手动
+跳过它们。Block Arguments 是 Block 定义的**固有属性**，不存在"位置"
+问题，变换代码更简洁。
+
+.. code-block:: text
+
+   // LLVM IR：PHI 必须在 block 顶部
+   loop:
+     %val = phi i32 [ 0, %entry ], [ %next, %body ]  ; 必须在顶部
+     %tmp = add i32 %val, 1                           ; 在 PHI 之后
+     ...
+
+   // MLIR：Block Arguments 是 block 定义的一部分
+   ^loop(%val: i32):               ; 参数在 block 入口处
+     %tmp = arith.addi %val, %c1 : i32
+     ...
+
+**2. 统一函数参数和 Block 参数**
+
+LLVM 中函数参数（``Function::arg_begin()``）和 PHI 节点是两套不同的
+机制。MLIR 用 Block Arguments 统一了二者——**入口 Block 的参数就是函数参数**。
+
+**3. 消除 PHI 的原子执行语义**
+
+LLVM 中同一 Block 的所有 PHI 节点**同时执行**（atomic semantics），
+这看似简单，但实际上经常导致"lost copy"问题——当需要将 PHI 节点
+转换为普通指令时，值的交换顺序很容易出错。Block Arguments 不存在
+这种问题，因为参数在进入 Block 时就已经确定。
+
+**4. 消除无序 PHI 列表的性能陷阱**
+
+LLVM 的 PHI 节点列表是无序的，对于有数千个前驱的 Block（如异常处理
+中的 unwind block），遍历这个列表成了编译时间的瓶颈。Block Arguments
+天然有序，不存在此问题。
+
+**5. 支持"仅在某条边上存在"的值**
+
+LLVM 的 ``invoke`` 指令无法直接表达"异常值仅在异常边上可用"——
+它需要 ``landingpad`` 这种 hack。MLIR 的 Block Arguments 天然支持
+这种场景：不同的前驱 Block 可以传递不同数量的参数。
+
+.. code-block:: text
+
+   // MLIR 中不同前驱可以传递不同的值
+   ^successor(%normal_val: i32):   // 正常路径传 i32
+     ...
+   ^successor(%exception_val: f64): // 异常路径传 f64
+     ...
+
+.. admonition:: 不只是 MLIR 的选择
+   :class: note
+
+   Swift 的 SIL 中间表示也采用了 Block Arguments 而非 PHI 节点。
+   Chris Lattner 在 2015 年 LLVM 开发者大会的演讲中详细讨论了
+   这种设计的优势（见 `YouTube <https://www.youtube.com/watch?v=Ntj8ab-5cvE>`__，
+   从 9:56 开始）。
+
 Dialect 的互操作性
 ======================
 
@@ -170,6 +236,67 @@ MLIR 的哲学总结
    5. 可插拔 Pass：优化 Pass 可以在任意抽象级别上定义和运行
    6. 降级至 LLVM：最终可以到达 LLVM Dialect，利用 LLVM 后端
 
+从源码看 Operation 的递归结构
+======================================
+
+"一切皆 Operation" 不只是一个概念，它在源码中有精确的实现。
+`Operation.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Operation.h>`__
+的注释详细描述了 Operation 的内存布局：
+
+.. code-block:: text
+
+   An Operation may optionally contain one or multiple Regions, stored in a
+   tail allocated array. Each Region is a list of Blocks. Each Block is
+   itself a list of Operations. This structure is effectively forming a tree.
+
+翻译成代码就是：
+
+.. code-block:: text
+
+   Operation
+   ├── Region (0 或多个)
+   │   ├── Block
+   │   │   ├── Operation
+   │   │   │   ├── Region ...
+   │   │   │   └── ...
+   │   │   └── Operation
+   │   └── Block
+   └── ...
+
+这个**递归树结构**是 MLIR 最核心的设计决策之一：
+
+- **LLVM 的方式**：Module → Function → BasicBlock → Instruction，**每层是不同类**
+- **MLIR 的方式**：Operation 包含 Region，Region 包含 Block，Block 包含 Operation，**递归统一**
+
+这种设计的直接好处是：通用的 IR 遍历、匹配、替换工具可以**递归地**处理
+任意深度的嵌套结构，而不需要为每种层级单独写一套 API。
+
+设计决策：符号与类型的分离
+======================================
+
+`Rationale.md <file:///workspace/llvm-project/mlir/docs/Rationale/Rationale.md>`__
+中记录了一个重要的设计决策——**类型中不允许使用符号**\ （symbols）。
+
+当一个 tensor 或 memref 的维度在编译期未知时，用 ``?`` 表示，实际的
+维度值通过 SSA 值在运行时查询：
+
+.. code-block:: text
+
+   // 类型中不嵌入符号：? 表示动态维度
+   %A = memref.alloc <8x?xf32> (%N)
+   %dim = memref.dim %A, 1 : memref<8x?xf32>
+
+   // 不采用的方式：在类型中嵌入符号
+   // (MLIR 设计决策：不这样做)
+   // %A : memref<8x%Nxf32>
+
+之所以选择前者，是因为 **类型在符号值改变时仍保持不可变**，这简化了
+类型系统的设计和实现。如果允许 ``memref<8x%Nxf32>``，那么当 ``%N``
+的值变化时，整个类型系统都需要处理"类型随符号变化"的问题。
+
+这是 MLIR 设计哲学中"务实"的体现：**在表达力和实现复杂度之间，MLIR
+倾向于选择更简单的实现**，即使这意味着某些信息需要在运行时查询。
+
 源码走读：Dialect 注册与操作命名
 ======================================
 
@@ -192,6 +319,30 @@ MLIR 的哲学总结
 
 这种设计让"内置 Dialect"和"用户 Dialect"走同一套注册路径——
 第一类 Dialect 不是口号，而是 `DialectRegistry` 里的平等条目。
+
+**ODS 的"轻量级"哲学** ——有了 Dialect 和 Operation 的框架，那如何
+定义具体的 Operation？`OpDefinition.h <file:///workspace/llvm-project/mlir/include/mlir/IR/OpDefinition.h>`__
+的文件头注释给出了答案：
+
+.. code-block:: cpp
+
+   /// The purpose of these types are to allow light-weight implementation
+   /// of concrete ops (like DimOp) with very little boilerplate.
+
+这个"light-weight implementation"（轻量级实现）是 MLIR 设计哲学中
+"务实"的另一个体现。在 ``.td`` 文件中用 ODS 声明式地描述 Operation：
+
+.. code-block:: tablegen
+
+   def AddIOp : Op<"arith.addi"> {
+     let summary = "integer addition operation";
+     let arguments = (ins AnyInteger:$lhs, AnyInteger:$rhs);
+     let results = (outs AnyInteger:$result);
+   }
+
+ODS 会自动生成 C++ 的 ``AddIOp`` 类，开发者无需手写 ``class`` 定义、
+``parse``/``print`` 方法、``verify`` 逻辑——这些全部从声明中推导。
+这种"声明式规范，自动生成实现"的模式贯穿 MLIR 的整个设计。
 
 渐进降级在源码中的体现
 ==============================
