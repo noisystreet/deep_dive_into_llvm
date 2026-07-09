@@ -12,6 +12,21 @@ tensor → scf 降级
    tensor 是"值"，scf 是"控制流"。降级 tensor → scf 的本质是把
    隐式的张量计算转换为显式的循环计算。
 
+.. admonition:: Bufferization：函数式张量的"落地"时刻
+   :class: note
+
+   ``tensor`` 是**不可变值语义**——``%1 = tensor.insert %v into %t[%i]``
+   产生新 tensor，不修改旧值。这对分析和优化很友好，但硬件只有一块内存。
+
+   **Bufferization** 就是把值语义的 tensor 映射到有地址的 memref：
+   分析哪些 tensor 可以原地复用内存，哪些需要分配新 buffer。
+   One-Shot Bufferization 用全局分析一次性完成，避免逐 Op 降级时
+   反复 alloc/dealloc 的性能损失。
+
+   这是 ML 编译器中最微妙的步骤之一——错误的 buffer 复用会导致
+   静默的数据竞争，所以 MLIR 为此专门建了 ``Bufferization`` Dialect
+   和详尽的冲突检测分析。
+
 Bufferization：tensor → memref
 =====================================
 

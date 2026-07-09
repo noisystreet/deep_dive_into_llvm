@@ -13,6 +13,21 @@ MLIR 中有两个控制流 Dialect：**scf** （Structured Control Flow）提供
    绝大多数 MLIR 程序使用 ``scf`` 来表达控制流。``cf`` 只在降级的最后阶段
    出现——当结构化控制流被转换为底层分支后。
 
+.. admonition:: scf 与 cf：编译器里的"高级语言"与"汇编"
+   :class: note
+
+   这和传统编译器前端/后端的角色分工惊人地相似：
+
+   - **scf** ≈ 带 ``for``/``if`` 的高级语言——保留循环结构，便于分析和变换
+   - **cf** ≈ 只有 ``br``/``cond_br`` 的汇编——接近 LLVM IR 的 CFG
+
+   关键设计决策是：**优化尽量在 scf 层完成**。循环展开、向量化、
+   并行化都依赖 ``scf.for`` 的 ``iter_args`` 语义；一旦降到 cf，
+   循环携带值变成 Block 参数，变换难度陡增。
+
+   LLVM 的 Loop Pass 也面临同样困境——所以 MLIR 社区极力主张
+   "在结构化层多做优化，晚一点再展平"。
+
 scf Dialect
 =================
 

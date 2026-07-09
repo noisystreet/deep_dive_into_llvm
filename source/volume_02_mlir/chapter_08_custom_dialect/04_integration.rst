@@ -11,6 +11,22 @@
 
    ``mlir-opt`` 的集成 = 注册 Dialect + 注册 Pass + 集成到 CMake。
 
+.. admonition:: toyc.cpp：从玩具编译器到生产工具的模板
+   :class: tip
+
+   Toy Tutorial Ch7 的 ``toyc.cpp`` 把 Dialect 注册、Pass Pipeline、
+   文件 I/O 封装为一个独立编译器——这是自定义 Dialect 走向实用的
+   标准路径。IREE 的 ``iree-compile``、Buddy 的 ``buddy-opt``
+   都遵循同一骨架：
+
+   1. ``registerDialect<MyDSL>()``
+   2. ``registerPass<...>()``
+   3. ``MlirOptMain`` 或自定义 ``main()``
+
+   你不必 fork ``mlir-opt`` 源码——在自己的工具中链接 MLIR 库、
+   注册 Dialect 和 Pass 即可。CMake 中 ``add_mlir_library`` 和
+   ``mlir_tablegen`` 宏帮你处理代码生成依赖。
+
 注册 Dialect
 ==================
 

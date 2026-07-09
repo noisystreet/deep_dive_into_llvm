@@ -11,8 +11,19 @@ Pattern Rewrite 是 MLIR 中最强大、最常用的转换机制。它基于**�
 
    "Pattern Rewrite = 匹配（match） + 替换（rewrite）"
 
-ODE 的 Rewrite 系统比 LLVM 的 InstCombine 更灵活——它支持
-**多操作数匹配**、**嵌套模式**和**条件约束**。
+.. admonition:: DAG 模式匹配：从 LLVM InstCombine 到 MLIR
+   :class: note
+
+   LLVM 的 InstCombine 用 C++ 手写 ``if (isa<AddInst>(...) && ...)`` 来
+   识别优化模式。MLIR 的 Pattern Rewrite 把这个过程声明化——
+   用 ``RewritePattern`` 描述"匹配什么 Op、替换成什么 Op"。
+
+   优势在于 Dialect 无关：同一个 ``GreedyPatternRewriteDriver``
+   可以驱动 arith 简化、linalg 融合、自定义 Dialect 变换。
+   劣势是复杂模式（跨多个 Op 的匹配）写起来仍不够直观——
+   社区正在推进 PDL（Pattern Description Language）来改善这一点。
+
+   日常开发中，80% 的局部优化用一个 ``OpRewritePattern`` 子类就够了。
 
 基本 Pattern
 ==================

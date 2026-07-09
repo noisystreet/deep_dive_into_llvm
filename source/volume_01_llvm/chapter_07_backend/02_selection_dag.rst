@@ -12,6 +12,19 @@ SelectionDAG
    SelectionDAG 是一个"翻译站"——LLVM IR 进来，目标无关的 DAG 出去，
    然后在指令选择中被匹配为具体的目标指令。
 
+.. admonition:: DAG 节点：LLVM 后端的"通用货币"
+   :class: note
+
+   SelectionDAG 的每个节点代表一个操作及其操作数，边代表数据依赖。
+   它介于 LLVM IR 和目标指令之间——足够抽象以跨目标共享优化
+   （DAGCombiner），又足够具体以匹配目标指令模式（TableGen 生成的
+   ``*.td`` 模式）。
+
+   一个有趣的设计：DAG 节点类型用 ``ISD`` （Instruction Selection DAG）
+   枚举定义，如 ``ISD::ADD``、``ISD::LOAD``——这些在 ``llvm/include/llvm/CodeGen/ISDOpcodes.h``
+   中声明，与目标无关。目标相关的部分只在最后的 Pattern Match 阶段出现。
+   这让 LLVM 能为 20+ 个目标共享 90% 的后端代码。
+
 SelectionDAG 的节点结构
 ============================
 

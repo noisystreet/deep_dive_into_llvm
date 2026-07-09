@@ -11,6 +11,18 @@ ODS 中完整地描绘 Dialect 的数据类型系统。
 
    Operation 定义了"做什么"，Type 定义了"对什么做"。
 
+.. admonition:: StorageUniquer：指针比较即相等
+   :class: note
+
+   MLIR 中 ``IntegerType::get(ctx, 32)`` 无论调用多少次，返回的都是
+   **同一个对象**。这靠 ``StorageUniquer`` 实现：每种 Type/Attribute
+   按参数唯一化存储，判等只需比较指针。
+
+   这与 LLVM ``Type`` 的唯一化策略一脉相承，但 MLIR 扩展到了
+   用户自定义 Type——``!llvm.struct<"desc", i32, i64>`` 也是唯一化的。
+   性能意义：Verifier 和 Pattern Rewrite 中大量类型比较变成 O(1) 指针比较，
+   而非字符串或结构体逐字段比较。
+
 用 ODS 定义 Type
 ======================
 

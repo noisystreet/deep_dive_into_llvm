@@ -12,6 +12,18 @@ Vector Dialect 是 MLIR 中用于**显式向量化**的 Dialect。它提供了�
    Vector Dialect 的设计目标：提供硬件无关的向量抽象，同时保留足够的
    SIMD 语义让后端生成高效的向量指令。
 
+.. admonition:: Vector Dialect vs LLVM 自动向量化
+   :class: note
+
+   LLVM 的 Loop Vectorizer 从标量循环**自动推断** SIMD 机会——方便但
+   不可控。Vector Dialect 走**显式向量**路线：前端或优化器直接生成
+   ``vector.transfer_read``、``vector.fma`` 等 Op，精确控制向量宽度。
+
+   两条路线互补：MLIR 在 linalg 层做 Tiling 后，可以选择
+   降为 ``vector`` Dialect（显式 SIMD）或 ``scf`` 循环（交给 LLVM 自动向量化）。
+   对已知向量宽度的硬件（如 AVX-512），显式 Vector Dialect 通常
+   能生成更优代码——这也是 Buddy 编译器的核心策略。
+
 向量类型
 ==================
 

@@ -11,6 +11,21 @@ JIT Pipeline 是 MLIR 编译管道和运行时执行之间的桥梁。
 
    MLIR JIT 的核心：``mlir-cpu-runner`` 内部封装了 ORC JIT。
 
+.. admonition:: ExecutionEngine：MLIR 版的 LLJIT
+   :class: note
+
+   MLIR 的 ``ExecutionEngine`` 封装了 LLVM ORC JIT，API 比裸用
+   ``LLJIT`` 简洁——传入降级后的 LLVM Dialect 模块，即可 JIT 执行。
+
+   与第一卷 :ref:`chapter-08-04-lljit-and-lazy` 的 LLJIT 对比：
+
+   - **LLJIT** — 直接加载 LLVM IR bitcode
+   - **ExecutionEngine** — 先走 MLIR 降级管道，再 JIT
+
+   典型场景：Python/Jupyter 中交互式调用 MLIR 编译的算子——
+   修改 IR → ``ExecutionEngine`` 重新 JIT → 立即执行。
+   这是 MLIR 走向"编译器即服务"的关键运行时组件。
+
 JIT Pipeline 结构
 ========================
 

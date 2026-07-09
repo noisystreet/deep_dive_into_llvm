@@ -11,6 +11,19 @@
 
    定义一个 Operation = 告诉 MLIR 它的名字、参数、结果、汇编格式和约束。
 
+.. admonition:: assemblyFormat：一行 TableGen 省下百行 C++
+   :class: note
+
+   手写 MLIR Operation 时，最繁琐的部分是 **Print/Parse**——如何把
+   Operation 格式化为文本、如何从文本解析回来。ODS 的 ``assemblyFormat``
+   用声明式字符串（如 ``"$lhs `,` $rhs attr-dict"``）描述格式，
+   ``mlir-tblgen`` 自动生成完整的 ``print()`` 和 ``parse()`` 实现。
+
+   Toy Tutorial 的 ``MulOp`` 只有十几行 ODS，却自动获得类型检查、
+   文档生成、IR 打印/解析——这是 MLIR 开发效率远超手写 LLVM Pass
+   的关键原因。LLVM 的 TableGen 主要生成后端指令描述；
+   MLIR ODS 则覆盖了 Op 生命周期的几乎全部样板代码。
+
 一个完整的 Op 定义
 =========================
 

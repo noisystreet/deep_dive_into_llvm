@@ -12,6 +12,21 @@ LLVM Dialect
    如果你想把 MLIR 程序编译为可执行机器码，最终都会经过 ``LLVM`` Dialect——
    它是 MLIR 降级管道中的最后一站。
 
+.. admonition:: LLVM Dialect：为何不直接生成 .ll 文件？
+   :class: note
+
+   一个自然的问题是：既然最终要 LLVM IR，为什么不跳过 LLVM Dialect
+   直接输出 ``.ll``？答案涉及 **渐进验证** 和 **类型安全**。
+
+   LLVM Dialect 仍是 MLIR 世界的一部分——可以用 MLIR 的 Verifier 检查
+   类型一致性，用 Pass 做最后阶段的优化（如 memref 描述符展开）。
+   只有确认 LLVM Dialect 模块合法后，``mlir-translate`` 才一次性
+   生成 LLVM IR。
+
+   此外，GPU 路径中 NVVM/ROCDL Dialect 也遵循同样模式——先降到
+   目标相关的 LLVM 变体 Dialect，再统一翻译。这让 MLIR 能用
+   同一套 Translation 框架服务 CPU 和 GPU。
+
 LLVM Dialect 的设计
 =========================
 

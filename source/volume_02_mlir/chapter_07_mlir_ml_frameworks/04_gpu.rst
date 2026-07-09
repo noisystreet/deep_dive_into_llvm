@@ -11,6 +11,20 @@ CUDA、ROCm 和 OpenCL 后端的 Dialect 和 Pass。
 
    MLIR-GPU 的目标：写一次 Dialect 程序，生成到多个 GPU 后端。
 
+.. admonition:: Kernel Outlining：从"内联代码"到"独立核函数"
+   :class: note
+
+   GPU 编程的核心难题是区分**主机代码**和**设备代码**。
+   ``gpu.launch`` 体内的 Operation 必须通过 **Kernel Outlining**
+   提取为独立的 ``gpu.func``，才能编译为 PTX/SPIR-V。
+
+   这和 CUDA 编译器把 ``__global__`` 函数从主机代码中分离如出一辙。
+   MLIR 的优势是 Outlining 发生在 IR 层——同一套 ``gpu.launch``
+   可以 outline 后交给 NVPTX 或 ROCDL 后端，无需重写前端。
+
+   日常调试时，在 ``--gpu-kernel-outlining`` 前后分别 ``mlir-opt``
+   打印 IR，是理解 GPU 管道最直观的方法。
+
 GPU Dialect
 ===================
 

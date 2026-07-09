@@ -12,6 +12,20 @@ Region 与 Block
    LLVM IR 的 BasicBlock 只能出现在函数中；MLIR 的 Block 可以出现在任何
    Operation 的 Region 中——这允许了嵌套控制流、lambda 等结构的直接表示。
 
+.. admonition:: Region 与 SESE：结构化控制流的基石
+   :class: note
+
+   结构化控制流的核心思想是 ``SESE`` （Single Entry, Single Exit）——
+   每个控制流区域只有一个入口和一个出口。``scf.for`` 的循环体就是一个
+   SESE Region：从 ``scf.for`` 进入，从 ``scf.yield`` 退出。
+
+   MLIR 的 Region 比 LLVM BasicBlock 更灵活：``scf.if`` 有两个 Region
+   （then/else），Region 内还可以嵌套含 Region 的 Op。这让前端可以直接
+   表示 lambda、协程、GPU kernel 等结构，而不必先展平为 goto 面条代码。
+
+   代价是分析更复杂——MLIR 为此引入了 ``RegionBranchOpInterface`` 等
+   机制，让优化器仍能推断 Region 之间的控制流边。
+
 Block（块）
 ==============
 

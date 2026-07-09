@@ -11,6 +11,18 @@ LLVM Dialect → LLVM IR
 
    MLIR 管道的终点——从此以后，交由 LLVM ``opt`` 和 ``llc`` 接管。
 
+.. admonition:: MLIR 与 LLVM 的"主权交接"
+   :class: note
+
+   ``mlir-translate --mlir-to-llvmir`` 是 MLIR 世界的最后一道门。
+   出门之后，``opt -O2``、``llc``、``lli`` 完全沿用第一卷的工具链——
+   寄存器分配、指令选择、ELF 生成，MLIR 不再介入。
+
+   这意味着 MLIR 不必重复实现后端——它专注于"如何把领域知识
+   翻译成 LLVM 能理解的 IR"。对读者来说，掌握 MLIR 降级的终点，
+   就是掌握 LLVM 优化的起点：把 ``mlir-translate`` 的输出
+   喂给 ``opt``，就能用第一卷学到的 Pass 继续优化。
+
 Translation 接口
 ========================
 

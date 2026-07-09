@@ -12,6 +12,21 @@
    ODS 定义 = 告诉 MLIR 你的 Operation 长什么样。剩下的代码由
    ``mlir-tblgen`` 自动生成。
 
+.. admonition:: 从 Toy Ch3 到 MyDSL：ODS 定义的"最小闭环"
+   :class: tip
+
+   Toy Tutorial Ch3 用不到 100 行 ODS 定义了完整的 Toy Dialect——
+   包括 ``mul``、``constant``、``return`` 等 Op。MyDSL 遵循同一模板：
+
+   1. 写 ``MyDSLOps.td`` 定义 Op
+   2. ``mlir-tblgen`` 生成 C++ 类
+   3. 注册 Dialect 到 ``MyDSL.cpp``
+   4. 用 ``mlir-opt`` 解析/打印验证
+
+   建议读者对照 Toy 的 ``Ops.td`` 阅读本节——两个 Dialect 的
+   结构几乎相同，区别只在类型名和操作语义。掌握 Toy 就等于
+   掌握了自定义 Dialect 的 80%。
+
 ODS 定义文件
 ====================
 

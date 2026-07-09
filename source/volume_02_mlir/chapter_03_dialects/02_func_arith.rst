@@ -12,6 +12,19 @@ func / arith / math Dialect
    ``arith`` 和 ``func`` 是 MLIR 中最稳定的 Dialect 之一——几乎所有
    需要降级到 LLVM 的 MLIR 程序都会经过它们。
 
+.. admonition:: arith 为何从 std 独立出来？
+   :class: note
+
+   早期 MLIR 把整数运算放在 ``std`` Dialect 中。随着生态扩张，
+   ``std`` 变得臃肿且语义模糊——它既管控制流又管算术又管内存。
+   2020 年前后的大重构将其拆分为 ``arith``、``memref``、``scf`` 等
+   专职 Dialect。
+
+   ``arith`` 的设计原则是**最小且纯**：只提供基本算术，附加
+   ``Pure`` Trait 标记无副作用，让 CSE/DCE 可以自由优化。
+   几乎所有降级管道的倒数第二步都是 ``convert-arith-to-llvm``——
+   理解 arith 就是理解 MLIR 到 LLVM 的"最后一公里"前的通用层。
+
 func Dialect
 =================
 

@@ -13,6 +13,18 @@ MLIR 在 IR 的每一级都保留了**源码位置信息**。每个 Operation、
    LLVM IR 中，一个指令的位置信息在优化后可能丢失或变得不精确；
    MLIR 的设计确保从顶层到底层的每一步都可以追溯到源代码。
 
+.. admonition:: 多层降级中，诊断信息为何不能丢？
+   :class: note
+
+   传统编译器在 AST → IR 降级后，优化 Pass 可能让指令的 ``debug loc``
+   变得模糊甚至丢失。MLIR 把 ``Location`` 作为**一等公民**挂在每个
+   Operation 上，并支持 **FusedLocation** 把多层来源合并。
+
+   实际价值：当 ``linalg.matmul`` 降级为三层 ``scf.for`` 再变成
+   ``llvm.load`` 时，错误信息仍能指向原始 Python/ONNX 代码行——
+   这对 ML 框架调试至关重要。XLA 和 IREE 的用户反馈中，
+   "能定位到原始模型算子" 是 Location 机制最受好评的特性之一。
+
 Location（位置信息）
 ========================
 

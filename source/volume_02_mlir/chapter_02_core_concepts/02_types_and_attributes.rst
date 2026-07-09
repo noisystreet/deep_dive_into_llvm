@@ -12,6 +12,20 @@ MLIR 拥有一个**可扩展的类型系统**——这与 LLVM IR 的固定类�
    LLVM IR 有固定的 ``i32``、``ptr``、``float`` 等类型；MLIR 允许你定义
    ``tensor<4x4xf32>``、``memref<1024xf64>`` 或任何你需要的类型。
 
+.. admonition:: Type、Attribute、Value 的三权分立
+   :class: note
+
+   LLVM IR 中，常量有时以 ``ConstantInt`` 指令出现，有时藏在全局变量里——
+   类型与常量值的边界并不清晰。MLIR 做了更干净的分工：
+
+   - **Type** — 描述"是什么"，如 ``i32``、 ``tensor<4xf32>``
+   - **Attribute** — 描述编译期已知的元数据，如 ``dense<...>``、 ``#map``
+   - **Value** — 描述运行时的 SSA 数据流，如 ``%0``、 ``%arg0``
+
+   这种三分法让 ODS 可以为每个字段单独声明约束，Verifier 也能精确检查
+   "这个整数属性是否在合法范围内"。StableHLO 从 HLO 迁移到 MLIR 时，
+   正是借这套机制解决了旧 IR 中类型/常量混用带来的版本兼容噩梦。
+
 Type（类型）
 ================
 

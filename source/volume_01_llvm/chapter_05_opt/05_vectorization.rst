@@ -12,6 +12,20 @@
    如果一个循环一次处理一个元素，向量化让它一次处理四个——不增加指令数，
    吞吐量提高四倍。
 
+.. admonition:: SLP vs Loop Vectorize：两种向量化的分工
+   :class: note
+
+   LLVM 有两条向量化路径，适用场景不同：
+
+   - **Loop Vectorizer** — 在循环中把标量迭代合并为向量迭代。
+     适合 ``for (i) a[i] = b[i] + c[i]`` 这类规则循环。
+   - **SLP Vectorizer** — 在基本块内把**相邻的独立标量操作**合并为向量。
+     适合循环已展开后的 ``a[0]+b[0]``、``a[1]+b[1]`` 等操作。
+
+   两者常配合使用：Loop Vectorizer 先合并迭代，SLP 再合并块内残余。
+   ``-Rpass-analysis=loop-vectorize`` 可以打印向量化的决策理由——
+   是理解"编译器为何拒绝向量化某循环"的最佳工具。
+
 LLVM 中的向量化有两种主要 Pass：
 
 - **Loop Vectorizer** ：自动将循环体向量化

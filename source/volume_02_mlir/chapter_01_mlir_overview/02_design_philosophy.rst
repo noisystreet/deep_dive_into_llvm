@@ -12,6 +12,18 @@ MLIR 的设计哲学
    MLIR 最核心的设计原则是：**渐进降级** （Progressive Lowering）和
    **第一类 Dialect 机制** （First-class Dialects）。
 
+.. admonition:: "方言"一词的由来：编译器里的巴别塔
+   :class: note
+
+   MLIR 把可插拔的 IR 扩展称为 **Dialect** （方言）——这个命名很形象：
+   就像不同地区说不同方言，不同领域也需要不同的 IR "方言"。
+   TensorFlow 说 TOSA，PyTorch 说 Torch，硬件设计说 HW，但它们共享
+   同一套 **Operation / Type / Pass** 基础设施。
+
+   这与 LLVM 形成对比：LLVM 只有一套 IR，新领域只能往里面"硬塞" intrinsics
+   或 metadata。MLIR 允许你**先定义自己的 Dialect，再逐步降级到公共层**——
+   CIRCT（芯片设计）、IREE（推理引擎）、Buddy（向量扩展）都是这条路的成功案例。
+
 Progressive Lowering（渐进降级）
 ======================================
 

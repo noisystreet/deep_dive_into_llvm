@@ -11,6 +11,19 @@ Operation 的行为由 **Traits** （特性）和 **Interfaces** （接口）控
 
    Traits 是"你是什么"（属性），Interfaces 是"你能做什么"（行为）。
 
+.. admonition:: Trait vs Interface：编译期标签 vs 运行时多态
+   :class: note
+
+   这个区分借鉴了面向对象设计中"类注解"与"接口"的思想：
+
+   - **Trait** 在编译期确定——``Pure`` 表示无副作用，优化器看到就能 DCE
+   - **Interface** 在运行期查询——``LoopLikeOpInterface`` 让 Pass 对
+     ``scf.for`` 和 ``affine.for`` 调用统一的 ``getLoopBounds()``
+
+   LLVM 没有等价机制：判断一条指令是否可交换，得写 ``isa<BinaryOperator>``
+   再加操作码检查。MLIR 的 Trait/Interface 让通用优化 Pass 的代码量
+   减少一个数量级——``Canonicalizer`` 就是靠 Trait 批量识别可简化模式的。
+
 Traits（特性）
 ==================
 

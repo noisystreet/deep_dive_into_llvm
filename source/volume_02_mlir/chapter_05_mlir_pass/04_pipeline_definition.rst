@@ -12,6 +12,18 @@ MLIR 提供了灵活的方式来定义、组合和复用的 Pipeline。
    Pipeline = 一系列 Pass 的有序组合。每个 Pass 接收 IR，转换后
    传递给下一个 Pass。
 
+.. admonition:: Pass Pipeline 即"编译器的配方"
+   :class: tip
+
+   把 Pipeline 想象成菜谱：食材是 IR，每道工序是一个 Pass。
+   TensorFlow 的 XLA 有 ``HloToLinalg`` 配方，IREE 有 ``FlowToHAL`` 配方，
+   它们都注册为 MLIR Pipeline，通过 ``mlir-opt --pass-pipeline=...`` 执行。
+
+   Pipeline 还支持 **嵌套**——函数级 Pipeline 内嵌循环级 Pipeline，
+   这与 LLVM New PM 的 ``FunctionPassManager`` 嵌套 ``LoopPassManager``
+   的设计如出一辙。区别在于 MLIR Pipeline 可以用字符串或 C++ Builder
+   动态组合，更适合 ML 框架"按模型特性选 Pass"的需求。
+
 创建 Pipeline
 ===================
 

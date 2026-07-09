@@ -12,6 +12,18 @@ LLVM 的 Sanitizer 工具是一组**运行时动态分析工具**，通过在编
    Sanitizer 把传统的"分段错误、随机崩溃"变成了清晰的错误报告——
    告诉你**哪行代码、什么类型、触发了什么错误**。
 
+.. admonition:: Sanitizer 的"编译期插桩"哲学
+   :class: note
+
+   Sanitizer 的核心思路是**在编译期插入检测代码**，而非依赖外部调试器。
+   ASan 在每个内存访问前插入"这片区域是否合法"的检查；
+   UBSan 在每个可能溢出的运算前插入边界检查。
+
+   代价是性能：ASan 通常让程序慢 2x、内存多 3x。但 Google 的生产经验表明，
+   这点开销远低于"线上崩溃 + 人工排查"的成本——Chrome、Android 系统服务
+   都在 CI 中默认开启 ASan。LLVM 的插桩 Pass 位于
+   ``llvm/lib/Transforms/Instrumentation/``，与优化 Pass 共享同一套 IR 基础设施。
+
 AddressSanitizer（ASan）
 =============================
 

@@ -12,6 +12,20 @@ mlir-translate
    ``mlir-translate`` 与 ``mlir-opt`` 的分工：
    ``mlir-opt`` 做 Dialect 间转换，``mlir-translate`` 做格式间翻译。
 
+.. admonition:: mlir-opt 与 mlir-translate 的分工边界
+   :class: note
+
+   新手常混淆这两个工具：
+
+   - **mlir-opt** — IR 到 IR，输入输出都是 ``.mlir``。做 Dialect 转换、
+     优化、分析。类比 LLVM 的 ``opt``。
+   - **mlir-translate** — IR 到外部格式。最常见是 ``--mlir-to-llvmir``，
+     也支持 SPIR-V、LLVM IR 回译为 MLIR 等。类比没有直接对应——
+     最接近 ``llvm-dis`` 的逆操作。
+
+   记忆口诀：**opt 改内容，translate 改格式**。完整管道通常是
+   ``mlir-opt ... | mlir-translate --mlir-to-llvmir``。
+
 基本用法
 ==============
 

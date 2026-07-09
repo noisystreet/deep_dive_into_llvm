@@ -11,6 +11,19 @@ Dialect Conversion 是 MLIR **渐进降级** （Progressive Lowering）的核心
 
    Conversion 的本质：把"高层的 Operation"翻译成"低层的 Operation"。
 
+.. admonition:: unrealized_conversion_cast：降级路上的"临时桥"
+   :class: note
+
+   渐进降级中，源 Dialect 和目标 Dialect 的类型系统往往不兼容——
+   ``tensor<4xf32>`` 无法直接变成 ``!llvm.ptr``。``DialectConversion``
+   框架引入 **Materialization** 机制，用 ``unrealized_conversion_cast``
+   作为临时占位符。
+
+   这些 cast 在管道末尾由 ``reconcile-unrealized-casts`` 消除。
+   如果消除失败，说明降级不完整——这是 MLIR 管道调试最常见的错误之一。
+   看到残留的 ``unrealized_conversion_cast``，就检查哪一步 Conversion
+   没有为某种类型对注册 ``TypeConverter``。
+
 Conversion 的核心概念
 ============================
 

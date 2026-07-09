@@ -14,6 +14,20 @@ tensor / linalg Dialect
    一个**通用的结构化操作模板** （``linalg.generic`` ），由用户描述输入输出
    的访问模式。
 
+.. admonition:: linalg 的"一个 generic 统治一切"
+   :class: note
+
+   传统方案为每种线性代数操作定义独立 Op：``MatMulOp``、``ConvOp``、``DotOp``……
+   每新增一种操作就要写 ODS、Verifier、Lowering、测试。``linalg.generic``
+   反其道而行：**用 ``indexing_maps`` 描述访问模式，一个 Op 表达所有逐元素/归约/收缩计算**。
+
+   这借鉴了数学中"张量索引记号"的思想——爱因斯坦求和约定 ``A[i,j] * B[j,k]``
+   不需要为每种乘法定义新语法。Tiling、Fusion 等优化只需理解 ``indexing_maps``，
+   就能通用地处理 matmul、conv、elementwise 等所有 linalg 操作。
+
+   代价是 IR 文本可读性下降——所以生产管道通常在高层保留 ``linalg.matmul`` 等
+   命名 Op，优化后再降为 ``linalg.generic``。
+
 tensor Dialect
 ===================
 

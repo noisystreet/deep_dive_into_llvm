@@ -11,6 +11,20 @@ ODS 定义，然后根据不同的命令行选项生成对应的 C++ 代码。
 
    编写完 ``.td`` 文件后，``mlir-tblgen`` 帮你完成剩下的 90% 的代码生成工作。
 
+.. admonition:: mlir-tblgen 与 llvm-tblgen：师出同门
+   :class: note
+
+   两者共享 TableGen 语言，但生成目标不同：
+
+   - **llvm-tblgen** — 生成指令选择器、寄存器描述、汇编打印器
+   - **mlir-tblgen** — 生成 Op 类、Dialect 注册、Type/Attr 类、文档
+
+   一个有趣的历史细节：MLIR 最初复用 ``llvm-tblgen`` 二进制，
+   后来才独立出 ``mlir-tblgen`` 以支持 ODS 特有的生成后端
+   （``-gen-op-decls``、``-gen-typedef-defs`` 等）。
+   如果你熟悉第一卷 TableGen，ODS 的学习曲线会平缓很多——
+   语法相同，只是 Record 类和生成目标换了。
+
 基本用法
 ==============
 

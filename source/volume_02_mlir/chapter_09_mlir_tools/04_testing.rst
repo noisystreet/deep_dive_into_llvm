@@ -12,6 +12,19 @@ MLIR 的测试体系基于 LLVM 的 **FileCheck** 工具。FileCheck 通过匹�
    MLIR 测试的核心公式：
    ``mlir-opt`` + FileCheck = 可重复、可维护的测试。
 
+.. admonition:: MLIR 测试文化：每个 Pass 都有 .mlir 测试文件
+   :class: note
+
+   LLVM 用 ``test/`` 目录下成千上万的 ``.ll`` + FileCheck 文件
+   守护 Pass 正确性。MLIR 继承了这一传统——``mlir/test/`` 中
+   每个 Pass 都有对应的 ``.mlir`` 测试，用 ``// RUN:`` 指令
+   声明运行方式。
+
+   自定义 Dialect 应遵循同一规范：为每个 Conversion Pattern 写
+   ``CHECK`` 行验证输出 IR。项目 CI 中的 ``verify-mlir-examples.sh``
+   是简化版——只验证示例能跑通；生产级 Dialect 需要 FileCheck
+   级别的细粒度断言。
+
 FileCheck 基础
 ==================
 

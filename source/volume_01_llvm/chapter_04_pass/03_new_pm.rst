@@ -11,6 +11,20 @@ New Pass Manager
 
    如果说 Legacy PM 是一个"能用的原型"，那 New PM 就是一个"产品级的设计"。
 
+.. admonition:: New PM 的"分析失效"机制
+   :class: note
+
+   Legacy PM 最大的隐患是：变换 Pass 修改了 IR，但分析 Pass 的缓存结果
+   没有失效，导致后续 Pass 基于过时的信息做决策。
+
+   New PM 用 **PreservedAnalyses** 解决这个问题——每个 Pass 必须声明
+   "我保留了哪些分析结果"。如果 ``InstCombine`` 说"Dominance 分析仍然有效"，
+   后续 Pass 就可以复用缓存；如果说"全部失效"，框架自动重算。
+
+   这个设计让 Pass 组合变得安全：`clang -O2` 运行的几十个 Pass
+   能正确共享分析结果，同时避免不必要的重算。LLVM 15 将 New PM 设为
+   默认，正是因为这一机制已经足够成熟。
+
 New PM 的设计动机
 ====================
 

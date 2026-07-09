@@ -11,6 +11,19 @@
 
    "写降级模式"是自定义 Dialect 开发中最核心的工程任务。
 
+.. admonition:: Partial Conversion：只降你想降的部分
+   :class: note
+
+   自定义 Dialect 降级很少一步完成。``DialectConversion`` 支持
+   **Partial Conversion**——只转换目标 Dialect 的 Op，其余保持不变。
+
+   典型策略：MyDSL → arith/scf（第一层）→ llvm（第二层）。
+   每层用独立的 ``ConversionTarget`` 声明"哪些 Op 是合法的"。
+   如果降级后仍残留 MyDSL Op，说明 Pattern 覆盖不完整——
+   ``mlir-opt`` 会打印具体哪个 Op 无法转换，这是最有效的调试线索。
+
+   Toy Ch6 的 ``LowerToAffine`` 和 ``LowerToLLVM`` 就是分两层降级的经典范例。
+
 降级目标
 ==================
 

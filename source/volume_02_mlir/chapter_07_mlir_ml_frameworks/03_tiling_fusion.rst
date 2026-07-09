@@ -11,6 +11,20 @@ Tiling、Fusion 和 Bufferization 是 MLIR 中**张量计算优化的三大支�
 
    这三个技术是 MLIR 的"性能引擎"——它们决定了最终代码有多快。
 
+.. admonition:: 类比数据库：Tiling 是分区，Fusion 是 JOIN 下推
+   :class: note
+
+   把张量计算想象成数据库查询：
+
+   - **Tiling** ≈ 表分区——把大矩阵切成小块，每块 fit 进 L1/共享内存
+   - **Fusion** ≪ JOIN 下推——把 ``matmul + bias + relu`` 合并为一次遍历，
+     避免写回中间结果到内存
+   - **Bufferization** ≈ 查询计划中的内存分配——决定哪些中间结果可以原地复用
+
+   Google 的 XLA 早在 HLO 层就做 Fusion；MLIR 的优势是把这件事
+   推迟到 linalg 层，利用 ``indexing_maps`` 做更通用的融合判定。
+   一条经验法则：**在最高层做最多的 Fusion，再逐层降级**。
+
 Tiling（分片）
 ====================
 

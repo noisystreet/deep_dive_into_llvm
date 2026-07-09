@@ -12,6 +12,19 @@ HLO（High-Level Operations）的稳定版本，被 TensorFlow、JAX 和 PyTorch
 
    StableHLO = HLO 的稳定演进版。它在保持向后兼容的同时提供版本化升级路径。
 
+.. admonition:: 为什么 Google 需要"稳定版 HLO"？
+   :class: note
+
+   原始 HLO 随 TensorFlow/XLA 快速迭代，Op 语义和签名频繁变动——
+   今天保存的模型，明天可能就解析失败。StableHLO 的核心承诺是
+   **版本化兼容性**：每个程序标注 ``stablehlo.version``，旧版本
+   程序可以被新版本编译器处理。
+
+   它使用 MLIR Bytecode 格式 ``.mlirbc`` 而非文本 IR 做序列化——
+   体积更小、解析更快，适合在生产环境传输和缓存计算图。
+   JAX 导出 StableHLO、IREE 导入 StableHLO，形成了 MLIR 生态中
+   最活跃的跨框架 IR 交换格式之一。
+
 StableHLO 的由来
 =======================
 

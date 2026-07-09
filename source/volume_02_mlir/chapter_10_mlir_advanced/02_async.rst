@@ -12,6 +12,20 @@ Async Dialect 是 MLIR 中用于**异步执行**的 Dialect。它提供了一组
    Async Dialect 的核心抽象：``async.execute`` 创建一个异步任务，
    ``async.await`` 等待它完成。
 
+.. admonition:: 异步 Dialect：编译器里的 Future/Promise
+   :class: note
+
+   ``async.execute`` + ``async.await`` 的组合等价于大多数语言中的
+   ``Future`` 模式——创建异步任务，稍后等待结果。MLIR 选择在 IR 层
+   显式表达异步，而非依赖运行时的线程池魔法。
+
+   降级时，``async-to-async-runtime`` 将 Op 映射为 ``async.runtime``
+   的 C API 调用（创建任务、入队、等待）。这让 MLIR 可以优化
+   **异步任务的创建和调度**——例如消除冗余的 ``async.await``，
+   或合并相邻的 ``async.execute``。
+
+   IREE 和 TensorFlow 的异步执行路径都借鉴了这一抽象。
+
 基本操作
 ==================
 

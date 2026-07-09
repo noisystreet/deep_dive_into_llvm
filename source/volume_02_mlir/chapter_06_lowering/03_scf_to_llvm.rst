@@ -12,6 +12,19 @@ LLVM Dialect 中的对应操作。这是 MLIR 降级管道中**最标准的阶�
    几乎所有 LLVM 后端的 MLIR 程序都会经过这一步。
    这也是 ``mlir-opt`` 最常测试的降级路径。
 
+.. admonition:: 三步 Conversion：scf → arith → func → llvm
+   :class: tip
+
+   这一阶段看似三个独立 Pass，实则环环相扣：
+
+   1. **scf → cf** — 循环展平为 CFG，``iter_args`` 变成 Block 参数
+   2. **arith → llvm** — 整数运算映射为 ``llvm.add`` 等指令
+   3. **func → llvm** — 函数签名和 ``return`` 映射为 ``llvm.func``
+
+   顺序不能乱：先拆控制流，再换算术指令，最后统一函数 ABI。
+   项目 CI 脚本 ``verify-mlir-examples.sh`` 就是按这个顺序
+   验证 ``vector_add.mlir`` 的——它是整个 MLIR 管道的"冒烟测试"。
+
 scf.for → LLVM
 ====================
 

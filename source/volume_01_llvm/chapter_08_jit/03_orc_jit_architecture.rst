@@ -12,6 +12,20 @@ ORC JIT（Omni-Range Code JIT）是 LLVM 当前主推的 JIT 编译框架。它�
    如果说 MCJIT 是一个"编译器"，ORC JIT 就是一个"编译器操作系统"——
    它管理编译任务、依赖关系和资源。
 
+.. admonition:: ORC 的名字：Omni-Range Code 的含义
+   :class: note
+
+   **Omni-Range** 意为"全范围"——ORC JIT 不假设你只 JIT 一个函数或一个模块，
+   而是管理**任意数量、任意依赖关系**的代码单元。核心抽象：
+
+   - **JITDylib** — 类似动态库，容纳一组符号
+   - **MaterializationUnit** — 延迟编译的代码单元
+   - **ExecutionSession** — 协调查找、编译、链接的总调度器
+
+   对比 MCJIT 的"一次性编译整个模块"，ORC 支持**懒编译**——
+   函数第一次被调用时才触发编译，且已编译的函数可以跨 Session 缓存。
+   LLJIT 在此基础上封装了更简洁的 API，成为今天 LLVM JIT 的事实标准。
+
 ORC JIT 的设计哲学
 ======================
 
