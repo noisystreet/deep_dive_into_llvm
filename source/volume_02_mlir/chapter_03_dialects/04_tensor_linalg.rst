@@ -195,13 +195,13 @@ Bufferization：tensor → memref
 卷积等截然不同的运算——区别仅在于 indexing_maps 和 region 体的不同。
 
 矩阵乘法示例中 ``reduction`` 维度是关键：它告诉优化器"这个维度需要归约"，
-从而启用 tiling 时在该维度上累加，而非并行展开。:ref:`mlir-07-07-03` 中的
+从而启用 tiling 时在该维度上累加，而非并行展开。:ref:`mlir-09-09-03` 中的
 Tiling/Fusion 优化正是建立在这个语义之上。
 
 源码走读：Bufferization 与循环展开
 ======================================
 
-Bufferization 的三阶段分析见 :ref:`mlir-06-06-02` 中对
+Bufferization 的三阶段分析见 :ref:`mlir-11-06-02` 中对
 `OneShotAnalysis.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Bufferization/Transforms/OneShotAnalysis.cpp>`__
 的解读。
 

@@ -212,7 +212,7 @@ LLVM Dialect 是 MLIR 与 LLVM 后端之间的精确桥梁。掌握它的关键�
 MLIR 降级管道的前半段在各 Dialect 之间转换语义，后半段在 LLVM Dialect 中
 固化为一一对应的 LLVM IR 操作，最终由 ``ModuleTranslation`` 导出。
 
-第 3 章 Dialect 概览至此完成。下一章 :ref:`mlir-04-index` 将深入
+第 3 章 Dialect 概览至此完成。下一章 :ref:`mlir-11-index` 将深入
 ODS 如何定义这些 Dialect 中的每一个 Operation 。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

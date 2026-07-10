@@ -205,7 +205,7 @@ Block 内的 Operation 按顺序排列，Block 参数等价于 LLVM IR 的 PHI �
    mlir-opt examples/mlir/chapter_03_dialects/scf_sum.mlir
 
 ``scf.for`` 的循环体就是一个 Region，内含 Block 和若干 Operation。
-对比 :ref:`mlir-06-06-03` 中降级后的 ``cf.br`` / ``^bb1`` 结构，
+对比 :ref:`mlir-11-06-03` 中降级后的 ``cf.br`` / ``^bb1`` 结构，
 可以直观看到 Region 如何被展开为显式 CFG。
 
 本章小结

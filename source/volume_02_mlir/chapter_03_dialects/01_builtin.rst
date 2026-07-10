@@ -197,7 +197,7 @@ FunctionType
 - ``IsolatedFromAbove`` 保证 Module 内部的值不会泄漏到外部——这是 SSA 作用域的边界
 
 ``UnrealizedConversionCastOp`` 也在同一文件中定义，它是 Dialect Conversion 的
-临时桥梁。:ref:`mlir-06-06-03` 中的 ``--reconcile-unrealized-casts`` 检查的
+临时桥梁。:ref:`mlir-11-06-03` 中的 ``--reconcile-unrealized-casts`` 检查的
 正是这类操作的残留。
 
 动手验证

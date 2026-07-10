@@ -185,7 +185,7 @@ scf → cf 的降级
 源码走读：SCFToControlFlow 的不变量
 ======================================
 
-降级实现详见 :ref:`mlir-06-06-03` 中分析的
+降级实现详见 :ref:`mlir-11-06-03` 中分析的
 `SCFToControlFlow.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/SCFToControlFlow/SCFToControlFlow.cpp>`__ 。
 其核心不变量值得在此重申：生成的 CFG 子图有单一入口和单一出口，
 循环携带值通过条件块的 Block 参数在所有后继块中可见。

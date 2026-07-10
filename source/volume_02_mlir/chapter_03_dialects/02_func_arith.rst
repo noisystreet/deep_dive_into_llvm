@@ -192,7 +192,7 @@ math Dialect
 
 ``CallOpInterface`` 和 ``SymbolUserOpInterface`` 是 MLIR 的 Interface 机制——
 Pass 可以通过 Interface 统一处理所有"函数调用"语义的 Op，而不必逐个匹配
-``func.call``、``llvm.call`` 等具体名称。Interface 的详细机制见 :ref:`mlir-04-04-03` 。
+``func.call``、``llvm.call`` 等具体名称。Interface 的详细机制见 :ref:`mlir-05-05-03` 。
 
 ``arith`` Dialect 的基类定义在
 `ArithOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Arith/IR/ArithOps.td>`__ ：
