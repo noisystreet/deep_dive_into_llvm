@@ -200,4 +200,12 @@ MLIR 的测试体系与 LLVM 一脉相承：lit + FileCheck 验证 IR 变换，
 mlir-reduce 最小化 bug 复现。编写自定义 Dialect 时，应为每个 Pass
 和降级路径配套 ``.mlir`` 测试文件。
 
+
+.. rubric:: 进一步阅读
+
+- `MLIR 测试指南 <https://mlir.llvm.org/docs/TestingGuide/>`_ — MLIR 测试最佳实践
+- `mlir-opt 工具 <https://mlir.llvm.org/docs/Tools/mlir-opt/>`_ — 命令行参考
+- `mlir-cpu-runner <https://mlir.llvm.org/docs/ExecutionEngine/>`_ — JIT 执行器
+
+
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

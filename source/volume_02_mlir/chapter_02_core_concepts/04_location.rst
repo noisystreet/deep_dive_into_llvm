@@ -205,4 +205,12 @@ Location 和诊断系统是 MLIR 相比 LLVM IR 的显著优势之一：
 这四篇核心概念文档至此告一段落。下一章 :ref:`mlir-03-index` 将进入
 具体的 Dialect 世界。
 
+
+.. rubric:: 进一步阅读
+
+- `MLIR Rationale <https://mlir.llvm.org/docs/Rationale/>`_ — MLIR 设计决策文档
+- `MLIR Glossary <https://mlir.llvm.org/docs/Glossary/>`_ — 术语表
+- :ref:`附录-Dialect 速查表 <mlir-appendix-02-dialect-cheatsheet>` — 快速定位 Dialect
+
+
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

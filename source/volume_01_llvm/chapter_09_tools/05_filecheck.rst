@@ -248,6 +248,13 @@ lit 通过 ``RUN:`` 指令中的 ``%s`` 、``%t`` 、``%S`` 等替换符来参�
 
 这些目录中的测试文件是学习 FileCheck 模式的最佳教材。
 
+.. rubric:: 进一步阅读
+
+- `FileCheck 文档 <https://llvm.org/docs/CommandGuide/FileCheck.html>`_ — 命令参考
+- `LLVM Testing Infrastructure Guide <https://llvm.org/docs/TestingGuide.html>`_ — LLVM 测试体系
+- `llvm-mca 用户指南 <https://llvm.org/docs/CommandGuide/llvm-mca.html>`_ — 机器码分析器
+
+
 --------
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

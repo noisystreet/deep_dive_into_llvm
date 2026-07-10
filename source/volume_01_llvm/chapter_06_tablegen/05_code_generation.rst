@@ -212,6 +212,13 @@ TableGen 源码架构
 每个 ``*Emitter.cpp`` 对应一个 TableGen 后端，读取 Record 数据库并输出 C++ 代码。
 这些后端的源码本身是学习"如何遍历 Record"的最佳教材。
 
+.. rubric:: 进一步阅读
+
+- `TableGen 文档 <https://llvm.org/docs/TableGen/index.html>`_ — 官方 TableGen 参考
+- `TableGen Backend 编写指南 <https://llvm.org/docs/TableGen/BackGuide.html>`_ — 自定义后端生成器
+- :ref:`附录-代码阅读指南 <appendix-02-code-reading-guide>` — LLVM 源码组织结构
+
+
 --------
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

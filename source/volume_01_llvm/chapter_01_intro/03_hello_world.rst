@@ -423,6 +423,14 @@ LLVM 的库采用模块化设计，每个组件对应一个库：
    ``FunctionList`` （函数列表）等。当你创建一个 ``Module`` 对象时，你已经在
    构造 LLVM IR 的内存表示——这是所有后续操作（优化、代码生成）的起点。
 
+
+.. rubric:: 进一步阅读
+
+- `LLVM 官方网站 <https://llvm.org/>`_ — 项目首页、文档和发布说明
+- `LLVM 的 ACM Software System Award 获奖介绍 <https://awards.acm.org/about/2011-llvm>`_
+- Chris Lattner 的 LLVM 入门演讲：*The Architecture of Open Source Applications: LLVM*
+- :ref:`附录-参考资源 <appendix-01-resources>` — 更多书籍和工具推荐
+
 .. raw:: html
 
    <hr>

@@ -254,4 +254,12 @@ Toy 的 ``toyc`` 是完整编译器。掌握前者是理解后者的基础。
 第二卷至此完结。附录 :ref:`mlir-appendix` 提供了源码阅读指南和 Dialect 速查表，
 供后续深入时查阅。
 
+
+.. rubric:: 进一步阅读
+
+- `CIRCT 项目 <https://circt.llvm.org/>`_ — 基于 MLIR 的硬件设计工具
+- `IREE: MLIR 的端到端应用 <https://iree.dev/>`_ — 完整的 MLIR 编译管道
+- :ref:`第 9 章 MyDSL 设计 <mlir-09-09-01>` — MyDSL 的设计思路参考
+
+
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

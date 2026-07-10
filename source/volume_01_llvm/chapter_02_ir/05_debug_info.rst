@@ -121,3 +121,9 @@ IR 中生成大量调试元数据，将 IR 指令与源代码位置、变量名�
 
    调试元数据会增加 IR 体积和编译时间。生产环境常见做法：用 ``-O2 -g`` 编译，
    然后通过 ``strip`` 或 ``objcopy`` 分离调试信息。
+
+.. rubric:: 进一步阅读
+
+- `LLVM Language Reference Manual <https://llvm.org/docs/LangRef.html>`_ — LLVM IR 的官方完整参考
+- `LLVM Debug Info Guide <https://llvm.org/docs/SourceLevelDebugging.html>`_ — 调试信息的 DWARF 映射
+- `SSA Book <https://pp.info.uni-karlsruhe.de/uploads/publikationen/braun13cc.pdf>`_ — *SSA-based Compiler Design* 开源书

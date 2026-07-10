@@ -206,4 +206,12 @@ MLIR JIT Pipeline 的价值在于**缩短验证循环** ：修改 Dialect 或 Pa
 ``ExecutionEngine`` 把 MLIR 的降级成果对接到第一卷介绍的 ORC JIT 引擎，
 完成从 MLIR 到可执行机器码的最后一公里。
 
+
+.. rubric:: 进一步阅读
+
+- `MLIR Async Dialect <https://mlir.llvm.org/docs/Dialects/Async/>`_ — 异步计算
+- `Vector Dialect <https://mlir.llvm.org/docs/Dialects/Vector/>`_ — 向量化
+- `MLIR JIT <https://mlir.llvm.org/docs/ExecutionEngine/>`_ — MLIR 的 JIT 编译
+
+
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

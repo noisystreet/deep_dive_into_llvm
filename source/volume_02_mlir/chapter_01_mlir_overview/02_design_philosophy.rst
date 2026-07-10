@@ -388,4 +388,12 @@ MLIR 的设计哲学可以归结为一句话：**在正确的抽象层次做正�
 带着这些原则，下一章 :ref:`mlir-02-index` 将逐一拆解
 Operation、Value、Block、Region 四大构建块。
 
+
+.. rubric:: 进一步阅读
+
+- `MLIR 官方文档 <https://mlir.llvm.org/docs/>`_ — MLIR 的所有指南和 Rationale
+- Chris Lattner 在 2019 LLVM Dev Meeting 的演讲：*MLIR: Compiler Infrastructure for End of Moore's Law*
+- `MLIR 论文 <https://arxiv.org/abs/1902.08068>`_ — *MLIR: Scaling Compiler Infrastructure for Domain Specific Computation*
+
+
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

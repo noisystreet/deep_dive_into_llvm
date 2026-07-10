@@ -239,4 +239,12 @@ Toy Tutorial 的 CMake 构建自动调用这些生成器——
 掌握它的生成目标，就掌握了自定义 Dialect 的构建流程。
 第 5 章 :ref:`mlir-11-index` 将在此基础上介绍如何用 Pass 变换这些 Operation。
 
+
+.. rubric:: 进一步阅读
+
+- `ODS 文档 <https://mlir.llvm.org/docs/OpDefinitions/>`_ — MLIR Operation 定义规范
+- `mlir-tblgen 文档 <https://mlir.llvm.org/docs/Tablegens/>`_ — 代码生成器参考
+- :ref:`第 1 卷 TableGen 章节 <chapter-06-01-tablegen-intro>` — TableGen 语言基础
+
+
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -240,4 +240,12 @@ Toy 还包含领域特定的 Toy → Affine/SCF 降级步骤。
 Pipeline 将离散的 Pass 编排为可复用的编译阶段，是 MLIR 工具链的骨架。
 第 6 章 :ref:`mlir-11-06-01` 的渐进降级概念在此落地为具体的 Pass 序列。
 
+
+.. rubric:: 进一步阅读
+
+- `MLIR Pass Infrastructure <https://mlir.llvm.org/docs/PassManagement/>`_ — Pass 管理框架
+- `Pattern Rewrite 文档 <https://mlir.llvm.org/docs/PatternRewriter/>`_ — 重写模式指南
+- `Dialect Conversion <https://mlir.llvm.org/docs/DialectConversion/>`_ — Dialect 降级框架
+
+
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

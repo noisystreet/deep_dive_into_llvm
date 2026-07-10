@@ -205,6 +205,13 @@
 - **LLVM 源码中的 Target 目录** ：`llvm/lib/Target/ <file:///workspace/llvm-project/llvm/lib/Target/>`__，每个 Target 都是一个可参考的实例
 - **TableGen 文档** ：`llvm/docs/TableGen/ <file:///workspace/llvm-project/llvm/docs/TableGen/>`__
 
+.. rubric:: 进一步阅读
+
+- `LLVM Language Reference Manual <https://llvm.org/docs/LangRef.html>`_ — IR 完整参考
+- `AddressSanitizer 文档 <https://clang.llvm.org/docs/AddressSanitizer.html>`_ — 内存错误检测
+- `ThinLTO 设计文档 <https://clang.llvm.org/docs/ThinLTO.html>`_ — Google 的 LTO 方案
+
+
 --------
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

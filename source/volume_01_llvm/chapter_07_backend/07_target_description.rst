@@ -180,6 +180,13 @@ LLVM 中每个后端都在独立的命名空间中：
    # 查看特定目标的信息
    $ llc -march=x86-64 -mcpu=help
 
+.. rubric:: 进一步阅读
+
+- `LLVM CodeGen 文档 <https://llvm.org/docs/CodeGenerator.html>`_ — 后端代码生成架构
+- `Writing an LLVM Backend <https://llvm.org/docs/WritingAnLLVMBackend.html>`_ — 新后端编写指南
+- `GlobalISel 文档 <https://llvm.org/docs/GlobalISel.html>`_ — 新一代指令选择框架
+
+
 --------
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

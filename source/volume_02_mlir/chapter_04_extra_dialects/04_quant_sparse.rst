@@ -134,6 +134,13 @@ quant 和 sparse_tensor 代表了 MLIR 的同一个理念：
 "唯一 IR" 设计无法处理量化和稀疏张量，但在 MLIR 中，只需要
 一个新的 Dialect 就搞定了。
 
+.. rubric:: 进一步阅读
+
+- `memref Dialect <https://mlir.llvm.org/docs/Dialects/MemRef/>`_ — memref 类型和操作
+- `Transform Dialect <https://mlir.llvm.org/docs/Dialects/Transform/>`_ — 元编程 IR 变换
+- `Sparse Tensor 文档 <https://mlir.llvm.org/docs/Dialects/SparseTensor/>`_ — 稀疏张量编译
+
+
 --------
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -215,4 +215,12 @@ MLIR 降级管道的前半段在各 Dialect 之间转换语义，后半段在 LL
 第 3 章 Dialect 概览至此完成。下一章 :ref:`mlir-11-index` 将深入
 ODS 如何定义这些 Dialect 中的每一个 Operation 。
 
+
+.. rubric:: 进一步阅读
+
+- `MLIR Dialect 文档 <https://mlir.llvm.org/docs/Dialects/>`_ — 所有内置 Dialect 参考
+- `LLVM Dialect <https://mlir.llvm.org/docs/Dialects/LLVM/>`_ — LLVM Dialect 详细规范
+- :ref:`第 7 章降级 <mlir-07-index>` — 从高层 Dialect 到 LLVM Dialect 的完整路径
+
+
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
