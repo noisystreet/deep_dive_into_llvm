@@ -61,14 +61,12 @@ MLIR 的 GPU Dialect 提供了 **与后端无关** 的 GPU 编程抽象：
 GPU 的降级路径
 =========================
 
-.. mermaid::
+.. figure:: /_static/figures/gpu_launch_flow.svg
+   :align: center
+   :alt: GPU Kernel Launch 流程
+   :width: 90%
 
-   flowchart LR
-       A[linalg/tensor] --> B[gpu.launch]
-       B --> C[gpu Dialect + NVIDIA Dialect]
-       C --> D[LLVM Dialect + NVVM Dialect]
-       D --> E[LLVM IR]
-       E --> F[PTX]
+   GPU 编译路径：Host 侧启动 → Device 侧 Grid/Block 层次
 
 **NVIDIA (CUDA) 路径**
 

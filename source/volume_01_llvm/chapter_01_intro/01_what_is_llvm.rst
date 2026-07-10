@@ -72,26 +72,12 @@ M 种目标后端 = N × M 个"翻译对"需要维护。
 
    传统编译器：N × M 种语言-目标组合，需要维护 N × M 个翻译对
 
-.. mermaid::
+.. figure:: /_static/figures/llvm_ecosystem.svg
+   :align: center
+   :alt: LLVM 项目生态
+   :width: 85%
 
-   flowchart TD
-       subgraph 传统方案[传统方案: 紧耦合]
-           C1[C Frontend] --> GIMPLE1[GIMPLE IR]
-           C2[C++ Frontend] --> GIMPLE2[GIMPLE IR]
-           F1[Fortran Frontend] --> GIMPLE3[GENERIC IR]
-           GIMPLE1 --> X861[x86 Backend]
-           GIMPLE2 --> X861
-           GIMPLE3 --> X862[x86 Backend]
-       end
-
-       subgraph LLVM方案[LLVM 方案: 统一 IR]
-           C3[C/C++ Frontend] --> IR[LLVM IR]
-           C4[Rust Frontend] --> IR
-           F2[Fortran Frontend] --> IR
-           IR --> X863[x86 Backend]
-           IR --> ARM[ARM Backend]
-           IR --> RISCV[RISC-V Backend]
-       end
+   LLVM 三阶段架构：前端 → LLVM Core → 后端 + 工具链
 
 LLVM 的解法很简洁：统一 IR = N + M。你只需要实现 N 个前端（生成 IR）和 M 个后端
 （消费 IR），优化器在 IR 上无论做多少变换，都和前端、后端无关。这个设计看似简单，

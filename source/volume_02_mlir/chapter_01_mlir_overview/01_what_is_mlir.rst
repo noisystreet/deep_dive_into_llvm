@@ -89,17 +89,12 @@ MLIR（Multi-Level Intermediate Representation）是 LLVM 项目中为了解决�
 MLIR 的核心思想很简单： **不要试图用一个 IR 覆盖所有需求，而是让用户定义
 自己需要的 IR** 。
 
-.. mermaid::
+.. figure:: /_static/figures/mlir_multi_level_ir.svg
+   :align: center
+   :alt: MLIR 多层 IR 表示
+   :width: 90%
 
-   flowchart LR
-       A["Python / ML 框架模型"] --> B["HLO / TOSA\n（高级操作数）"]
-       B --> C["linalg / scf\n（结构化控制流）"]
-       C --> D["arith / memref\n（底层原语）"]
-       D --> E["LLVM Dialect\n（LLVM IR 映射）"]
-       E --> F[机器码]
-
-       style A fill:#e91e63,color:#fff
-       style F fill:#4caf50,color:#fff
+   MLIR 的五层抽象层次：从高级领域 IR 到机器码
 
 这就是 **Progressive Lowering** （渐进降级）的哲学：不是一步跳到 LLVM IR，
 而是通过多个层次的 IR，逐步降低抽象级别。每一层都在合适的抽象级别上做优化。

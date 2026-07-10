@@ -143,19 +143,14 @@ LLVM 定义了三种操作合法化状态：
 
 从 SelectionDAG 的角度看，后端流水线是这样的：
 
-.. mermaid::
+.. figure:: /_static/figures/selection_dag_flow.svg
+   :align: center
+   :alt: SelectionDAG 指令选择流程
+   :width: 90%
 
-   flowchart LR
-       A[LLVM IR] --> B[SelectionDAGBuilder]
-       B --> C[SelectionDAG]
-       C --> D[DAGCombine]
-       D --> E[Legalization]
-       E --> F[DAGCombine 再次]
-       F --> G[指令选择\nTableGen 匹配]
-       G --> H[MachineInstr DAG]
+   SelectionDAG 五个阶段：IR → DAG 构建 → Legalization → Combine → 指令选择 → MachineDAG
 
-       style A fill:#4caf50,color:#fff
-       style H fill:#ff9800,color:#fff
+DAG 构建的起点      style H fill:#ff9800,color:#fff
 
 SelectionDAG 的调试
 =======================

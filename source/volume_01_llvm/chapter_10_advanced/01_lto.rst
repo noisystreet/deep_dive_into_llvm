@@ -73,23 +73,12 @@ LTO 的做法是：将 IR 的优化推迟到链接阶段，让链接器"看到"�
 LTO 的工作流程
 ===================
 
-.. mermaid::
+.. figure:: /_static/figures/lto_flow.svg
+   :align: center
+   :alt: LTO/ThinLTO 工作流程
+   :width: 90%
 
-   flowchart LR
-       subgraph 编译阶段
-           A[foo.c] --> A1[clang -flto]
-           B[bar.c] --> B1[clang -flto]
-           A1 --> A2[foo.bc]
-           B1 --> B2[bar.bc]
-       end
-       subgraph 链接阶段
-           A2 --> C["链接器（ld.lld）"]
-           B2 --> C
-           C --> D["LLVM 优化\n（整个程序可见）"]
-           D --> E["目标代码"]
-       end
-
-       style D fill:#ff9800,color:#fff
+   传统编译 vs Full LTO vs ThinLTO
 
 1. **编译阶段** ：使用 ``-flto`` 编译时，clang 生成 LLVM 比特码（ ``.bc`` ）代替目标文件（ ``.o`` ）
 2. **链接阶段** ：链接器（如 ``lld`` ）检测到输入文件是比特码，调用 LLVM 的 LTO 插件
