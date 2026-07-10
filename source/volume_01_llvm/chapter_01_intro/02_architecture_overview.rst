@@ -10,6 +10,13 @@ LLVM 架构概览
 从问题出发：传统编译器的痛点
 ================================
 
+.. figure:: /_static/figures/llvm_three_stage.svg
+   :align: center
+   :alt: LLVM 三段式架构
+   :width: 90%
+
+   LLVM 将编译器解耦为前端、优化器、后端三个阶段，通过统一的 LLVM IR 连接。
+
 在 LLVM 诞生之前，GCC 是开源世界的主流编译器。GCC 的架构是 **前端-中端-后端**
 三者耦合在一起的：每个前端（C、C++、Fortran、Ada、Java 等）有自己独特的中间表示，
 没有统一的 IR。这意味着：
