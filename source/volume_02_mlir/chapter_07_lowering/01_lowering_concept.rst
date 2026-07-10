@@ -179,5 +179,3 @@ Toy Tutorial Ch6 的 `LowerToLLVM.cpp <file:///workspace/llvm-project/mlir/examp
 渐进降级的本质是 **在正确的抽象层次做正确的优化，然后逐层下沉** 。
 理解这个概念后，:ref:`mlir-11-06-02` 至 :ref:`mlir-11-06-04` 的每一步
 都有了明确的定位——它们不是随意的 Pass 堆砌，而是精心设计的语义展开链。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

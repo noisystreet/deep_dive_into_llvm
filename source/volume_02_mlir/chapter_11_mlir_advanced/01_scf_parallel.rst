@@ -177,5 +177,3 @@ GPU 后端：
 MLIR 的并行策略是 **显式标记而非自动推断**——前端或优化器用 ``scf.parallel``
 声明并行性，后端负责映射到目标平台。这与 :ref:`chapter-05-05-vectorization`
 中 LLVM 自动向量化的思路形成互补。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

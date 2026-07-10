@@ -243,5 +243,3 @@ scf/arith → LLVM Dialect 是 MLIR 降级管道中 **最成熟** 的一段。
 scf 展开为 CFG，arith 映射为 LLVM 指令，func/memref 处理函数边界和内存描述符。
 全部完成后，模块中只剩 LLVM Dialect 的操作，可以交给
 :ref:`mlir-11-06-04` 描述的 ``ModuleTranslation`` 导出为 LLVM IR。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

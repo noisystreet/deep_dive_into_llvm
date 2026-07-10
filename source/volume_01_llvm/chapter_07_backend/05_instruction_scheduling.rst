@@ -163,7 +163,3 @@ MachinePipeliner（循环流水线）
 
    # 禁用调度（用于对比）
    $ llc -pre-RA-sched=source input.ll -o output.unsched.s
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

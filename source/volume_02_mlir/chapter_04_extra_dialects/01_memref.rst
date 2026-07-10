@@ -133,7 +133,3 @@ memref 的维度与动态形状
    * - 内存分配
      - 由 bufferization 管理
      - 显式的 alloc/dealloc
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

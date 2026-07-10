@@ -164,7 +164,3 @@ llvm-bcanalyzer：比特码分析
    # 3. 用户端：比特码 → 优化 → 本地执行
    $ opt kernel.bc -passes='default<O2>' -o kernel_opt.bc
    $ llc kernel_opt.bc -filetype=obj -o kernel.o
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

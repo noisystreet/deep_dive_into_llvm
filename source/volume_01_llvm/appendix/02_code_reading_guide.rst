@@ -173,7 +173,3 @@ LLVM Coding Standards 要点
    * - Error 处理
      - 使用 ``llvm::Error``
      - ``return llvm::make_error<...>()``
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

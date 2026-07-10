@@ -235,5 +235,3 @@ ODS 与第一卷 TableGen 的关系：:ref:`chapter-06-05-code-generation` 描�
 ODS 是 MLIR 可扩展性的基石：它把 Operation 的样板代码交给 ``mlir-tblgen`` ，
 让开发者专注于语义和降级逻辑。后续章节将逐一展开 Op 定义、Trait、Interface 和
 TableGen 驱动的类型系统。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -274,7 +274,3 @@ ASTMatcher 的匹配器可以组合出非常复杂的查询条件，比如"找�
        callee(functionDecl(hasName("::test*"))),
        returns(voidType())
    )
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

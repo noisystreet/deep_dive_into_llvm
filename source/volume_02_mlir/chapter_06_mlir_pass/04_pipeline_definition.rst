@@ -246,6 +246,3 @@ Pipeline 将离散的 Pass 编排为可复用的编译阶段，是 MLIR 工具�
 - `MLIR Pass Infrastructure <https://mlir.llvm.org/docs/PassManagement/>`_ — Pass 管理框架
 - `Pattern Rewrite 文档 <https://mlir.llvm.org/docs/PatternRewriter/>`_ — 重写模式指南
 - `Dialect Conversion <https://mlir.llvm.org/docs/DialectConversion/>`_ — Dialect 降级框架
-
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

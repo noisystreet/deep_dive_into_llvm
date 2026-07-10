@@ -197,5 +197,3 @@ StableHLO 解决了 ML 前端 IR 的 **稳定性和版本化** 问题，但它�
 MLIR 多层降级中的起点。理解它的最好方式，是把它放进
 :ref:`mlir-11-06-01` 描述的 Progressive Lowering 全景中，
 看清"从计算图到机器码"的完整链路。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -197,7 +197,3 @@ ORC JIT 的一个关键特性是 **异步编译** 。 ``ExecutionSession`` 可�
    ├── CompileOnDemandLayer.h
    ├── IRTransformLayer.h
    └── ...
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

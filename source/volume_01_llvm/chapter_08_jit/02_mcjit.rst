@@ -138,7 +138,3 @@ MCJIT 在 LLVM 14+ 中已经被标记为 **弃用** 。新的开发工作全部�
 适合作为学习 JIT 的教材。
 
 在源码中的位置：`llvm/lib/ExecutionEngine/MCJIT/ <file:///workspace/llvm-project/llvm/lib/ExecutionEngine/MCJIT/>`__
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

@@ -249,5 +249,3 @@ Toy Ch6 的 ``ToyToLLVMLoweringPass`` （:ref:`mlir-09-09-03`）也使用同一�
 Dialect Conversion 处理跨 Dialect 的类型变化和 Operation 替换，
 是 MLIR 渐进降级管道的核心机制。下一节 :ref:`mlir-11-05-04` 介绍
 如何将多个 Pass 编排为 Pipeline 。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

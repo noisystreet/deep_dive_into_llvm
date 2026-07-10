@@ -231,7 +231,3 @@ scf 和 cf 体现了 MLIR 在控制流上的分层设计：scf 保留结构，cf
    llvm.br / llvm.cond_br
          ↓（translate）
    LLVM IR: br / br i1
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

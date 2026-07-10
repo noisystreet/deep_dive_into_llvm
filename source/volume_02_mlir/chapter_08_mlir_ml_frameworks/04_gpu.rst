@@ -192,6 +192,3 @@ MLIR-GPU 实现了"写一次 Dialect，生成多个 GPU 后端"的目标。
 - `StableHLO 官方文档 <https://github.com/openxla/stablehlo>`_ — StableHLO 规范
 - `TOSA 规范 <https://www.mlplatform.org/tosa>`_ — TOSA 算子集定义
 - `IREE 项目 <https://iree.dev/>`_ — 基于 MLIR 的推理引擎
-
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

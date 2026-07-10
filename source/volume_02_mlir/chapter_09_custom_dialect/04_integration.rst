@@ -260,6 +260,3 @@ Toy 的 ``toyc`` 是完整编译器。掌握前者是理解后者的基础。
 - `CIRCT 项目 <https://circt.llvm.org/>`_ — 基于 MLIR 的硬件设计工具
 - `IREE: MLIR 的端到端应用 <https://iree.dev/>`_ — 完整的 MLIR 编译管道
 - :ref:`第 9 章 MyDSL 设计 <mlir-09-09-01>` — MyDSL 的设计思路参考
-
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

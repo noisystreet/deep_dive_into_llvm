@@ -245,5 +245,3 @@ MLIR Pass 框架的核心接口在
 
 MLIR PassManager 是多层级、可嵌套的变换调度器，是连接各 Dialect 降级 Pass 的枢纽。
 下一节 :ref:`mlir-11-05-02` 介绍其底层机制：Pattern Rewrite 。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

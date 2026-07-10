@@ -179,7 +179,3 @@ TargetMachine 的作用
 
    # 在某个阶段停止
    $ llc -stop-after=selectiondag input.ll
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

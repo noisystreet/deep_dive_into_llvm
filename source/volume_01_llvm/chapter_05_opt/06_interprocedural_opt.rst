@@ -185,8 +185,3 @@ ThinLTO 的核心思想： **不合并 IR，只合并摘要信息** 。
 - `LLVM 优化通道文档 <https://llvm.org/docs/Passes.html>`_ — 每个优化 Pass 的详细说明
 - `Vectorization 指南 <https://llvm.org/docs/Vectorizers.html>`_ — LLVM 的循环和 SLP 向量化
 - Steven Muchnick 的 *Advanced Compiler Design and Implementation* — 经典优化教科书
-
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

@@ -220,5 +220,3 @@ Attribute 定义在
 
 Type 描述"是什么"，Attribute 描述"编译期常量元数据"，Value 描述"运行时的 SSA 值"。
 下一节 :ref:`mlir-02-02-03` 将介绍 Region 和 Block 如何组织 Operation 的控制流结构。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

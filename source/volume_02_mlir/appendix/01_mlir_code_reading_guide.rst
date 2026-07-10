@@ -148,7 +148,3 @@ Toy Tutorial 阅读路线
    Ch7:     接入 ExecutionEngine（理解 JIT）
 
 入口：`mlir/examples/toy/ <file:///workspace/llvm-project/mlir/examples/toy/>`__
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

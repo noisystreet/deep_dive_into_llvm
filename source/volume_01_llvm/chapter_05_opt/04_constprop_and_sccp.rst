@@ -157,7 +157,3 @@ GlobalOpt（全局优化）
        %b = add i32 42, %x     ; 常量折叠 + 传播
        ret i32 %b              ; add 0 被 instcombine 消除
    }
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

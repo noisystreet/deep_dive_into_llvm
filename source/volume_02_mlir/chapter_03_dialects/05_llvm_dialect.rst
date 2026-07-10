@@ -221,6 +221,3 @@ ODS 如何定义这些 Dialect 中的每一个 Operation 。
 - `MLIR Dialect 文档 <https://mlir.llvm.org/docs/Dialects/>`_ — 所有内置 Dialect 参考
 - `LLVM Dialect <https://mlir.llvm.org/docs/Dialects/LLVM/>`_ — LLVM Dialect 详细规范
 - :ref:`第 7 章降级 <mlir-07-index>` — 从高层 Dialect 到 LLVM Dialect 的完整路径
-
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

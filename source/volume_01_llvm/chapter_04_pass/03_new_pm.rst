@@ -232,7 +232,3 @@ Legacy PM vs New PM 对比
    * - 多 Pass 管道
      - 通过命令行拼接
      - ``PassBuilder`` 显式构建
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

@@ -195,7 +195,3 @@ AssumptionCache（假设缓存）
 失效规则由变换 Pass 返回的 ``PreservedAnalyses`` 决定：
 - 如果 Pass 声明保留了某个分析，管理器直接返回缓存
 - 如果没有声明保留，下一次 ``getResult`` 会重新计算
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

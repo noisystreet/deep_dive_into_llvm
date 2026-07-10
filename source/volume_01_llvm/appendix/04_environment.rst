@@ -193,7 +193,3 @@ Docker 开发环境
    # 测试一个简单的 LLVM IR 程序
    $ echo 'define i32 @main() { ret i32 42 }' | llc -filetype=obj -o /dev/null
    $ echo '✅ LLVM 工作正常'
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

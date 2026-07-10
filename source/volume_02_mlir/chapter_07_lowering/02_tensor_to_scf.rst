@@ -217,5 +217,3 @@ Bufferization 解决"tensor 不可变"与"循环需要读写内存"之间的矛�
 linalg → loops 则利用 ``indexing_maps`` 和 ``iterator_types`` 自动生成正确的循环嵌套。
 
 下一节 :ref:`mlir-11-06-03` 将继续把 scf/arith 降级到 LLVM Dialect。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -170,7 +170,3 @@ Register Coalescing（寄存器合并）
 
    # 调试分配过程
    $ llc -debug-only=regalloc input.ll
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

@@ -254,5 +254,3 @@ canonicalize 应将其消除。
 
 Pattern Rewrite 是 MLIR 局部 IR 变换的核心机制，降级 Pattern 和优化 Pattern
 都建立在此之上。:ref:`mlir-09-09-03` 中 MyDSL 的降级就是典型应用。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

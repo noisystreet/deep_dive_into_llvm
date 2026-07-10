@@ -151,7 +151,3 @@ Transform Dialect 有几个核心操作：
    * - 性能
      - 解释执行
      - 编译执行
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

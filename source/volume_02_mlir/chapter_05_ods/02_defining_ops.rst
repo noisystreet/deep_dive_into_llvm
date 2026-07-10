@@ -227,5 +227,3 @@ Toy Ch3 的 ``MulOp`` 是 ODS 定义 Operation 的标准范例，见
 
 ODS 让 Operation 定义从"手写数百行 C++"变为"声明十几个字段"。
 下一节 :ref:`mlir-05-05-03` 介绍 Trait 和 Interface 如何为 Operation 附加行为。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

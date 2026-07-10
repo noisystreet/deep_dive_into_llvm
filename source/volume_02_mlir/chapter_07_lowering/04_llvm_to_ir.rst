@@ -210,6 +210,3 @@ LLVM Dialect → LLVM IR 是 MLIR 管道的终点站。 ``mlir-translate`` 完�
 - `Bufferization 文档 <https://mlir.llvm.org/docs/Bufferization/>`_ — One-Shot Bufferization
 - `LLVM Translation <https://mlir.llvm.org/docs/TargetLLVM/>`_ — MLIR → LLVM IR 翻译
 - :ref:`第 1 卷 LLVM IR 基础 <chapter-02-01-ir-basics>` — LLVM IR 语法回顾
-
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -193,7 +193,3 @@ LLVM 提供了详细的调试日志来追踪内联决策：
 .. code-block:: console
 
    $ clang -O2 -Rpass=inline ...
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

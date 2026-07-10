@@ -148,7 +148,3 @@ llc：LLVM 静态编译器
 处处代码生成"。
 
 在源码中的位置：`llvm/tools/llc/llc.cpp <file:///workspace/llvm-project/llvm/tools/llc/llc.cpp>`__
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

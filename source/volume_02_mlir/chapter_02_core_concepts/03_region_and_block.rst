@@ -214,5 +214,3 @@ Block 内的 Operation 按顺序排列，Block 参数等价于 LLVM IR 的 PHI �
 Region 和 Block 让 MLIR 在保持 SSA 的同时支持结构化控制流。
 这是 scf Dialect 的基础，也是 MLIR 相比 LLVM IR 的核心优势之一。
 下一节 :ref:`mlir-02-02-04` 介绍位置信息与诊断系统。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

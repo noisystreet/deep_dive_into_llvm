@@ -209,7 +209,3 @@ foreach：批量生成
    $ llvm-tblgen -print-records test.td
 
 输出将包含 ``RAX`` 、 ``RBX`` 、 ``RCX`` 以及它们对应的 8 位版本。
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

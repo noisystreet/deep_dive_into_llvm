@@ -207,7 +207,3 @@ ODS 文件速查
      - ``mlir/include/mlir/Dialect/Async/IR/AsyncOps.td``
    * - vector
      - ``mlir/include/mlir/Dialect/Vector/IR/VectorOps.td``
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

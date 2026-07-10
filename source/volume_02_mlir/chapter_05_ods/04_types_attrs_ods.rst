@@ -197,5 +197,3 @@ memref 降级时生成的描述符结构体，详见 :ref:`mlir-11-06-03` 。
 
 ODS 不仅定义 Operation，也定义 Type 和 Attribute。
 三者在 ``mlir-tblgen`` 的生成体系中地位平等，共同构成一个 Dialect 的完整描述。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

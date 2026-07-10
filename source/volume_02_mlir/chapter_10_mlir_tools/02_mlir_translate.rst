@@ -174,5 +174,3 @@ MLIR Bytecode 格式比文本格式更紧凑，适合生产环境部署。
 
 ``mlir-translate`` 是 MLIR 降级管道的最后一环翻译工具，将 LLVM Dialect 固化为
 标准 LLVM IR。它与 ``mlir-opt`` 配合，完成从 MLIR 到机器码的衔接。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

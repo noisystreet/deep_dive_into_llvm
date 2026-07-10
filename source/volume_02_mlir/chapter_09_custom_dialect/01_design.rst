@@ -186,5 +186,3 @@ MyDSL 与 Toy 的对应关系：
 自定义 Dialect 的设计核心是 **抽象级别选择** 和 **降级路径规划** 。
 MyDSL 选择了 arith 作为直接降级目标，与 Toy 选择 LLVM Dialect 类似但少了一层。
 后续几节将逐步实现 MyDSL 的 ODS 定义和降级逻辑。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

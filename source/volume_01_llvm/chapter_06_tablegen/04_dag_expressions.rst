@@ -150,7 +150,3 @@ DAG 中的操作数可以带类型约束，TableGen 用这些约束来生成类�
 
    # 用 -print-records 查看解析后的 DAG
    $ llvm-tblgen -print-records X86InstrInfo.td | grep "Pattern"
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

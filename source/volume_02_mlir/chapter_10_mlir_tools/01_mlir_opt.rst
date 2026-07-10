@@ -184,5 +184,3 @@ Pass Pipeline 的高级用法
 
 ``mlir-opt`` 是 MLIR 开发者的核心工具，所有 Pass 开发和降级调试都从这里开始。
 下一节 :ref:`mlir-11-09-02` 介绍其搭档工具 ``mlir-translate`` 。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -251,5 +251,3 @@ MyDSL 的 ``MacOpLowering::matchAndRewrite`` 遵循标准三步：
 降级 Pattern 是自定义 Dialect 的核心工程产物。MyDSL 用 RewritePattern 降到 arith，
 后续管道与 :ref:`mlir-11-06-03` 的标准路径完全共享。
 下一节 :ref:`mlir-09-09-04` 将把 Dialect 和 Pass 集成到独立的 ``mydsl-opt`` 工具中。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

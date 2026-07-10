@@ -287,8 +287,3 @@ Clang 提供了丰富的选项来观察每个阶段的输出，这是理解编�
 - `Clang 官方文档 <https://clang.llvm.org/docs/>`_ — Clang 的所有指南
 - `Clang AST 简介 <https://clang.llvm.org/docs/IntroductionToTheClangAST.html>`_
 - `ELF 规范 <https://refspecs.linuxfoundation.org/elf/elf.pdf>`_ — 目标文件格式标准
-
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

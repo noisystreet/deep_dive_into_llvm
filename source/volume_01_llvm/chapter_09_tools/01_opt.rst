@@ -190,7 +190,3 @@ opt 的源码位置
 
    // 运行 Pass 管道
    MPM.run(M, MAM);
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

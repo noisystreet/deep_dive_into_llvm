@@ -245,5 +245,3 @@ LLVM IR 的 Instruction/Function 分层设计，MLIR 用统一的 Operation
 Operation 是 MLIR 的万能积木，Value 是 SSA 数据流的基本单元。
 理解 Operation 的结构后，下一节 :ref:`mlir-02-02-02` 的类型与属性
 系统就有了附着的基础。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

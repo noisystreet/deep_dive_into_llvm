@@ -173,7 +173,3 @@ SelectionDAG 的调试
 
    # 用 Graphviz 可视化
    $ llc -view-sched-dags input.ll
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

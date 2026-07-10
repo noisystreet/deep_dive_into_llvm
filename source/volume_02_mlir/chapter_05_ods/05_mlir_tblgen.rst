@@ -245,6 +245,3 @@ Toy Tutorial 的 CMake 构建自动调用这些生成器——
 - `ODS 文档 <https://mlir.llvm.org/docs/OpDefinitions/>`_ — MLIR Operation 定义规范
 - `mlir-tblgen 文档 <https://mlir.llvm.org/docs/Tablegens/>`_ — 代码生成器参考
 - :ref:`第 1 卷 TableGen 章节 <chapter-06-01-tablegen-intro>` — TableGen 语言基础
-
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

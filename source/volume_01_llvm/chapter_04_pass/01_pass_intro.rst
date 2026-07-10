@@ -177,7 +177,3 @@ Pass 的基类定义在 LLVM 源码中：
    class PassInfoMixin {
        // ...
    };
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

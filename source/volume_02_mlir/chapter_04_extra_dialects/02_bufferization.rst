@@ -128,7 +128,3 @@ Bufferization 的配置
        --convert-func-to-llvm \
        --convert-memref-to-llvm \
        input.mlir
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

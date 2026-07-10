@@ -251,7 +251,3 @@ Itanium C++ ABI
 
 ``_Z3fooi`` 中的 ``_Z`` 是 Itanium ABI 的前缀， ``3foo`` 是函数名（3 是名字长度），
 ``i`` 是参数类型（int）。
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

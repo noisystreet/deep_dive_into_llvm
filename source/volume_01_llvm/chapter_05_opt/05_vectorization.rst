@@ -189,7 +189,3 @@ TargetTransformInfo（TTI）
    $ clang -O3 -fno-vectorize -S -emit-llvm test.c -o test.scalar.ll
    $ clang -O3 -S -emit-llvm test.c -o test.vec.ll
    $ diff test.scalar.ll test.vec.ll
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

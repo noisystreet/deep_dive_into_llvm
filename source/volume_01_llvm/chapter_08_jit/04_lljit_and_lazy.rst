@@ -191,7 +191,3 @@ LLJIT 默认使用懒编译模式。如果要切换到即时编译，可以：
    // 直接通过 setCompileFunctionCreator 控制
 
 在源码中的位置：`llvm/include/llvm/ExecutionEngine/Orc/LLJIT.h <file:///workspace/llvm-project/llvm/include/llvm/ExecutionEngine/Orc/LLJIT.h>`__
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

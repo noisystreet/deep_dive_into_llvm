@@ -173,5 +173,3 @@ Toy Ch7 的 ``toyc.cpp`` （:ref:`mlir-09-09-04`）使用同一套 API，
 
 ``mlir-cpu-runner`` 缩短了 MLIR 程序的验证循环，是开发降级管道时的利器。
 :ref:`mlir-11-11-04` 有更详细的 JIT Pipeline 分析。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

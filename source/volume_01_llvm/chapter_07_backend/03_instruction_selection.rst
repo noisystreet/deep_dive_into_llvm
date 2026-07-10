@@ -161,7 +161,3 @@ GlobalISel 在 AArch64 后端已经成熟，并在逐步推广到其他架构。
        MO.getGlobal();        // 获取全局变量
        break;
    }
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

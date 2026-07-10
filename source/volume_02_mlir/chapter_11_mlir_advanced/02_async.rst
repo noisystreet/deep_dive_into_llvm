@@ -197,5 +197,3 @@ TableGen 中的描述非常关键：
 Async Dialect 在 MLIR 中扮演"结构化并发"的角色：它用 Region 封装可并发任务，
 用 Token/Group 管理同步，把执行策略推迟到降级阶段决定。
 在端到端管道中，它通常位于 linalg 并行化之后、LLVM 运行时之前。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

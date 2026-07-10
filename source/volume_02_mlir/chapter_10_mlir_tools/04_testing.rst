@@ -206,6 +206,3 @@ mlir-reduce 最小化 bug 复现。编写自定义 Dialect 时，应为每个 Pa
 - `MLIR 测试指南 <https://mlir.llvm.org/docs/TestingGuide/>`_ — MLIR 测试最佳实践
 - `mlir-opt 工具 <https://mlir.llvm.org/docs/Tools/mlir-opt/>`_ — 命令行参考
 - `mlir-cpu-runner <https://mlir.llvm.org/docs/ExecutionEngine/>`_ — JIT 执行器
-
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

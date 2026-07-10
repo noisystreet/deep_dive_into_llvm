@@ -148,7 +148,3 @@ LLVM JIT 的工作方式
 5. 返回函数指针，供调用者执行
 
 在后续几节中，我们将深入 MCJIT 和 ORC JIT 的实现细节。
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

@@ -250,5 +250,3 @@ Interface 通过 ``OpInterface`` 类在 ``.td`` 文件中声明方法签名，
 
 Trait 标记编译期属性，Interface 定义运行时行为契约——两者让 MLIR 的 Operation
 既有多态性，又保持高效。ODS 自动生成这些机制的 C++ 代码，是 MLIR 可扩展性的关键。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

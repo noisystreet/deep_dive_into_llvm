@@ -208,7 +208,3 @@ llvm-reduce：更现代的缩减工具
    # test_script.sh 是一个返回 0（成功）或 1（失败）的脚本
    # llvm-reduce 自动从 input.ll 中删除内容，
    # 只要 test_script.sh 仍然返回 1（复现 bug），就继续删除
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

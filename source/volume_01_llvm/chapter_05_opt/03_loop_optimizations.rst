@@ -198,7 +198,3 @@ LLVM 的 ``LoopStrengthReduce`` Pass 专门做这件事。它特别善于处理�
 
    # 禁用循环优化
    $ clang -O2 -fno-loop-optimizations ...
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

@@ -170,7 +170,3 @@ MCCodeEmitter 生成的字节流需要按照特定目标文件格式（ELF、Mac
 
    # 反汇编查看
    $ llvm-objdump -d output.o
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

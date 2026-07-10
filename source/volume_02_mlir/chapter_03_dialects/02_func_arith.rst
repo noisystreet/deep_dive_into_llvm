@@ -236,5 +236,3 @@ func/arith/math 是 MLIR 降级管道的"主干骨架"：func 提供结构，ari
 math 补充超越基本四则的数学函数。几乎所有端到端管道都会经过它们。
 
 下一节 :ref:`mlir-03-03-03` 将介绍控制流 Dialect：scf 与 cf 。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

@@ -196,7 +196,3 @@ TableGen 的核心数据结构定义在 LLVM 源码中：
        RecTy *Type;    // 类型
        Init *Value;    // 值（可能是未求值的表达式）
    };
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

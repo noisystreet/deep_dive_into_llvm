@@ -232,5 +232,3 @@ linalg 提供结构化循环模板。它们通过 Bufferization 和 LowerToLoops
 分别解决内存管理和循环展开，最终汇入 :ref:`mlir-03-03-03` 的 scf 控制流。
 
 下一节 :ref:`mlir-03-03-05` 将介绍降级管道的终点站：LLVM Dialect 。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

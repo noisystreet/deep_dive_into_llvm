@@ -203,5 +203,3 @@ Vector Dialect 的降级不是一步完成的，源码中明确拆为两个阶�
 Vector Dialect 填补了"高层循环向量化"和"底层 SIMD 指令"之间的空白。
 通过显式向量类型和操作，编译器管道可以精确控制向量宽度、shuffle 模式和
 归约方式——这在 GPU kernel 和 CPU SIMD 库的实现中尤为重要。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

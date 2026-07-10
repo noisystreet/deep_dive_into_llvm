@@ -121,7 +121,3 @@
 - **LLVM Developers' Meeting** ：每年两次的开发者大会
 - **EuroLLVM** ：欧洲 LLVM 开发者会议
 - **YouTube 频道** ：LLVM 官方演讲和教程
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

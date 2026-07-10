@@ -168,7 +168,3 @@ Pass 统计信息：-stats
 .. code-block:: console
 
    $ cmake -DLLVM_ENABLE_MODULES=ON ...
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

@@ -210,8 +210,3 @@
 - `LLVM Language Reference Manual <https://llvm.org/docs/LangRef.html>`_ — IR 完整参考
 - `AddressSanitizer 文档 <https://clang.llvm.org/docs/AddressSanitizer.html>`_ — 内存错误检测
 - `ThinLTO 设计文档 <https://clang.llvm.org/docs/ThinLTO.html>`_ — Google 的 LTO 方案
-
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

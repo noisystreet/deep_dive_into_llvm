@@ -220,5 +220,3 @@ FunctionType
 符号表和 Conversion 桥梁。理解它是阅读任何其他 Dialect 的前提。
 
 下一节 :ref:`mlir-03-03-02` 将介绍最常用的 func/arith/math 三件套。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

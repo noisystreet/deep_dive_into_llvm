@@ -209,8 +209,3 @@ LLVM 源码树中的示例目录包含了多个完整可运行的 ORC/JIT 示例
 - `ORC JIT 文档 <https://llvm.org/docs/ORCv2.html>`_ — LLVM 的 ORC JIT API 参考
 - Lang Hames 在 LLVM Dev Meeting 的系列演讲：*ORC JIT Evolution*
 - :ref:`第 10 章 JIT Pipeline <chapter-10-01-lto>` — MLIR 中的 JIT 编译
-
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

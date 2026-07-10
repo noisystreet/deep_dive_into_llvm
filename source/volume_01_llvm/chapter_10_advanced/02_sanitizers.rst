@@ -178,7 +178,3 @@ Sanitizer Pass 的注册位置：
 
    # 或通过 CMake 的内置支持
    set(CMAKE_C_FLAGS_SANITIZE "address" CACHE STRING "Sanitizer type")
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

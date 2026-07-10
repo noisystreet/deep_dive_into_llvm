@@ -192,5 +192,3 @@ Fusion 则将相邻的 ``linalg`` 操作合并为单个 ``linalg.generic`` ，
 Tiling 优化数据局部性，Fusion 减少中间结果，Bufferization 解决内存分配——
 三者共同构成 MLIR 张量计算的性能引擎。它们都在 linalg 层操作，
 完成后接入标准的 scf → LLVM 降级管道。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

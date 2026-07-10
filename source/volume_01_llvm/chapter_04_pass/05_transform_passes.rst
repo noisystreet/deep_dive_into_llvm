@@ -289,8 +289,3 @@ LLVM 社区推荐使用 ``FileCheck`` 工具来测试 Pass 的正确性：
 - `Writing an LLVM New PM Pass <https://llvm.org/docs/WritingAnLLVMNewPMPass.html>`_ — New PM Pass 编写指南
 - `LLVM Pass 文档 <https://llvm.org/docs/Passes.html>`_ — 所有内置 Pass 的参考
 - Chandler Carruth 的 LLVM Developers Meeting 演讲：*The New Pass Manager* (2017)
-
-
---------
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm*

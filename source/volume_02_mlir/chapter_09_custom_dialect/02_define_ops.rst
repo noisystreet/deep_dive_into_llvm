@@ -211,5 +211,3 @@ CMake 集成方式一脉相承，只是生成器从 ``llvm-tblgen`` 换成了 ``
 ODS 定义是自定义 Dialect 的第一步：用 ``.td`` 文件声明 Operation 的结构，
 由 ``mlir-tblgen`` 生成 C++ 样板代码。下一节 :ref:`mlir-09-09-03` 将实现
 MyDSL 到 arith 的降级 Pattern 。
-
-*本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*
