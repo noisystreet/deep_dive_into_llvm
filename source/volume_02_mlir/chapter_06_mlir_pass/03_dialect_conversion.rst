@@ -29,18 +29,12 @@ Conversion 的核心概念
 
 Dialect Conversion 涉及三个核心角色：
 
-.. mermaid::
+.. figure:: /_static/figures/mlir_dialect_conversion.svg
+   :align: center
+   :alt: Dialect 转换流程
+   :width: 90%
 
-   flowchart LR
-       A[源 Operation] --> B[ConversionPattern]
-       B --> C[目标 Operation]
-       D[TypeConverter] --> B
-       E[TargetMaterialization] --> C
-       F[SourceMaterialization] --> B
-
-       style A fill:#ff9800,color:#fff
-       style C fill:#4a9eff,color:#fff
-       style B fill:#7c4dff,color:#fff
+   Dialect Conversion 框架：源 Dialect 通过转换模式和 TypeConverter 映射到目标 Dialect
 
 1. **ConversionPattern** ：定义源 Op 到目标 Op 的转换逻辑
 2. **TypeConverter** ：管理类型之间的映射（如 ``tensor`` → ``memref`` ）

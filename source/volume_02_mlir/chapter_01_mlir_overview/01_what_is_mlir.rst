@@ -51,16 +51,12 @@
 传统编译器的 IR 困境
 ==========================
 
-.. mermaid::
+.. figure:: /_static/figures/mlir_compilation_flow.svg
+   :align: center
+   :alt: MLIR 渐降级路径
+   :width: 95%
 
-   flowchart LR
-       A["Python / Julia / ML 框架模型"] --> B[高级语言语义]
-       B --> C[LLVM IR]
-       C --> D[机器码]
-
-       style B fill:#e91e63,color:#fff
-       style C fill:#ff9800,color:#fff
-       style D fill:#4caf50,color:#fff
+   MLIR 的渐进降级路径：从高层领域 Dialect 逐层降级到 LLVM Dialect
 
 在 LLVM IR 成为行业标准之后，出现了一些新的需求，LLVM IR 难以很好支持：
 

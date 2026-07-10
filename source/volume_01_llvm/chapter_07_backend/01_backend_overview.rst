@@ -40,18 +40,12 @@
 
 LLVM 后端将 LLVM IR 转换为目标机器码，整个过程分为 **一系列明确定义的阶段** ：
 
-.. mermaid::
+.. figure:: /_static/figures/llvm_backend_pipeline.svg
+   :align: center
+   :alt: LLVM 后端代码生成管道
+   :width: 95%
 
-   flowchart LR
-       A[LLVM IR] --> B[指令选择\nSelectionDAG / GlobalISel]
-       B --> C[指令调度\nPre-RA Scheduling]
-       C --> D[寄存器分配\nRegister Allocation]
-       D --> E[指令调度\nPost-RA Scheduling]
-       E --> F[MC 层\nEmission]
-       F --> G[机器码 / 汇编]
-
-       style A fill:#4a9eff,color:#fff
-       style G fill:#ff9800,color:#fff
+   LLVM 后端从 IR 到机器码的五个主要阶段：指令选择 → 指令调度 → 寄存器分配 → 后寄存器调度 → MC 层输出。
 
 每个阶段的输入和输出：
 

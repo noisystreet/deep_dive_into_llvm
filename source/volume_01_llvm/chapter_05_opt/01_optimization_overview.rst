@@ -89,24 +89,12 @@ Pass Pipeline 的组织方式
 
 一个典型的 ``-O2`` 管道大致如下：
 
-.. mermaid::
+.. figure:: /_static/figures/llvm_opt_pipeline.svg
+   :align: center
+   :alt: LLVM -O2 优化管道
+   :width: 90%
 
-   flowchart LR
-       subgraph 早期简化
-           A[mem2reg] --> B[instcombine] --> C[simplifycfg]
-       end
-       subgraph 内联
-           C --> D[Inliner]
-       end
-       subgraph 中端优化
-           D --> E[instcombine] --> F[GVN] --> G[SCCP]
-           G --> H[LICM] --> I[IndVarSimplify]
-       end
-       subgraph 后端准备
-           I --> J[SimplifyCFG] --> K[DeadCodeElimination]
-       end
-
-       style D fill:#ff9800,color:#fff
+   -O2 管道：分析 Pass → 变换 Pass → 向量化
 
 这个顺序不是随意的：
 
