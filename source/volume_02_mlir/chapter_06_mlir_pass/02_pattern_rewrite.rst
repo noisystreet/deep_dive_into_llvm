@@ -171,7 +171,7 @@ Pattern 的优先级由 ``benefit`` 参数控制：
    patterns.add<HighPriorityPattern>(ctx, /*benefit=*/5);
    patterns.add<LowPriorityPattern>(ctx,  /*benefit=*/1);
 
-**内置 Pattern 的默认 benefit**：
+**内置 Pattern 的默认 benefit** ：
 
 .. list-table:: 默认 benefit 值
    :header-rows: 1
@@ -189,7 +189,7 @@ Pattern 的优先级由 ``benefit`` 参数控制：
      - 0
      - 最低优先级
 
-如果你希望某条 pattern 优先匹配，设置 ``benefit > 1``。
+如果你希望某条 pattern 优先匹配，设置 ``benefit > 1`` 。
 
 Canonicalizer Pass
 =======================

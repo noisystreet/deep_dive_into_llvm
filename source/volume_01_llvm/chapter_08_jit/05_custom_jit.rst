@@ -124,7 +124,7 @@
 与外部符号交互
 ===================
 
-JIT 编译的代码可能需要调用外部函数（如 ``printf``、``malloc`` ）。
+JIT 编译的代码可能需要调用外部函数（如 ``printf`` 、``malloc`` ）。
 ORC JIT 通过 ``JITDylib::define`` 来注册外部符号：
 
 .. code-block:: cpp
@@ -162,7 +162,7 @@ ORC JIT 默认使用 ``SectionMemoryManager`` ，每次编译分配新的内存�
 
 **编译优化等级**
 
-对于 JIT 场景，默认使用 ``-O2`` 可能太慢。通常使用 ``-O1`` 或 ``-O0``：
+对于 JIT 场景，默认使用 ``-O2`` 可能太慢。通常使用 ``-O1`` 或 ``-O0`` ：
 
 .. code-block:: cpp
 
@@ -189,9 +189,9 @@ ORC JIT 默认使用 ``SectionMemoryManager`` ，每次编译分配新的内存�
 
 这个模式在很多项目中得到应用：
 
-- **Julia**：使用 LLVM JIT 编译 Julia 函数
-- **TensorFlow XLA**：将 TensorFlow 计算图编译为高效机器码
-- **Rustc**：使用 LLVM JIT 执行编译期常量求值（const eval）
+- **Julia** ：使用 LLVM JIT 编译 Julia 函数
+- **TensorFlow XLA** ：将 TensorFlow 计算图编译为高效机器码
+- **Rustc** ：使用 LLVM JIT 执行编译期常量求值（const eval）
 - **SQLite** 的实验性引擎：JIT 编译 SQL 查询计划
 
 在源码中的位置

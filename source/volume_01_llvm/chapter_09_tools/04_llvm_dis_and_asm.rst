@@ -15,7 +15,7 @@ llvm-dis 与 llvm-as
 为什么需要两种格式？
 =========================
 
-LLVM IR 有**三种表示形式**，它们在语义上完全等价：
+LLVM IR 有**三种表示形式** ，它们在语义上完全等价：
 
 .. list-table:: LLVM IR 的三种形式
    :header-rows: 1

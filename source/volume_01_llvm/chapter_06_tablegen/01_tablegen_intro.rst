@@ -31,11 +31,11 @@ Target 目录下（``X86.td`` 、\ ``AArch64.td`` 、\ ``RISCV.td`` 等）。这
    - 有人提议用 XML——但 XML 写起来太啰嗦，读起来更痛苦
    - 有人提议自己写个专用 DSL——但这意味着要写解析器、类型检查器……
 
-   TableGen 的解法很"LLVM 风格"：写一个**最小的**、专用于"数据描述"
+   TableGen 的解法很"LLVM 风格"：写一个**最小的** 、专用于"数据描述"
    的 DSL，然后通过后端生成不同的 C++ 代码。它不需要是图灵完备的语言，
    只需要能描述"指令长什么样"就够了。
 
-   今天，``llvm/lib/Target`` 目录下 **超过 60% 的代码是 TableGen 文件**，
+   今天，``llvm/lib/Target`` 目录下 **超过 60% 的代码是 TableGen 文件** ，
    而不是手写 C++。一个典型的 CPU 后端有数万行 ``.td`` 文件，如果全部
    手写，维护成本将难以想象。TableGen 以"一个副业项目"的起点，成了
    LLVM 后端开发中不可或缺的基础设施。
@@ -54,7 +54,7 @@ TableGen 要解决的问题
 在传统的编译器（如 GCC）中，这些信息散布在不同的文件中，需要手动维护一致性。
 修改一条指令意味着要同步修改四五处代码。
 
-TableGen 的做法是：**用一份 ``.td`` 文件集中描述指令的所有属性**，然后由
+TableGen 的做法是：**用一份 ``.td`` 文件集中描述指令的所有属性** ，然后由
 不同的 TableGen 后端（TableGen Backend）自动生成各种代码文件。
 
 .. mermaid::
@@ -123,8 +123,8 @@ llvm-tblgen 工具
    # 查看所有可用的生成器（backend）
    $ llvm-tblgen --help | grep gen
 
-常用生成器包括：``-gen-instr-info``、``-gen-register-info``、``-gen-dag-isel``、
-``-gen-asm-writer``、``-gen-asm-matcher``、``-gen-subtarget`` 等。
+常用生成器包括：``-gen-instr-info`` 、``-gen-register-info`` 、``-gen-dag-isel`` 、
+``-gen-asm-writer`` 、``-gen-asm-matcher`` 、``-gen-subtarget`` 等。
 
 TableGen 不是通用语言
 =========================
@@ -135,7 +135,7 @@ TableGen **不是** 像 C++ 或 Python 那样的通用编程语言。它没有�
 TableGen 是一个**数据描述语言** ——它的全部输出就是一组**记录** （Records），
 每个记录是一组键值对。C++ 代码再根据这些记录生成实际的代码。
 
-这也意味着：**TableGen 中没有逻辑计算**。你能做的就是用继承、多态和模板参数
+这也意味着：**TableGen 中没有逻辑计算** 。你能做的就是用继承、多态和模板参数
 来组织和复用数据描述。
 
 --------

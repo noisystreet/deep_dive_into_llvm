@@ -18,7 +18,7 @@ MLIR 的 Pass 框架提供了在 IR 上进行**模块化分析和转换**的能�
 
    LLVM 已经有了一套成熟的 Pass 框架，为什么 MLIR 还要重新写一套？
    
-   原因在于**多级 IR 的特性要求多级 Pass 管理**。LLVM 只有一种 IR，
+   原因在于**多级 IR 的特性要求多级 Pass 管理** 。LLVM 只有一种 IR，
    所以它的 PassManager 只需要管理"一个 IR 上的 Pass 顺序"。
    而 MLIR 的 Pass 需要同时管理：
 
@@ -34,13 +34,13 @@ MLIR 的 Pass 框架提供了在 IR 上进行**模块化分析和转换**的能�
 
    更关键的是，MLIR 的 Pass 框架支持**嵌套 PassManager**——可以在
    特定 Operation 的 Region 内单独运行 Pass。例如，可以先在函数级别
-   运行 ``cse``，然后在循环级别运行 ``loop-unroll``，再回到函数级别
-   运行 ``inline``。这种"聚焦式"的 Pass 管理是 MLIR 独有的能力。
+   运行 ``cse`` ，然后在循环级别运行 ``loop-unroll`` ，再回到函数级别
+   运行 ``inline`` 。这种"聚焦式"的 Pass 管理是 MLIR 独有的能力。
 
 Pass 类型
 ===============
 
-MLIR 提供两种类型的 Pass：**Operation Pass** 和 **Analysis Pass**。
+MLIR 提供两种类型的 Pass：**Operation Pass** 和 **Analysis Pass** 。
 
 **Operation Pass**
 

@@ -5,7 +5,7 @@ tensor → scf 降级
 =================
 
 从 ``tensor`` / ``linalg`` 到 ``scf`` / ``arith`` 的降级是 MLIR 计算
-降级管道中的第一步。它将高层**张量计算**展开为显式的**标量循环**。
+降级管道中的第一步。它将高层**张量计算**展开为显式的**标量循环** 。
 
 .. rst-class:: center
 
@@ -63,11 +63,11 @@ Bufferization 是 tensor 计算降级的第一步。它将不可变的 ``tensor`
 One-Shot Bufferize 的核心策略是**就地缓冲** （in-place bufferization）。
 它分析 tensor 的使用链，尽可能复用现有的缓冲区，避免内存分配。
 
-**Bufferization 的主要挑战**：
+**Bufferization 的主要挑战** ：
 
-- **别名分析**：判断两个 memref 是否指向同一内存区域
-- **就地更新判断**：确认可以就地修改而不影响其他使用者
-- **内存分配边界**：在无法就地更新时插入分配
+- **别名分析** ：判断两个 memref 是否指向同一内存区域
+- **就地更新判断** ：确认可以就地修改而不影响其他使用者
+- **内存分配边界** ：在无法就地更新时插入分配
 
 linalg.generic 到 scf.for 的降级
 ====================================
@@ -153,9 +153,9 @@ One-Shot Bufferize Pass 完成，其实现分布在：
 
 ``OneShotAnalysis.cpp`` 的文件头注释把流程拆为三个阶段，值得精读：
 
-1. **分析**：判断哪些操作数可以就地缓冲（in-place），无需插入拷贝
-2. **插入拷贝**：为不能就地缓冲的操作数在 tensor 世界插入 ``tensor.insert_slice`` 等
-3. **Bufferize**：调用各操作的 ``BufferizableOpInterface::bufferize`` 完成转换
+1. **分析** ：判断哪些操作数可以就地缓冲（in-place），无需插入拷贝
+2. **插入拷贝** ：为不能就地缓冲的操作数在 tensor 世界插入 ``tensor.insert_slice`` 等
+3. **Bufferize** ：调用各操作的 ``BufferizableOpInterface::bufferize`` 完成转换
 
 其中第 1 步是性能关键。注释明确指出分析依赖 ``BufferizableOpInterface``——
 每个支持 bufferization 的 Op 都要声明自己的读写语义。如果分析失败，
@@ -212,7 +212,7 @@ region 内的计算，再把结果 ``store`` 到输出。三重嵌套循环的�
 本章小结
 ========
 
-tensor → scf 降级的本质是**语义展开**：把声明式的张量操作翻译为命令式的循环。
+tensor → scf 降级的本质是**语义展开** ：把声明式的张量操作翻译为命令式的循环。
 Bufferization 解决"tensor 不可变"与"循环需要读写内存"之间的矛盾；
 linalg → loops 则利用 ``indexing_maps`` 和 ``iterator_types`` 自动生成正确的循环嵌套。
 

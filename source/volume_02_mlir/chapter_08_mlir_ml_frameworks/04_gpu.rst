@@ -14,9 +14,9 @@ CUDA、ROCm 和 OpenCL 后端的 Dialect 和 Pass。
 .. admonition:: Kernel Outlining：从"内联代码"到"独立核函数"
    :class: note
 
-   GPU 编程的核心难题是区分**主机代码**和**设备代码**。
+   GPU 编程的核心难题是区分**主机代码**和**设备代码** 。
    ``gpu.launch`` 体内的 Operation 必须通过 **Kernel Outlining**
-   提取为独立的 ``gpu.func``，才能编译为 PTX/SPIR-V。
+   提取为独立的 ``gpu.func`` ，才能编译为 PTX/SPIR-V。
 
    这和 CUDA 编译器把 ``__global__`` 函数从主机代码中分离如出一辙。
    MLIR 的优势是 Outlining 发生在 IR 层——同一套 ``gpu.launch``
@@ -133,7 +133,7 @@ NVIDIA 特有操作（NVVM Dialect）
 mlir-gpu-runner
 ========================
 
-``mlir-gpu-runner`` 类似于 ``mlir-cpu-runner``，但使用 GPU：
+``mlir-gpu-runner`` 类似于 ``mlir-cpu-runner`` ，但使用 GPU：
 
 .. code-block:: console
 

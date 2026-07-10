@@ -14,7 +14,7 @@ TableGen 中的两个核心概念是 **Record** （记录）和 **Class** （类
 Record（记录）
 ================
 
-Record 是 TableGen 中的**具体数据单元**。每一条 ``def`` 语句创建一个 Record：
+Record 是 TableGen 中的**具体数据单元** 。每一条 ``def`` 语句创建一个 Record：
 
 .. code-block:: text
 
@@ -123,10 +123,10 @@ TableGen 支持**多重继承**——一个 Record 可以从多个 Class 继承�
 
 当 Record 继承 Class 时，字段的最终值由以下规则决定：
 
-1. **模板参数**：Class 的模板参数先赋值
-2. **默认值**：Class 体内的 ``let`` 设置默认值
-3. **Record 体内的 let**：Record 中的 ``let`` 覆盖 Class 的默认值
-4. **外层 let**：使用 ``let ... in { def ... }`` 语法设置的值
+1. **模板参数** ：Class 的模板参数先赋值
+2. **默认值** ：Class 体内的 ``let`` 设置默认值
+3. **Record 体内的 let** ：Record 中的 ``let`` 覆盖 Class 的默认值
+4. **外层 let** ：使用 ``let ... in { def ... }`` 语法设置的值
 
 .. code-block:: text
 

@@ -22,7 +22,7 @@ LLVM 架构概览
    :class: note
 
    Chris Lattner 在 2000 年设计 LLVM 时的核心洞察是：**用统一的 IR 连接
-   前端和后端**。这催生了一个新产业——语言前端只需生成 LLVM IR
+   前端和后端** 。这催生了一个新产业——语言前端只需生成 LLVM IR
    （Rust、Swift、Julia 都走这条路）；硬件厂商只需实现 LLVM 后端；
    工具厂商的 Sanitizer、LTO、PGO 自动惠及所有前端。
 

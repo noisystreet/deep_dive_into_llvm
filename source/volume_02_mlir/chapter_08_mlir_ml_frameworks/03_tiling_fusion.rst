@@ -4,7 +4,7 @@
 Tiling、Fusion 与 Bufferization
 ========================================
 
-Tiling、Fusion 和 Bufferization 是 MLIR 中**张量计算优化的三大支柱**。
+Tiling、Fusion 和 Bufferization 是 MLIR 中**张量计算优化的三大支柱** 。
 它们解决了如何将大张量计算高效映射到硬件的核心问题。
 
 .. rst-class:: center
@@ -23,7 +23,7 @@ Tiling、Fusion 和 Bufferization 是 MLIR 中**张量计算优化的三大支�
 
    Google 的 XLA 早在 HLO 层就做 Fusion；MLIR 的优势是把这件事
    推迟到 linalg 层，利用 ``indexing_maps`` 做更通用的融合判定。
-   一条经验法则：**在最高层做最多的 Fusion，再逐层降级**。
+   一条经验法则：**在最高层做最多的 Fusion，再逐层降级** 。
 
 Tiling（分片）
 ====================
@@ -72,7 +72,7 @@ MLIR 中通过 ``--linalg-tile`` 实现：
 Fusion（融合）
 ====================
 
-Fusion 将多个连续的操作**合并为一个**，减少中间结果的读写开销。
+Fusion 将多个连续的操作**合并为一个** ，减少中间结果的读写开销。
 
 **融合前（两个独立操作）**
 
@@ -104,7 +104,7 @@ MLIR 中通过 ``--linalg-fuse-elementwise-ops`` 实现：
 
    $ mlir-opt --linalg-fuse-elementwise-ops input.mlir
 
-**Fusion 的好处**：
+**Fusion 的好处** ：
 
 - 减少中间张量的内存分配
 - 减少缓存未命中
@@ -118,7 +118,7 @@ One-Shot Bufferization 是 MLIR 的一种**一次性缓冲化**策略。它不�
 传统的"先分配再复制"策略，而是通过分析所有 tensor 的用途链，
 一次性做出最优的缓冲化决策。
 
-**核心思路**：
+**核心思路** ：
 
 .. code-block:: text
 
@@ -131,7 +131,7 @@ One-Shot Bufferization 是 MLIR 的一种**一次性缓冲化**策略。它不�
 
    $ mlir-opt --one-shot-bufferize input.mlir
 
-**就地更新的判断**：
+**就地更新的判断** ：
 
 .. code-block:: text
 
@@ -169,7 +169,7 @@ Fusion 则将相邻的 ``linalg`` 操作合并为单个 ``linalg.generic`` ，
 减少中间 tensor 的分配。One-Shot Bufferization 的三阶段分析见
 :ref:`mlir-11-06-02` 中对 `OneShotAnalysis.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Bufferization/Transforms/OneShotAnalysis.cpp>`__ 的解读。
 
-三者的执行顺序通常是 **Tile → Fuse → Bufferize → LowerToLoops**：
+三者的执行顺序通常是 **Tile → Fuse → Bufferize → LowerToLoops** ：
 先优化张量计算的访问模式，再解决内存分配，最后展开为循环。
 
 动手验证

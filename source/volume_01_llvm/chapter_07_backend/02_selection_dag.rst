@@ -21,14 +21,14 @@ SelectionDAG
    ``*.td`` 模式）。
 
    一个有趣的设计：DAG 节点类型用 ``ISD`` （Instruction Selection DAG）
-   枚举定义，如 ``ISD::ADD``、``ISD::LOAD``——这些在 ``llvm/include/llvm/CodeGen/ISDOpcodes.h``
+   枚举定义，如 ``ISD::ADD`` 、``ISD::LOAD``——这些在 ``llvm/include/llvm/CodeGen/ISDOpcodes.h``
    中声明，与目标无关。目标相关的部分只在最后的 Pattern Match 阶段出现。
    这让 LLVM 能为 20+ 个目标共享 90% 的后端代码。
 
 SelectionDAG 的节点结构
 ============================
 
-SelectionDAG 中的每个节点是一个 ``SDNode``，节点间的边代表数据依赖关系：
+SelectionDAG 中的每个节点是一个 ``SDNode`` ，节点间的边代表数据依赖关系：
 
 .. code-block:: text
 
@@ -70,7 +70,7 @@ SelectionDAG 中的每个节点是一个 ``SDNode``，节点间的边代表数�
    t2: i32 = add t0, t1        ; 内部节点：加法
 
 整个过程由 ``SelectionDAGBuilder`` 类完成。它遍历 LLVM IR 的 BasicBlock，
-为每条 IR 指令创建对应的 ``SDNode``。
+为每条 IR 指令创建对应的 ``SDNode`` 。
 
 在源码中的位置：`llvm/lib/CodeGen/SelectionDAG/SelectionDAGBuilder.cpp <file:///workspace/llvm-project/llvm/lib/CodeGen/SelectionDAG/SelectionDAGBuilder.cpp>`__
 

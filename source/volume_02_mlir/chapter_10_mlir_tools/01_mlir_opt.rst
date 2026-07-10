@@ -29,14 +29,14 @@ mlir-opt
 
    **场景 3：IR 合法性检查**
    ``mlir-opt --verify-each --pass-pipeline="builtin.module(canonicalize,convert-scf-to-cf)" input.mlir``
-   每个 Pass 后都会运行验证器——这类似于 LLVM 中 ``opt -verify``，
+   每个 Pass 后都会运行验证器——这类似于 LLVM 中 ``opt -verify`` ，
    但因为 MLIR 支持多 Dialect，验证器也支持多 Dialect 的合法性检查。
 
    **场景 4：测试精简**
    ``mlir-reduce`` 可以从一个数千行的 MLIR 程序中自动缩减到最小可以
    触发 bug 的 IR。这对于复现和报告 bug 非常有帮助。
 
-   可以说，任何 MLIR 开发工作 90% 的时间都离不开 ``mlir-opt``。
+   可以说，任何 MLIR 开发工作 90% 的时间都离不开 ``mlir-opt`` 。
 
 基本用法
 ==============
@@ -140,7 +140,7 @@ Pass Pipeline 的高级用法
 自定义 mlir-opt
 ==================
 
-可以基于 ``MlirOptMain`` 构建自己的 ``mydsl-opt``：
+可以基于 ``MlirOptMain`` 构建自己的 ``mydsl-opt`` ：
 
 .. code-block:: cpp
 

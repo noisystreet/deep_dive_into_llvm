@@ -18,13 +18,13 @@ opt：LLVM 优化器驱动
    意想不到的应用：
 
    **场景 1：定制化 -O 等级**
-   Apple 的 Xcode 默认的 ``-O2`` 实际上不是 LLVM 的默认 ``-O2``，
+   Apple 的 Xcode 默认的 ``-O2`` 实际上不是 LLVM 的默认 ``-O2`` ，
    而是苹果自己调过参数的管道。通过 ``opt -pass-pipeline`` 可以精确
    控制哪些 Pass 运行、什么顺序运行。
 
    **场景 2：调试优化器**
    ``opt -print-after-all`` 这个选项被 LLVM 开发者称为"最强大的调试武器"。
-   它在每个 Pass 之后都打印 IR，让你看到 IR 从输入到输出的**每一帧变化**。
+   它在每个 Pass 之后都打印 IR，让你看到 IR 从输入到输出的**每一帧变化** 。
    加上 ``-debug-only=pass-name`` 可以只看特定 Pass 的调试日志。
 
    **场景 3：LLVM 测试基础设施**
@@ -59,9 +59,9 @@ opt：LLVM 优化器驱动
 
 参数说明：
 
-- ``-passes``：指定要运行的 Pass 管道（New PM 格式）
-- ``-S``：输出文本格式 IR（.ll），不指定则输出比特码（.bc）
-- ``-o``：指定输出文件，不指定则输出到 stdout
+- ``-passes`` ：指定要运行的 Pass 管道（New PM 格式）
+- ``-S`` ：输出文本格式 IR（.ll），不指定则输出比特码（.bc）
+- ``-o`` ：指定输出文件，不指定则输出到 stdout
 
 Pass 管道语法
 ================
@@ -101,7 +101,7 @@ LLVM 15+ 使用 New Pass Manager 时，通过 ``-load-pass-plugin`` 加载自定
    $ opt -load-pass-plugin=./libMyPass.so \
          -passes='my-pass' input.ll -S
 
-Legacy PM（可选）仍然使用 ``-load``：
+Legacy PM（可选）仍然使用 ``-load`` ：
 
 .. code-block:: console
 

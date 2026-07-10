@@ -4,7 +4,7 @@
 memref Dialect
 ==============
 
-``memref`` （Memory Reference）是 MLIR 中**可变内存抽象**的核心 Dialect。
+``memref`` （Memory Reference）是 MLIR 中 **可变内存抽象** 的核心 Dialect。
 它代表了 MLIR 从"值语义"（tensor）到"内存语义"（指针+布局）的转变。
 
 .. rst-class:: center
@@ -15,7 +15,7 @@ memref Dialect
 memref 类型结构
 =======================
 
-memref 类型不仅包含数据类型，还包含**内存布局信息**：
+memref 类型不仅包含数据类型，还包含 **内存布局信息** ：
 
 .. code-block:: text
 
@@ -37,7 +37,7 @@ memref 类型不仅包含数据类型，还包含**内存布局信息**：
    memref<4x4xf32, strided<[4, 1]>>
    // stride 数组说明：第 0 维步长 4，第 1 维步长 1（行主序）
 
-在 LLVM 后端中，memref 被降级为一个**结构化类型**：
+在 LLVM 后端中，memref 被降级为一个 **结构化类型** ：
 
 .. code-block:: text
 

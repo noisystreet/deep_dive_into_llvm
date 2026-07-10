@@ -97,30 +97,30 @@
 开源项目与工具
 ==================
 
-**基于 LLVM 的工具和语言**：
+**基于 LLVM 的工具和语言** ：
 
-- **Clang**：C/C++/Objective-C 前端
-- **Flang**：Fortran 前端
+- **Clang** ：C/C++/Objective-C 前端
+- **Flang** ：Fortran 前端
 - **rustc** （LLVM 后端）：Rust 编译器
 - **Julia** （LLVM 后端）：科学计算语言
-- **MLIR**：多级 IR 框架
-- **IREE**：基于 MLIR 的 ML 推理引擎
+- **MLIR** ：多级 IR 框架
+- **IREE** ：基于 MLIR 的 ML 推理引擎
 - **TVM** （LLVM 后端）：深度学习编译器
 
-**开发工具**：
+**开发工具** ：
 
 - **compiler-explorer** （godbolt.org）：在线查看编译器输出
-- **llvm-mca**：LLVM 机器码分析器
-- **Performance Analysis Tools**：perf、Valgrind、XRay
+- **llvm-mca** ：LLVM 机器码分析器
+- **Performance Analysis Tools** ：perf、Valgrind、XRay
 
 社区资源
 ==================
 
 - **LLVM Weekly** （llvmweekly.org）：每周 LLVM 新闻摘要
-- **MLIR News**：MLIR 社区动态
-- **LLVM Developers' Meeting**：每年两次的开发者大会
-- **EuroLLVM**：欧洲 LLVM 开发者会议
-- **YouTube 频道**：LLVM 官方演讲和教程
+- **MLIR News** ：MLIR 社区动态
+- **LLVM Developers' Meeting** ：每年两次的开发者大会
+- **EuroLLVM** ：欧洲 LLVM 开发者会议
+- **YouTube 频道** ：LLVM 官方演讲和教程
 
 --------
 

@@ -15,19 +15,19 @@ LLVM Dialect → LLVM IR
    :class: note
 
    ``mlir-translate --mlir-to-llvmir`` 是 MLIR 世界的最后一道门。
-   出门之后，``opt -O2``、``llc``、``lli`` 完全沿用第一卷的工具链——
+   出门之后，``opt -O2`` 、``llc`` 、``lli`` 完全沿用第一卷的工具链——
    寄存器分配、指令选择、ELF 生成，MLIR 不再介入。
 
    这意味着 MLIR 不必重复实现后端——它专注于"如何把领域知识
    翻译成 LLVM 能理解的 IR"。对读者来说，掌握 MLIR 降级的终点，
    就是掌握 LLVM 优化的起点：把 ``mlir-translate`` 的输出
-   喂给 ``opt``，就能用第一卷学到的 Pass 继续优化。
+   喂给 ``opt`` ，就能用第一卷学到的 Pass 继续优化。
 
 Translation 接口
 ========================
 
 MLIR 的 Translation 框架定义了从 MLIR Operation 到 LLVM IR 的映射。
-核心类是 ``ModuleTranslation``：
+核心类是 ``ModuleTranslation`` ：
 
 .. code-block:: cpp
 
@@ -166,9 +166,9 @@ mlir-cpu-runner
    This file implements the translation between an MLIR LLVM dialect module and
    the corresponding LLVMIR module.
 
-翻译器的工作方式是**逐 Operation 分发**：对每个 ``llvm.func`` 内的
-``llvm.add``、``llvm.load`` 等操作，调用对应的 ``LLVMTranslationInterface``
-生成 ``llvm::Instruction``。类型映射由 ``TypeToLLVM.h`` 统一处理，
+翻译器的工作方式是**逐 Operation 分发** ：对每个 ``llvm.func`` 内的
+``llvm.add`` 、``llvm.load`` 等操作，调用对应的 ``LLVMTranslationInterface``
+生成 ``llvm::Instruction`` 。类型映射由 ``TypeToLLVM.h`` 统一处理，
 确保 ``!llvm.ptr`` 等 MLIR 类型正确转为 LLVM IR 类型。
 
 这与 :ref:`chapter-09-04-llvm-dis-and-asm` 讨论的 LLVM bitcode/IR 文本
@@ -201,7 +201,7 @@ mlir-cpu-runner
 ========
 
 LLVM Dialect → LLVM IR 是 MLIR 管道的终点站。``mlir-translate`` 完成最后
-的格式转换，之后 ``opt``、``llc``、``lli`` 接管——MLIR 与 LLVM 的边界
+的格式转换，之后 ``opt`` 、``llc`` 、``lli`` 接管——MLIR 与 LLVM 的边界
 就在这一步。第 6 章降级管道至此完整闭环。
 
 *本文由 ``agents.md`` 驱动，项目：deep_dive_into_llvm · 第二卷 MLIR*

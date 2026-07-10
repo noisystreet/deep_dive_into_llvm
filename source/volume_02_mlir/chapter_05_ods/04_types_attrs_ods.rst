@@ -4,7 +4,7 @@
 用 ODS 定义类型和属性
 ===========================
 
-ODS 不仅能定义 Operation，还能定义 **Type** 和 **Attribute**。这让你可以在
+ODS 不仅能定义 Operation，还能定义 **Type** 和 **Attribute** 。这让你可以在
 ODS 中完整地描绘 Dialect 的数据类型系统。
 
 .. rst-class:: center
@@ -15,7 +15,7 @@ ODS 中完整地描绘 Dialect 的数据类型系统。
    :class: note
 
    MLIR 中 ``IntegerType::get(ctx, 32)`` 无论调用多少次，返回的都是
-   **同一个对象**。这靠 ``StorageUniquer`` 实现：每种 Type/Attribute
+   **同一个对象** 。这靠 ``StorageUniquer`` 实现：每种 Type/Attribute
    按参数唯一化存储，判等只需比较指针。
 
    这与 LLVM ``Type`` 的唯一化策略一脉相承，但 MLIR 扩展到了

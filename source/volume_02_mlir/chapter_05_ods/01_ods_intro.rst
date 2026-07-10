@@ -5,7 +5,7 @@ ODS 概述
 ============
 
 ODS（Operation Definition Spec）是 MLIR 中定义 Operation、Type、Attribute
-等的**声明式框架**。它基于 LLVM 的 TableGen 语言，让你用 ``.td`` 文件描述
+等的**声明式框架** 。它基于 LLVM 的 TableGen 语言，让你用 ``.td`` 文件描述
 Operation 的结构和约束，然后由 ``mlir-tblgen`` 自动生成 C++ 代码。
 
 .. rst-class:: center
@@ -20,19 +20,19 @@ Operation 的结构和约束，然后由 ``mlir-tblgen`` 自动生成 C++ 代码
    LLVM 的 TableGen 是一个"通用数据描述语言"，它的设计哲学是：
    给你最小的工具集（Record、Class、DAG），让你自己做任何事。
 
-   MLIR 的 ODS 在 TableGen 之上做了一层**领域专用的抽象**：
+   MLIR 的 ODS 在 TableGen 之上做了一层**领域专用的抽象** ：
    - 不用写 ``def`` 来定义 Operation，而是用 ``Op<>``
    - 参数类型用 ``I32:$lhs`` 而不是 ``Field<I32>``
    - 汇编格式用声明式字符串而不是 C++ 代码片段
 
    这种"领域特化"带来的好处是惊人的：
 
-   对于 MLIR 内置的 Dialect，ODS 生成的代码量是手写代码的 **5-10 倍**。
+   对于 MLIR 内置的 Dialect，ODS 生成的代码量是手写代码的 **5-10 倍** 。
    以 ``arith`` Dialect 为例：``ArithOps.td`` 大约有 3000 行 TableGen，
    而 ``mlir-tblgen -gen-op-defs`` 生成的 C++ 代码超过 30000 行。
    换句话说，一顿饭吃 10 分钟，产生的能量够工作 1 小时。
 
-   更关键的是，ODS 生成的代码**不会有人为 bug**。编码表、验证函数、
+   更关键的是，ODS 生成的代码**不会有人为 bug** 。编码表、验证函数、
    解析/打印函数——这些代码的模式高度固定，最适合自动生成。
    历史上 LLVM/MLIR 的很多 bug 都来自手写的解析器或验证器，
    ODS 将这些 bug 类别彻底消灭了。
@@ -75,7 +75,7 @@ Operation 的结构和约束，然后由 ``mlir-tblgen`` 自动生成 C++ 代码
      - ~50 行
      - ✅
 
-ODS 的核心思路：**只描述"是什么"，自动生成"怎么做"**。
+ODS 的核心思路：**只描述"是什么"，自动生成"怎么做"** 。
 
 ODS 文件结构
 =================
@@ -112,7 +112,7 @@ ODS 中的 TableGen 扩展
 
 ODS 扩展了 TableGen 的语法，加入了专门用于 MLIR Operation 定义的构造：
 
-**``Op<>``**：定义 Operation 的基类模板
+**``Op<>``** ：定义 Operation 的基类模板
 
 .. code-block:: text
 
@@ -122,7 +122,7 @@ ODS 扩展了 TableGen 的语法，加入了专门用于 MLIR Operation 定义�
        // 完整名称：my_dialect.my_op
    }
 
-**``ins`` / ``outs``**：定义输入参数和输出结果
+**``ins`` / ``outs``** ：定义输入参数和输出结果
 
 .. code-block:: text
 
@@ -132,7 +132,7 @@ ODS 扩展了 TableGen 的语法，加入了专门用于 MLIR Operation 定义�
    let results = (outs I32:$result);
    // 输出：一个 i32 类型，名字 result
 
-**``let``**：设置 Operation 的属性
+**``let``** ：设置 Operation 的属性
 
 .. code-block:: text
 
@@ -167,12 +167,12 @@ ODS 的工作流程
 
 - **Op 类声明** （``MyDialect.h.inc`` ）：Operation 的 C++ 类
 - **Op 类实现** （``MyDialect.cpp.inc`` ）：构造函数、解析/打印等
-- **Dialect 注册**：Dialect 的初始化代码
+- **Dialect 注册** ：Dialect 的初始化代码
 
 ODS vs 手写 C++
 ====================
 
-ODS 不能覆盖 100% 的代码生成场景。**对于大部分情况（90%+），ODS 足够**。
+ODS 不能覆盖 100% 的代码生成场景。**对于大部分情况（90%+），ODS 足够** 。
 对于需要手写的场景，可以通过 ODS 中的 ``let verifier`` 或 ``let hasCustomAssemblyFormat``
 来插入自定义逻辑。
 

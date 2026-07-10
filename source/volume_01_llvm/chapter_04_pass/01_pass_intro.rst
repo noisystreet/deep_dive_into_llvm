@@ -19,21 +19,21 @@ Pass 框架概述
 
    LLVM 的 Pass 框架经历过一次**漫长而痛苦的迁移**——从 Legacy Pass Manager
    到 New Pass Manager。这个过程从 2016 年开始，到 2021 年 Legacy PM 才正式
-   被标记为废弃，历时 **5 年之久**。
+   被标记为废弃，历时 **5 年之久** 。
 
    Legacy PM 是 LLVM 最早期的设计（2003 年），它的问题在于：
 
-   1. **全局状态**：Pass 使用静态全局变量注册，无法支持多个 LLVM 实例
-   2. **类型不安全**：``getAnalysis<>()`` 使用运行时类型名而非编译期类型
-   3. **不透明依赖**：Pass 的依赖关系在运行时才解析
-   4. **线程不安全**：无法并行执行 Pass
+   1. **全局状态** ：Pass 使用静态全局变量注册，无法支持多个 LLVM 实例
+   2. **类型不安全** ：``getAnalysis<>()`` 使用运行时类型名而非编译期类型
+   3. **不透明依赖** ：Pass 的依赖关系在运行时才解析
+   4. **线程不安全** ：无法并行执行 Pass
 
    New PM 由 Chandler Carruth 主导设计（Google），完全重新设计了
    Pass 管理架构：
-   - **显式 Pipeline**：Pass 的添加和执行顺序完全透明
-   - **类型安全的 AnalysisManager**：编译期类型检查
-   - **无全局状态**：支持多实例、支持 JIT 场景
-   - **线程友好**：Pass 不再持有可变的全局状态
+   - **显式 Pipeline** ：Pass 的添加和执行顺序完全透明
+   - **类型安全的 AnalysisManager** ：编译期类型检查
+   - **无全局状态** ：支持多实例、支持 JIT 场景
+   - **线程友好** ：Pass 不再持有可变的全局状态
    
    这次迁移之所以漫长，是因为 LLVM 有数百个 Pass 和数千个用户，
    每个 Pass 都需要逐个迁移、逐个测试。Vladimir Vereschaka 的 LLVM

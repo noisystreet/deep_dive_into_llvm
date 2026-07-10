@@ -41,7 +41,7 @@ FileCheck 在测试文件中嵌入 ``CHECK`` 指令：
        func.return %0 : i32
    }
 
-**常用 CHECK 指令**：
+**常用 CHECK 指令** ：
 
 .. list-table:: FileCheck 指令
    :header-rows: 1
@@ -123,7 +123,7 @@ MLIR 测试示例
 使用 CHECK-DAG
 ====================
 
-当输出顺序不确定时使用 ``CHECK-DAG``：
+当输出顺序不确定时使用 ``CHECK-DAG`` ：
 
 .. code-block:: text
 
@@ -137,7 +137,7 @@ MLIR 测试示例
 mlir-reduce
 ==================
 
-``mlir-reduce`` 是 MLIR 的**测试用例缩减工具**。当有测试失败时，
+``mlir-reduce`` 是 MLIR 的**测试用例缩减工具** 。当有测试失败时，
 它自动将 IR 缩减到最小的可重现用例：
 
 .. code-block:: console

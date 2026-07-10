@@ -4,7 +4,7 @@
 LLJIT 与 Lazy Compilation
 ==========================
 
-LLJIT（Low-Level JIT）是 ORC JIT 提供的一个**开箱即用的高级 API**。
+LLJIT（Low-Level JIT）是 ORC JIT 提供的一个**开箱即用的高级 API** 。
 它封装了 ORC JIT 的底层 Layer 栈，让你用最少的代码就能运行 JIT 编译。
 
 .. rst-class:: center
@@ -79,7 +79,7 @@ LLJIT 的创建非常简单：
    auto *Add = (int (*)(int, int))AddSym->getAddress();
    int Result = Add(1, 2);
 
-注意 ``lookup`` 返回的是 ``JITEvaluatedSymbol``，它包含了符号的地址和标志位。
+注意 ``lookup`` 返回的是 ``JITEvaluatedSymbol`` ，它包含了符号的地址和标志位。
 
 JITDylib 管理
 =================
@@ -162,7 +162,7 @@ LLJIT 内部构建的 Layer 栈是：
          ↓
    ObjectLinkingLayer（加载 + 重定位）
 
-这个栈提供了平衡的默认行为：**懒编译 → 优化 → 编译 → 链接**。
+这个栈提供了平衡的默认行为：**懒编译 → 优化 → 编译 → 链接** 。
 
 惰性 vs 即时编译策略
 ========================

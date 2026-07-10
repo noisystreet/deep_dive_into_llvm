@@ -4,7 +4,7 @@
 LLVM Dialect
 =================
 
-``LLVM`` Dialect 是 MLIR 和 LLVM IR 之间的**桥梁**。它将 LLVM IR 中的指令、
+``LLVM`` Dialect 是 MLIR 和 LLVM IR 之间的**桥梁** 。它将 LLVM IR 中的指令、
 类型和元数据映射为 MLIR 的 Operation 和 Type。
 
 .. rst-class:: center
@@ -16,7 +16,7 @@ LLVM Dialect
    :class: note
 
    一个自然的问题是：既然最终要 LLVM IR，为什么不跳过 LLVM Dialect
-   直接输出 ``.ll``？答案涉及 **渐进验证** 和 **类型安全**。
+   直接输出 ``.ll`` ？答案涉及 **渐进验证** 和 **类型安全** 。
 
    LLVM Dialect 仍是 MLIR 世界的一部分——可以用 MLIR 的 Verifier 检查
    类型一致性，用 Pass 做最后阶段的优化（如 memref 描述符展开）。
@@ -30,7 +30,7 @@ LLVM Dialect
 LLVM Dialect 的设计
 =========================
 
-``LLVM`` Dialect 的设计原则是：**尽可能地直接映射 LLVM IR**。
+``LLVM`` Dialect 的设计原则是：**尽可能地直接映射 LLVM IR** 。
 每个 LLVM IR 指令在 MLIR 中都有一个对应的 Operation。
 
 .. code-block:: text

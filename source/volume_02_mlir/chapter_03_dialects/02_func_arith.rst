@@ -17,10 +17,10 @@ func / arith / math Dialect
 
    早期 MLIR 把整数运算放在 ``std`` Dialect 中。随着生态扩张，
    ``std`` 变得臃肿且语义模糊——它既管控制流又管算术又管内存。
-   2020 年前后的大重构将其拆分为 ``arith``、``memref``、``scf`` 等
+   2020 年前后的大重构将其拆分为 ``arith`` 、``memref`` 、``scf`` 等
    专职 Dialect。
 
-   ``arith`` 的设计原则是**最小且纯**：只提供基本算术，附加
+   ``arith`` 的设计原则是**最小且纯** ：只提供基本算术，附加
    ``Pure`` Trait 标记无副作用，让 CSE/DCE 可以自由优化。
    几乎所有降级管道的倒数第二步都是 ``convert-arith-to-llvm``——
    理解 arith 就是理解 MLIR 到 LLVM 的"最后一公里"前的通用层。
@@ -121,7 +121,7 @@ math Dialect
 ==================
 
 ``math`` Dialect 提供了数学函数。它们通常会被降级为 LLVM 的内建函数调用
-（如 ``llvm.sqrt``、``llvm.sin`` 等）。
+（如 ``llvm.sqrt`` 、``llvm.sin`` 等）。
 
 .. code-block:: text
 
@@ -143,9 +143,9 @@ math Dialect
 类型转换与 arith 的关系
 ==============================
 
-``arith`` 只处理**标量类型（scalar types）**——即 ``i1``、``i32``、``f32``
+``arith`` 只处理**标量类型（scalar types）**——即 ``i1`` 、``i32`` 、``f32``
 等基础类型。如果你需要操作张量（如 ``tensor<4xf32>`` ），需要结合其他 Dialect
-（如 ``tensor``、``linalg`` ）的 Operation。
+（如 ``tensor`` 、``linalg`` ）的 Operation。
 
 .. code-block:: text
 
@@ -192,7 +192,7 @@ math Dialect
 
 ``CallOpInterface`` 和 ``SymbolUserOpInterface`` 是 MLIR 的 Interface 机制——
 Pass 可以通过 Interface 统一处理所有"函数调用"语义的 Op，而不必逐个匹配
-``func.call``、``llvm.call`` 等具体名称。Interface 的详细机制见 :ref:`mlir-05-05-03` 。
+``func.call`` 、``llvm.call`` 等具体名称。Interface 的详细机制见 :ref:`mlir-05-05-03` 。
 
 ``arith`` Dialect 的基类定义在
 `ArithOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Arith/IR/ArithOps.td>`__ ：
@@ -216,7 +216,7 @@ Pass 可以通过 Interface 统一处理所有"函数调用"语义的 Op，而�
 
    mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir
 
-确认输出中同时出现 ``func.func``、``arith.addi``、``func.return`` 三个 Dialect 的操作。
+确认输出中同时出现 ``func.func`` 、``arith.addi`` 、``func.return`` 三个 Dialect 的操作。
 然后运行完整降级：
 
 .. code-block:: console
@@ -227,7 +227,7 @@ Pass 可以通过 Interface 统一处理所有"函数调用"语义的 Op，而�
        --convert-func-to-llvm \
        --reconcile-unrealized-casts
 
-观察 ``func.func`` → ``llvm.func``、``arith.addi`` → ``llvm.add`` 的一一映射。
+观察 ``func.func`` → ``llvm.func`` 、``arith.addi`` → ``llvm.add`` 的一一映射。
 
 本章小结
 ========

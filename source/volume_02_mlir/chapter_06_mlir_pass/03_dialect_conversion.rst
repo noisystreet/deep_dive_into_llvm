@@ -15,14 +15,14 @@ Dialect Conversion 是 MLIR **渐进降级** （Progressive Lowering）的核心
    :class: note
 
    渐进降级中，源 Dialect 和目标 Dialect 的类型系统往往不兼容——
-   ``tensor<4xf32>`` 无法直接变成 ``!llvm.ptr``。``DialectConversion``
+   ``tensor<4xf32>`` 无法直接变成 ``!llvm.ptr`` 。``DialectConversion``
    框架引入 **Materialization** 机制，用 ``unrealized_conversion_cast``
    作为临时占位符。
 
    这些 cast 在管道末尾由 ``reconcile-unrealized-casts`` 消除。
    如果消除失败，说明降级不完整——这是 MLIR 管道调试最常见的错误之一。
-   看到残留的 ``unrealized_conversion_cast``，就检查哪一步 Conversion
-   没有为某种类型对注册 ``TypeConverter``。
+   看到残留的 ``unrealized_conversion_cast`` ，就检查哪一步 Conversion
+   没有为某种类型对注册 ``TypeConverter`` 。
 
 Conversion 的核心概念
 ============================
@@ -42,9 +42,9 @@ Dialect Conversion 涉及三个核心角色：
        style C fill:#4a9eff,color:#fff
        style B fill:#7c4dff,color:#fff
 
-1. **ConversionPattern**：定义源 Op 到目标 Op 的转换逻辑
-2. **TypeConverter**：管理类型之间的映射（如 ``tensor`` → ``memref`` ）
-3. **Materialization**：处理类型不匹配时的转换操作
+1. **ConversionPattern** ：定义源 Op 到目标 Op 的转换逻辑
+2. **TypeConverter** ：管理类型之间的映射（如 ``tensor`` → ``memref`` ）
+3. **Materialization** ：处理类型不匹配时的转换操作
 
 ConversionPattern
 =======================
@@ -70,7 +70,7 @@ ConversionPattern
 
 **Adaptor 机制**
 
-``Adaptor`` 是 Conversion 的一个重要机制。它自动完成了**操作数的类型映射**：
+``Adaptor`` 是 Conversion 的一个重要机制。它自动完成了**操作数的类型映射** ：
 
 .. code-block:: cpp
 
@@ -216,7 +216,7 @@ Dialect Conversion 的核心实现在
 `DialectConversion.h <file:///workspace/llvm-project/mlir/include/mlir/Transforms/DialectConversion.h>`__ 。
 
 ``applyFullConversion`` 与 ``applyPartialConversion`` 的区别在于
-**合法化检查的时机和严格程度**：
+**合法化检查的时机和严格程度** ：
 
 - Full Conversion：目标 Dialect 之外的 Operation 必须全部被转换，否则失败
 - Partial Conversion：允许保留部分未转换的 Operation，适合分阶段降级

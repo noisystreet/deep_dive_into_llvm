@@ -17,7 +17,7 @@ HLO（High-Level Operations）的稳定版本，被 TensorFlow、JAX 和 PyTorch
 
    原始 HLO 随 TensorFlow/XLA 快速迭代，Op 语义和签名频繁变动——
    今天保存的模型，明天可能就解析失败。StableHLO 的核心承诺是
-   **版本化兼容性**：每个程序标注 ``stablehlo.version``，旧版本
+   **版本化兼容性** ：每个程序标注 ``stablehlo.version`` ，旧版本
    程序可以被新版本编译器处理。
 
    它使用 MLIR Bytecode 格式 ``.mlirbc`` 而非文本 IR 做序列化——
@@ -40,8 +40,8 @@ StableHLO 的由来
 
 StableHLO 分为两个模块：
 
-- **stablehlo**：核心稳定操作集（版本化，保证向后兼容）
-- **chlo**：自定义操作（非版本化，包含高级组合操作）
+- **stablehlo** ：核心稳定操作集（版本化，保证向后兼容）
+- **chlo** ：自定义操作（非版本化，包含高级组合操作）
 
 核心操作
 ================
@@ -170,7 +170,7 @@ CHLO 与 StableHLO 的分工
 动手验证
 ==========
 
-如果你没有安装 ``stablehlo-translate``，仍可以用纯 MLIR Dialect
+如果你没有安装 ``stablehlo-translate`` ，仍可以用纯 MLIR Dialect
 模拟降级管道的后半段。以前文的矩阵乘法为例，在 linalg 层走通
 :ref:`mlir-11-06-02` 描述的 tensor → scf 路径，即 StableHLO 降级的
 最终落点之一。

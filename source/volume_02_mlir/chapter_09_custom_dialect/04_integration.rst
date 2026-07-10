@@ -16,7 +16,7 @@
 
    Toy Tutorial Ch7 的 ``toyc.cpp`` 把 Dialect 注册、Pass Pipeline、
    文件 I/O 封装为一个独立编译器——这是自定义 Dialect 走向实用的
-   标准路径。IREE 的 ``iree-compile``、Buddy 的 ``buddy-opt``
+   标准路径。IREE 的 ``iree-compile`` 、Buddy 的 ``buddy-opt``
    都遵循同一骨架：
 
    1. ``registerDialect<MyDSL>()``
@@ -191,8 +191,8 @@ Toy 编译器入口在
    4. ExecutionEngine::create(module) 创建 JIT
    5. engine->invoke("main") 执行
 
-MyDSL 的 ``mydsl-opt`` 只覆盖前两步——它是**开发调试工具**；
-Toy 的 ``toyc`` 则覆盖全部五步，是**端到端编译器**。
+MyDSL 的 ``mydsl-opt`` 只覆盖前两步——它是**开发调试工具** ；
+Toy 的 ``toyc`` 则覆盖全部五步，是**端到端编译器** 。
 
 源码走读：MlirOptMain
 ================================
@@ -247,7 +247,7 @@ Toy Ch7 在降级后调用 ``ExecutionEngine`` 执行程序，详见
 本章小结
 ========
 
-自定义 Dialect 开发的最后一步是**工具集成**：注册 Dialect 和 Pass，
+自定义 Dialect 开发的最后一步是**工具集成** ：注册 Dialect 和 Pass，
 让用户能通过命令行驱动编译管道。MyDSL 的 ``mydsl-opt`` 是最小集成；
 Toy 的 ``toyc`` 是完整编译器。掌握前者是理解后者的基础。
 

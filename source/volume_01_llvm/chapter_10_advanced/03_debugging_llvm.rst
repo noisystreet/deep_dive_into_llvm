@@ -32,7 +32,7 @@ LLVM 项目中广泛使用 ``LLVM_DEBUG`` 宏来输出调试信息：
        }
    }
 
-**关键点**：``LLVM_DEBUG`` 在 Release 模式**不产生任何代码**。只有 Debug 构建
+**关键点** ：``LLVM_DEBUG`` 在 Release 模式**不产生任何代码** 。只有 Debug 构建
 或 Release 构建时用 ``-DLLVM_ENABLE_ASSERTIONS=ON`` 才会编译进去。
 
 运行时通过 ``-debug`` 或 ``-debug-only`` 控制输出：
@@ -93,7 +93,7 @@ MachineVerifier 与 IR Verifier
 
 LLVM 自带两个"自动检查员"：
 
-**IR Verifier**：验证 LLVM IR 的一致性。
+**IR Verifier** ：验证 LLVM IR 的一致性。
 
 .. code-block:: console
 
@@ -106,7 +106,7 @@ LLVM 自带两个"自动检查员"：
 
    $ opt -disable-verify ...
 
-**MachineVerifier**：验证 MachineInstr 的一致性（后端）。
+**MachineVerifier** ：验证 MachineInstr 的一致性（后端）。
 
 .. code-block:: console
 
@@ -119,7 +119,7 @@ MachineVerifier 检查：
 - 虚拟寄存器是否在分配前被使用
 - 基本块是否以终止指令结尾
 
-在 Pass 开发过程中，建议始终开启 ``-verify``。
+在 Pass 开发过程中，建议始终开启 ``-verify`` 。
 
 opt 的调试工具
 ====================
@@ -184,7 +184,7 @@ GDB 调试 LLVM 的最佳实践
 bugpoint：最小化测试用例
 ==============================
 
-``bugpoint`` 是 LLVM 的**自动化测试用例最小化工具**。当发现一个 Pass 有 bug 时，
+``bugpoint`` 是 LLVM 的**自动化测试用例最小化工具** 。当发现一个 Pass 有 bug 时，
 用 bugpoint 可以将触发 bug 的大型 IR 文件缩小到最小可复现版本：
 
 .. code-block:: console

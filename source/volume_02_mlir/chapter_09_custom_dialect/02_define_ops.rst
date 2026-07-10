@@ -5,7 +5,7 @@
 =====================
 
 本节使用 ODS（Operation Definition Spec）定义 MyDSL 的两个 Operation：
-``mac`` 和 ``square``。
+``mac`` 和 ``square`` 。
 
 .. rst-class:: center
 
@@ -16,7 +16,7 @@
    :class: tip
 
    Toy Tutorial Ch3 用不到 100 行 ODS 定义了完整的 Toy Dialect——
-   包括 ``mul``、``constant``、``return`` 等 Op。MyDSL 遵循同一模板：
+   包括 ``mul`` 、``constant`` 、``return`` 等 Op。MyDSL 遵循同一模板：
 
    1. 写 ``MyDSLOps.td`` 定义 Op
    2. ``mlir-tblgen`` 生成 C++ 类
@@ -30,7 +30,7 @@
 ODS 定义文件
 ====================
 
-``MyDSLOps.td``：
+``MyDSLOps.td`` ：
 
 .. code-block:: text
 
@@ -127,7 +127,7 @@ ODS 定义文件
 Dialect 注册
 ====================
 
-``MyDSLDialect.cpp``：
+``MyDSLDialect.cpp`` ：
 
 .. code-block:: cpp
 

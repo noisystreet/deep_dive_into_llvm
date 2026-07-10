@@ -5,7 +5,7 @@ SCF 并行优化
 =========================
 
 SCF（Structured Control Flow）Dialect 提供了三种级别的并行化支持：
-``scf.parallel``、``scf.for`` 的 ``thread_local`` 属性、以及隐式并行语义。
+``scf.parallel`` 、``scf.for`` 的 ``thread_local`` 属性、以及隐式并行语义。
 
 .. rst-class:: center
 
@@ -23,7 +23,7 @@ SCF（Structured Control Flow）Dialect 提供了三种级别的并行化支持�
    对现实世界中的代码效果不佳。
 
    MLIR 并没有放弃这个梦想，而是换了一个更现实的思路：**不试图自动发现
-   并行性，而是让上层 IR 显式标记并行性**。
+   并行性，而是让上层 IR 显式标记并行性** 。
 
    ``scf.parallel`` 和 ``scf.for`` 的区别就是这种思路的体现：
    程序员（或前端编译器）已经知道哪些循环可以并行，只需用 ``scf.parallel``
@@ -41,7 +41,7 @@ SCF（Structured Control Flow）Dialect 提供了三种级别的并行化支持�
 scf.parallel
 ==================
 
-``scf.parallel`` 是 SCF 中**显式的并行循环**：
+``scf.parallel`` 是 SCF 中**显式的并行循环** ：
 
 .. code-block:: text
 
@@ -62,9 +62,9 @@ scf.parallel
 
 ``scf.parallel`` 与 ``scf.for`` 的关键区别：
 
-- **无数据依赖**：所有迭代可以并行执行
-- **归约操作**：使用 ``scf.reduce`` 处理跨迭代的聚合
-- **任意顺序**：迭代顺序不确定
+- **无数据依赖** ：所有迭代可以并行执行
+- **归约操作** ：使用 ``scf.reduce`` 处理跨迭代的聚合
+- **任意顺序** ：迭代顺序不确定
 
 归约操作详解
 ==================
@@ -123,9 +123,9 @@ GPU 后端：
 
 使用 ``scf.parallel`` 时，以下因素影响性能：
 
-1. **迭代粒度**：每次迭代的工作量应足够大，以抵消线程调度的开销
-2. **数据局部性**：尽量让同一 block 的线程访问连续内存
-3. **归约次数**：太多归约会引入同步开销
+1. **迭代粒度** ：每次迭代的工作量应足够大，以抵消线程调度的开销
+2. **数据局部性** ：尽量让同一 block 的线程访问连续内存
+3. **归约次数** ：太多归约会引入同步开销
 
 并行优化示例
 ==================
@@ -151,7 +151,7 @@ GPU 后端：
 ``scf.parallel`` 定义在
 `SCFOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/SCF/IR/SCFOps.td>`__ 。
 与 ``scf.for`` 的关键区别是：``iterator_types`` 标记为 ``parallel`` 的维度
-**没有跨迭代依赖**，优化器可以安全地映射为 OpenMP 的 ``#pragma omp parallel for``
+**没有跨迭代依赖** ，优化器可以安全地映射为 OpenMP 的 ``#pragma omp parallel for``
 或 GPU 的线程网格。
 
 降级时，``scf.parallel`` 通常先展开为多个 ``scf.for`` ，

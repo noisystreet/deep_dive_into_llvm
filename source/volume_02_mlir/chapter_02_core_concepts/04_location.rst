@@ -4,9 +4,9 @@
 位置信息与诊断
 =======================
 
-MLIR 在 IR 的每一级都保留了**源码位置信息**。每个 Operation、Block 参数、
-乃至 Attribute 都可以关联一个 ``Location``。这是 MLIR 比 LLVM IR 更强大
-的特性之一——**在多层降级过程中，位置信息不会丢失**。
+MLIR 在 IR 的每一级都保留了**源码位置信息** 。每个 Operation、Block 参数、
+乃至 Attribute 都可以关联一个 ``Location`` 。这是 MLIR 比 LLVM IR 更强大
+的特性之一——**在多层降级过程中，位置信息不会丢失** 。
 
 .. rst-class:: center
 
@@ -68,7 +68,7 @@ FusedLoc：多级位置
 DiagnosticEngine（诊断引擎）
 =====================================
 
-MLIR 的诊断系统支持可插拔的**诊断处理引擎**。其工作方式与 LLVM 的 ``LLVM_DEBUG``
+MLIR 的诊断系统支持可插拔的**诊断处理引擎** 。其工作方式与 LLVM 的 ``LLVM_DEBUG``
 不同——它不是打印文本，而是发送结构化的诊断对象。
 
 .. code-block:: cpp
@@ -81,8 +81,8 @@ MLIR 的诊断系统支持可插拔的**诊断处理引擎**。其工作方式�
    emitWarning(op->getLoc(), "this pattern is deprecated");
 
 两种级别的诊断：
-- **emitOpError**：返回并报告错误（中止操作）
-- **emitWarning** / **emitRemark**：仅记录，不中止
+- **emitOpError** ：返回并报告错误（中止操作）
+- **emitWarning** / **emitRemark** ：仅记录，不中止
 
 诊断的默认目标是 stderr，但可以注册自定义处理引擎：
 
@@ -105,10 +105,10 @@ Verifier（验证器）
 
 MLIR 的验证器会在 IR 构造完成后自动运行，它检查：
 
-1. **Operation 的正确性**：操作数数量、类型是否匹配
-2. **SSA 有效性**：所有使用必须对应到定义（没有未定义的值）
-3. **Block 有效性**：Block 必须终止于合法的终止操作
-4. **自定义验证**：每个 Operation 的 verify() 方法
+1. **Operation 的正确性** ：操作数数量、类型是否匹配
+2. **SSA 有效性** ：所有使用必须对应到定义（没有未定义的值）
+3. **Block 有效性** ：Block 必须终止于合法的终止操作
+4. **自定义验证** ：每个 Operation 的 verify() 方法
 
 .. code-block:: cpp
 
@@ -161,7 +161,7 @@ MLIR 的位置信息不是简单的字符串，而是一棵可遍历的属性树
 对比第一卷 :ref:`chapter-02-05-debug-info` 中的 DWARF 调试信息：
 LLVM IR 的 ``!dbg`` 元数据在激进优化后可能失效或被剥离；
 MLIR 把 Location 做成 Operation 的一等属性，在 Dialect Conversion 过程中
-**默认保留**，这对多层降级管道中的错误诊断至关重要。
+**默认保留** ，这对多层降级管道中的错误诊断至关重要。
 
 源码走读：诊断与验证
 ======================================

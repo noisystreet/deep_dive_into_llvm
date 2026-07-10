@@ -19,7 +19,7 @@
 
 - 4 个通用寄存器（ ``%r0`` ~ ``%r3`` ）
 - 两种指令格式：寄存器-寄存器（RR）和寄存器-立即数（RI）
-- 指令： ``add``、``sub``、``load``、``store``
+- 指令： ``add`` 、``sub`` 、``load`` 、``store``
 - 32 位固定长度指令
 
 第一步：创建目录和 CMakeLists.txt
@@ -200,10 +200,10 @@
 
 如果你真的想实现一个 LLVM 后端，以下资源是最有价值的：
 
-- **LLVM 官方文档**：`llvm/docs/WritingAnLLVMBackend.rst <file:///workspace/llvm-project/llvm/docs/WritingAnLLVMBackend.rst>`__
-- **Cpu0 后端教程**：一个完整的教学后端实现（网上搜索 "Cpu0 LLVM backend"）
-- **LLVM 源码中的 Target 目录**：`llvm/lib/Target/ <file:///workspace/llvm-project/llvm/lib/Target/>`__，每个 Target 都是一个可参考的实例
-- **TableGen 文档**：`llvm/docs/TableGen/ <file:///workspace/llvm-project/llvm/docs/TableGen/>`__
+- **LLVM 官方文档** ：`llvm/docs/WritingAnLLVMBackend.rst <file:///workspace/llvm-project/llvm/docs/WritingAnLLVMBackend.rst>`__
+- **Cpu0 后端教程** ：一个完整的教学后端实现（网上搜索 "Cpu0 LLVM backend"）
+- **LLVM 源码中的 Target 目录** ：`llvm/lib/Target/ <file:///workspace/llvm-project/llvm/lib/Target/>`__，每个 Target 都是一个可参考的实例
+- **TableGen 文档** ：`llvm/docs/TableGen/ <file:///workspace/llvm-project/llvm/docs/TableGen/>`__
 
 --------
 

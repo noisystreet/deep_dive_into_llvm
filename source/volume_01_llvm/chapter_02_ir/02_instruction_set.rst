@@ -15,10 +15,10 @@ LLVM IR 的指令在 ``llvm/include/llvm/IR/Instructions.h`` 中定义，
 
    LLVM IR 有 60+ 种指令，但可按语义分为几个"家族"：
 
-   - **Terminator** — 改变控制流：``br``、 ``ret``、 ``switch``
-   - **BinaryOperator** — 二元运算：``add``、 ``fmul``、 ``and``
-   - **Memory** — 内存访问：``load``、 ``store``、 ``alloca``、 ``getelementptr``
-   - **Cast** — 类型转换：``zext``、 ``bitcast``、 ``ptrtoint``
+   - **Terminator** — 改变控制流：``br`` 、 ``ret`` 、 ``switch``
+   - **BinaryOperator** — 二元运算：``add`` 、 ``fmul`` 、 ``and``
+   - **Memory** — 内存访问：``load`` 、 ``store`` 、 ``alloca`` 、 ``getelementptr``
+   - **Cast** — 类型转换：``zext`` 、 ``bitcast`` 、 ``ptrtoint``
    - **Other** — 调用、PHI、向量操作等
 
    理解这个分类对读 Pass 源码至关重要——``InstCombiner`` 按家族分派，

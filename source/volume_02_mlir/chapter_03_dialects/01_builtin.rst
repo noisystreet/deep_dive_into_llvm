@@ -34,7 +34,7 @@ builtin Dialect
    独立的 IR，拥有自己的操作集和类型系统。Dialect 之间通过明确的
    降级关系相互连接。这意味着新增一个 Dialect 不需要修改已有的 Dialect。
 
-   截止 LLVM 22.x，MLIR 生态中已有 **超过 50 个官方 Dialect**，
+   截止 LLVM 22.x，MLIR 生态中已有 **超过 50 个官方 Dialect** ，
    以及更多的社区/内部 Dialect。这看起来很多，但每个 Dialect 都只做
    自己领域内的事情——这就是为什么 MLIR 能同时服务于深度学习编译器、
    硬件设计工具和高性能计算库的原因。
@@ -42,7 +42,7 @@ builtin Dialect
 ModuleOp：顶层容器
 ========================
 
-每个 MLIR 程序的最顶层都是一个 ``ModuleOp``。它是整个 IR 的根容器。
+每个 MLIR 程序的最顶层都是一个 ``ModuleOp`` 。它是整个 IR 的根容器。
 
 .. code-block:: text
 
@@ -85,7 +85,7 @@ UnrealizedConversionCastOp
    %1 = unrealized_conversion_cast %0 : tensor<4xf32> to memref<4xf32>
    //       ^^^^^^^^^^^^^^^^^^^^^^^^ 这个 cast 必须在最终代码生成前消除
 
-如果 finalization 之后还有未被消除的 ``UnrealizedConversionCastOp``，
+如果 finalization 之后还有未被消除的 ``UnrealizedConversionCastOp`` ，
 说明降级不完整，MLIR 会报错。
 
 内置类型
@@ -100,10 +100,10 @@ UnrealizedConversionCastOp
      - 示例
      - 说明
    * - ``IntegerType``
-     - ``i1``、``i8``、``i32``、``i64``
+     - ``i1`` 、``i8`` 、``i32`` 、``i64``
      - 任意位宽的整数
    * - ``FloatType``
-     - ``f16``、``f32``、``f64``、``bf16``
+     - ``f16`` 、``f32`` 、``f64`` 、``bf16``
      - IEEE 浮点数
    * - ``NoneType``
      - ``none``
@@ -146,7 +146,7 @@ FunctionType
 =====================
 
 ``builtin`` 也定义了一组基础 Attribute，前文第 2 章已经详细介绍过。
-这里补充一个常用场景——在 Operation 中使用 ``ArrayAttr`` 和 ``DictionaryAttr``：
+这里补充一个常用场景——在 Operation 中使用 ``ArrayAttr`` 和 ``DictionaryAttr`` ：
 
 .. code-block:: text
 

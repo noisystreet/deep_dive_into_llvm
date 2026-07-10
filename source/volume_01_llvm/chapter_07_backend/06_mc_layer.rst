@@ -5,7 +5,7 @@ MC 层
 =============
 
 MC 层（Machine Code Layer）是 LLVM 后端流水线的最后一站。它将指令选择、
-寄存器分配和调度后的 **MachineInstr** 转换为最终输出——**汇编文本**或**目标文件**。
+寄存器分配和调度后的 **MachineInstr** 转换为最终输出——**汇编文本**或**目标文件** 。
 
 .. rst-class:: center
 
@@ -150,9 +150,9 @@ MCCodeEmitter 生成的字节流需要按照特定目标文件格式（ELF、Mac
 
 每种目标文件格式对应一个 MCObjectWriter：
 
-- ``ELFWObjectWriter``：ELF（Linux）
-- ``MachObjectWriter``：Mach-O（macOS）
-- ``WinCOFFObjectWriter``：COFF（Windows）
+- ``ELFWObjectWriter`` ：ELF（Linux）
+- ``MachObjectWriter`` ：Mach-O（macOS）
+- ``WinCOFFObjectWriter`` ：COFF（Windows）
 
 调试 MC 层
 ================

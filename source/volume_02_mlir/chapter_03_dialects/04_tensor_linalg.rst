@@ -17,16 +17,16 @@ tensor / linalg Dialect
 .. admonition:: linalg 的"一个 generic 统治一切"
    :class: note
 
-   传统方案为每种线性代数操作定义独立 Op：``MatMulOp``、``ConvOp``、``DotOp``……
+   传统方案为每种线性代数操作定义独立 Op：``MatMulOp`` 、``ConvOp`` 、``DotOp``……
    每新增一种操作就要写 ODS、Verifier、Lowering、测试。``linalg.generic``
-   反其道而行：**用 ``indexing_maps`` 描述访问模式，一个 Op 表达所有逐元素/归约/收缩计算**。
+   反其道而行：**用 ``indexing_maps`` 描述访问模式，一个 Op 表达所有逐元素/归约/收缩计算** 。
 
    这借鉴了数学中"张量索引记号"的思想——爱因斯坦求和约定 ``A[i,j] * B[j,k]``
-   不需要为每种乘法定义新语法。Tiling、Fusion 等优化只需理解 ``indexing_maps``，
+   不需要为每种乘法定义新语法。Tiling、Fusion 等优化只需理解 ``indexing_maps`` ，
    就能通用地处理 matmul、conv、elementwise 等所有 linalg 操作。
 
    代价是 IR 文本可读性下降——所以生产管道通常在高层保留 ``linalg.matmul`` 等
-   命名 Op，优化后再降为 ``linalg.generic``。
+   命名 Op，优化后再降为 ``linalg.generic`` 。
 
 tensor Dialect
 ===================
@@ -67,15 +67,15 @@ tensor Dialect
            tensor.yield %v : i32
    } : tensor<?xi32>
 
-tensor 操作的一个重要特性是：它们不涉及**内存管理**。张量是不可变的值——
+tensor 操作的一个重要特性是：它们不涉及**内存管理** 。张量是不可变的值——
 每次 ``tensor.insert`` 都会产生一个新的张量值。内存分配和复用是在之后
 的 **Bufferization** 阶段解决的。
 
 linalg Dialect
 ===================
 
-``linalg`` Dialect（线性代数）提供了可以**结构化的循环计算**。
-它最核心的操作是 ``linalg.generic``。
+``linalg`` Dialect（线性代数）提供了可以**结构化的循环计算** 。
+它最核心的操作是 ``linalg.generic`` 。
 
 **linalg.generic：通用结构化操作**
 
@@ -98,10 +98,10 @@ linalg Dialect
 
 ``linalg.generic`` 的核心要素：
 
-- **indexing_maps**：每个操作数（输入和输出）的索引映射。定义了多维张量
+- **indexing_maps** ：每个操作数（输入和输出）的索引映射。定义了多维张量
   的每个维度如何映射到循环迭代空间
-- **iterator_types**：每个循环维度的类型（``parallel``、``reduction`` 等）
-- **Region**：计算内核，使用标量值进行计算
+- **iterator_types** ：每个循环维度的类型（``parallel`` 、``reduction`` 等）
+- **Region** ：计算内核，使用标量值进行计算
 
 **矩阵乘法的 linalg 表示**
 
@@ -111,7 +111,7 @@ linalg Dialect
    %C = linalg.matmul ins(%A, %B : tensor<4x4xf32>, tensor<4x4xf32>)
        outs(%C_init : tensor<4x4xf32>) -> tensor<4x4xf32>
 
-``linalg.matmul`` 等价于以下 ``linalg.generic``：
+``linalg.matmul`` 等价于以下 ``linalg.generic`` ：
 
 .. code-block:: text
 
@@ -136,7 +136,7 @@ linalg Dialect
 从 linalg 到 scf 的降级
 ===============================
 
-``linalg`` 操作通过 **LowerToLoops** 模式转换为 ``scf``：
+``linalg`` 操作通过 **LowerToLoops** 模式转换为 ``scf`` ：
 
 .. code-block:: text
 

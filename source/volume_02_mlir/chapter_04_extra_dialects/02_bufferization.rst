@@ -17,7 +17,7 @@ One-Shot Bufferization
 ============================
 
 MLIR 的 ``--one-shot-bufferize`` Pass 一次性完成所有 tensor → memref 的转换。
-它的核心思想是**就地缓冲（in-place bufferization）**。
+它的核心思想是**就地缓冲（in-place bufferization）** 。
 
 .. code-block:: text
 
@@ -35,7 +35,7 @@ MLIR 的 ``--one-shot-bufferize`` Pass 一次性完成所有 tensor → memref �
        func.return
    }
 
-**关键转变**：
+**关键转变** ：
 
 1. 返回值从 tensor 变为 memref 参数（"输出参数"风格）
 2. 调用者负责分配内存
@@ -63,7 +63,7 @@ Bufferization 在转换过程中可能插入以下操作作为中间表示：
 In-place 分析
 ======================
 
-Bufferization 的核心挑战是**决定哪些操作可以就地执行**。
+Bufferization 的核心挑战是**决定哪些操作可以就地执行** 。
 
 .. code-block:: text
 
@@ -74,7 +74,7 @@ Bufferization 的核心挑战是**决定哪些操作可以就地执行**。
    // 如果 out 只被 %0 使用 → 就地更新可行
    // 如果 out 还被别处使用   → 必须分配新内存
 
-这个分析称为 **RAUW（Replace All Uses With）分析**，是 One-Shot Bufferize
+这个分析称为 **RAUW（Replace All Uses With）分析** ，是 One-Shot Bufferize
 的核心算法。它通过构建 tensor 的 use-def 链来判断每个 tensor 是否可以就地更新。
 
 Bufferization 的配置
@@ -91,7 +91,7 @@ Bufferization 的配置
    # 允许内存分配
    $ mlir-opt --one-shot-bufferize="allow-unknown-ops" input.mlir
 
-**常用选项**：
+**常用选项** ：
 
 .. list-table::
    :header-rows: 1

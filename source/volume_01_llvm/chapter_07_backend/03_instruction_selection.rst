@@ -18,12 +18,12 @@ SelectionDAG 指令选择
 
 SelectionDAG 指令选择的流程：
 
-1. **DAG 构建**：``SelectionDAGBuilder`` 将 IR 转换为 DAG
-2. **DAGCombine**：DAG 层面的目标无关优化
-3. **合法化（Legalization）**：将不支持的类型/操作转换为目标原生形式
-4. **指令选择**：使用 TableGen 生成的匹配表，将 DAG 节点匹配为目标指令
+1. **DAG 构建** ：``SelectionDAGBuilder`` 将 IR 转换为 DAG
+2. **DAGCombine** ：DAG 层面的目标无关优化
+3. **合法化（Legalization）** ：将不支持的类型/操作转换为目标原生形式
+4. **指令选择** ：使用 TableGen 生成的匹配表，将 DAG 节点匹配为目标指令
 
-指令选择的核心是 **模式匹配**。TableGen 从 ``.td`` 文件中的 ``Pattern`` 定义
+指令选择的核心是 **模式匹配** 。TableGen 从 ``.td`` 文件中的 ``Pattern`` 定义
 生成匹配表。当 DAG 中的子图与某个指令的 Pattern 匹配时，该 DAG 子图被替换为
 对应的目标指令。
 
@@ -112,10 +112,10 @@ GlobalISel 的流水线分为四个阶段：
        style A fill:#4caf50,color:#fff
        style F fill:#ff9800,color:#fff
 
-1. **IRTranslator**：将 LLVM IR 转换为通用的 MIR（``G_ADD``、``G_LOAD`` 等通用操作码）
-2. **Legalizer**：将不支持的类型/操作合法化（可以增量进行）
-3. **RegisterBankSelect**：为每个虚拟寄存器分配"寄存器类型"（如 GPR、FPR）
-4. **InstructionSelect**：将通用 MIR 指令匹配为目标特定指令
+1. **IRTranslator** ：将 LLVM IR 转换为通用的 MIR（``G_ADD`` 、``G_LOAD`` 等通用操作码）
+2. **Legalizer** ：将不支持的类型/操作合法化（可以增量进行）
+3. **RegisterBankSelect** ：为每个虚拟寄存器分配"寄存器类型"（如 GPR、FPR）
+4. **InstructionSelect** ：将通用 MIR 指令匹配为目标特定指令
 
 GlobalISel 在 AArch64 后端已经成熟，并在逐步推广到其他架构。在未来，
 它有可能完全取代 SelectionDAG。
@@ -140,9 +140,9 @@ GlobalISel 在 AArch64 后端已经成熟，并在逐步推广到其他架构。
 
 操作数可以是：
 
-- **物理寄存器** （\ ``%eax``、\ ``%xmm0``\ ）
-- **虚拟寄存器** （\ ``%vreg0``、\ ``%vreg1``\ ）
-- **立即数** （\ ``$42``、\ ``$label``\ ）
+- **物理寄存器** （\ ``%eax`` 、\ ``%xmm0``\ ）
+- **虚拟寄存器** （\ ``%vreg0`` 、\ ``%vreg1``\ ）
+- **立即数** （\ ``$42`` 、\ ``$label``\ ）
 - **全局地址** （\ ``@global_var``\ ）
 - **栈对象** （\ ``%stack.0``\ ）
 

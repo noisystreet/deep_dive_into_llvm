@@ -17,7 +17,7 @@ mlir-cpu-runner
    开发自定义 Dialect 时，``mlir-cpu-runner`` 是最高效的冒烟测试——
    它把降级、翻译、JIT、执行串成一条命令，直接打印 ``main`` 的返回值。
 
-   内部流程：MLIR IR → LLVM Dialect → LLVM IR → ORC JIT → 调用 ``main``。
+   内部流程：MLIR IR → LLVM Dialect → LLVM IR → ORC JIT → 调用 ``main`` 。
    与第一卷 ``lli`` 的区别只是前端多了一步 MLIR 降级。
    如果 ``mlir-cpu-runner`` 能跑通，说明你的 Dialect 至少能走完整
    CPU 管道——这比分别调试每个 Pass 高效得多。
@@ -36,7 +36,7 @@ mlir-cpu-runner
        --reconcile-unrealized-casts \
        input.mlir | mlir-cpu-runner -e main -entry-point-result=i32
 
-**关键参数**：
+**关键参数** ：
 
 .. code-block:: console
 
@@ -105,9 +105,9 @@ mlir-cpu-runner
 
 常用的共享库：
 
-- ``libmlir_runner_utils.so``：MLIR 运行时工具（打印等）
-- ``libmlir_c_runner_utils.so``：C 运行时工具
-- ``libmlir_async_runtime.so``：异步运行时
+- ``libmlir_runner_utils.so`` ：MLIR 运行时工具（打印等）
+- ``libmlir_c_runner_utils.so`` ：C 运行时工具
+- ``libmlir_async_runtime.so`` ：异步运行时
 
 内部实现
 ==================

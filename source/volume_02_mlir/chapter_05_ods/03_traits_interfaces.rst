@@ -103,7 +103,7 @@ Traits 是编译期的属性，在 Operation 定义时附加。它们影响 MLIR
 Interfaces（接口）
 ======================
 
-Interfaces 定义了 Operation 必须实现的**方法签名**。MLIR 使用 ``OpInterface``
+Interfaces 定义了 Operation 必须实现的**方法签名** 。MLIR 使用 ``OpInterface``
 来声明这些接口。
 
 **内置 Interface 示例**
@@ -114,7 +114,7 @@ Interfaces 定义了 Operation 必须实现的**方法签名**。MLIR 使用 ``O
        LoopLikeOpInterface  // 要求实现 LoopLike 接口
    ]> { ... }
 
-**常见的 MLIR 接口**：
+**常见的 MLIR 接口** ：
 
 .. list-table:: 常用 Interface
    :header-rows: 1
@@ -140,7 +140,7 @@ Interfaces 定义了 Operation 必须实现的**方法签名**。MLIR 使用 ``O
 
 **InferTypeOpInterface：类型推断**
 
-最常见的 Interface 之一是 ``InferTypeOpInterface``：
+最常见的 Interface 之一是 ``InferTypeOpInterface`` ：
 它让 Operation 可以自动推断结果类型，不用显式指定。
 
 .. code-block:: text
@@ -200,7 +200,7 @@ Traits vs Interfaces 的选择
      - 标记属性（可交换、无副作用）
      - 行为抽象（循环、函数调用）
 
-简单规则：**若只需标记属性，用 Trait；若需定义方法签名，用 Interface**。
+简单规则：**若只需标记属性，用 Trait；若需定义方法签名，用 Interface** 。
 
 访问 Traits 和 Interfaces 的 C++ 接口
 ===========================================
@@ -230,10 +230,10 @@ Interface 通过 ``OpInterface`` 类在 ``.td`` 文件中声明方法签名，
 就附加了这个 Trait。
 
 ``LoopLikeOpInterface`` 则抽象了所有"类循环"操作的公共方法
-（``getLoopInductionVars()``、``getLoopBounds()`` 等），
+（``getLoopInductionVars()`` 、``getLoopBounds()`` 等），
 定义见
 `LoopLikeInterface.td <file:///workspace/llvm-project/mlir/include/mlir/Interfaces/LoopLikeInterface.td>`__ ，
-使得循环优化 Pass 可以统一处理 ``scf.for``、``affine.for`` 等不同 Op。
+使得循环优化 Pass 可以统一处理 ``scf.for`` 、``affine.for`` 等不同 Op。
 
 动手验证
 ==========

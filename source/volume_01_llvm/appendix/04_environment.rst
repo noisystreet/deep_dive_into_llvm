@@ -15,7 +15,7 @@ Docker 镜像以及 LLVM 版本选择建议。
 操作系统与工具链
 ======================
 
-**支持的操作系统**：
+**支持的操作系统** ：
 
 - **Linux** （推荐 Ubuntu 22.04+、Fedora 38+、Debian 12+）
 - **macOS** （13+，需 Xcode 或 Command Line Tools）
@@ -56,7 +56,7 @@ Docker 镜像以及 LLVM 版本选择建议。
    # 5. 安装
    $ sudo ninja install
 
-**CMake 选项说明**：
+**CMake 选项说明** ：
 
 .. list-table:: 常用 CMake 选项
    :header-rows: 1
@@ -113,7 +113,7 @@ LLVM 的首次完整构建可能需要 30-60 分钟。ccache 可以将后续增�
    $ ccache -M 50G            # 设置缓存上限
    $ cmake ... -DLLVM_CCACHE_BUILD=ON
 
-**ccache 命中率检查**：
+**ccache 命中率检查** ：
 
 .. code-block:: console
 
@@ -144,7 +144,7 @@ LLVM 的首次完整构建可能需要 30-60 分钟。ccache 可以将后续增�
 快速安装（预编译包）
 ========================
 
-**Ubuntu（apt.llvm.org）**：
+**Ubuntu（apt.llvm.org）** ：
 
 .. code-block:: console
 
@@ -152,7 +152,7 @@ LLVM 的首次完整构建可能需要 30-60 分钟。ccache 可以将后续增�
    $ sudo add-apt-repository "deb https://apt.llvm.org/$(lsb_release -sc)/ llvm-toolchain-$(lsb_release -sc)-18 main"
    $ sudo apt update && sudo apt install clang-18 lld-18 libclang-18-dev
 
-**macOS（Homebrew）**：
+**macOS（Homebrew）** ：
 
 .. code-block:: console
 

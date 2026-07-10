@@ -6,7 +6,7 @@
 
 指令选择之后，MachineInstr 中使用的仍然是**虚拟寄存器** （virtual registers）。
 虚拟寄存器数量无限，而物理寄存器数量有限。**寄存器分配** （Register Allocation）
-的任务就是：**将无限多的虚拟寄存器映射到有限的物理寄存器上**。
+的任务就是：**将无限多的虚拟寄存器映射到有限的物理寄存器上** 。
 
 .. rst-class:: center
 
@@ -114,7 +114,7 @@ Spilling：溢出
      %vreg2 = load %spill_slot        ; reload：从栈上加载回来
 
 Spilling 会降低性能（访存比寄存器操作慢得多），所以分配器的核心目标就是
-**最小化溢出**。
+**最小化溢出** 。
 
 Register Coalescing（寄存器合并）
 =======================================
@@ -132,7 +132,7 @@ Register Coalescing（寄存器合并）
      ... = use %vreg1          ; 直接使用原始值
      ; copy 指令被消除，%vreg0 与 %vreg1 共享物理寄存器
 
-合并不只是优化，它还能**减少虚拟寄存器的数量**，从而降低寄存器分配的压力。
+合并不只是优化，它还能**减少虚拟寄存器的数量** ，从而降低寄存器分配的压力。
 
 在源码中的位置：`llvm/lib/CodeGen/RegisterCoalescer.cpp <file:///workspace/llvm-project/llvm/lib/CodeGen/RegisterCoalescer.cpp>`__
 

@@ -5,7 +5,7 @@ scf/arith → LLVM Dialect 降级
 ==============================
 
 这一阶段将结构化控制流（``scf`` ）和算术运算（``arith`` ）转换为
-LLVM Dialect 中的对应操作。这是 MLIR 降级管道中**最标准的阶段**。
+LLVM Dialect 中的对应操作。这是 MLIR 降级管道中**最标准的阶段** 。
 
 .. rst-class:: center
 
@@ -119,7 +119,7 @@ memref → LLVM
 ====================
 
 ``memref`` 是 MLIR 特有的类型。降级时，一个 ``memref<NxMxf32>`` 被分解为
-LLVM 的**结构化类型**：
+LLVM 的**结构化类型** ：
 
 .. code-block:: text
 
@@ -148,7 +148,7 @@ LLVM 的**结构化类型**：
        input.mlir
 
 ``--reconcile-unrealized-casts`` 的职责是检查是否还有未消除的
-``UnrealizedConversionCastOp``，如果有则报错——这是确保降级完整性的
+``UnrealizedConversionCastOp`` ，如果有则报错——这是确保降级完整性的
 安全检查。
 
 源码走读：scf.for 如何变成 CFG
@@ -157,7 +157,7 @@ LLVM 的**结构化类型**：
 ``--convert-scf-to-cf`` 的实现位于
 `SCFToControlFlow.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/SCFToControlFlow/SCFToControlFlow.cpp>`__。
 
-这个文件最值得读的不是某个函数，而是第 43–61 行的**设计注释**。
+这个文件最值得读的不是某个函数，而是第 43–61 行的**设计注释** 。
 它用 ASCII 图描述了 ``scf.for`` 降级后的 CFG 结构，并维护三个不变量：
 
 1. 生成的 CFG 子图有**单一入口**和**单一出口**
@@ -166,7 +166,7 @@ LLVM 的**结构化类型**：
 
 理解了这段注释，就能明白为什么降级后的 ``cf.cond_br`` 需要携带
 ``(%iv, %init...)`` 这样的参数列表——它们就是原来 ``scf.for`` 的
-归纳变量和 ``iter_args``。
+归纳变量和 ``iter_args`` 。
 
 这与第一卷 :ref:`chapter-02-03-module-function-basicblock` 讨论的
 LLVM IR 基本块和 PHI 节点有异曲同工之妙：MLIR 用 Region 保留了结构化信息，
@@ -196,10 +196,10 @@ Pattern Rewrite 框架完全一致。
 func 与 memref 的降级要点
 ==============================
 
-**func → llvm**：`FuncToLLVM.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/FuncToLLVM/FuncToLLVM.cpp>`__
-将 ``func.func`` 转为 ``llvm.func``，调用约定由 ``LLVMConversionTarget`` 统一管理。
+**func → llvm** ：`FuncToLLVM.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/FuncToLLVM/FuncToLLVM.cpp>`__
+将 ``func.func`` 转为 ``llvm.func`` ，调用约定由 ``LLVMConversionTarget`` 统一管理。
 
-**memref → llvm**：``memref`` 在 LLVM Dialect 中被表示为描述符结构体
+**memref → llvm** ：``memref`` 在 LLVM Dialect 中被表示为描述符结构体
 （指针 + 对齐指针 + offset + sizes），而非裸指针。
 这让 MLIR 在降级过程中保留了对齐、偏移和形状信息，到 LLVM IR 时才进一步展开。
 

@@ -15,7 +15,7 @@ TOSA（Tensor Operator Set Architecture）是 MLIR 中一个**用于推理场景
 .. admonition:: TOSA vs StableHLO：一"场"没有硝烟的 Dialect 之争
    :class: note
 
-   在 MLIR 生态中，TOSA 和 StableHLO 是**两个最重要的机器学习 Dialect**。
+   在 MLIR 生态中，TOSA 和 StableHLO 是**两个最重要的机器学习 Dialect** 。
    它们都用于表示深度学习模型的计算图，但设计哲学截然不同。
 
    **StableHLO** 是 Google 推出的，它是 XLA HLO 的"稳定版"。它的设计
@@ -26,7 +26,7 @@ TOSA（Tensor Operator Set Architecture）是 MLIR 中一个**用于推理场景
    它只包含了可以在硬件上高效实现的操作，不支持动态形状，原生支持
    量化（i8/int8）。
 
-   这场"争论"的本质是：**训练 vs 推理**。
+   这场"争论"的本质是：**训练 vs 推理** 。
    - 训练需要灵活性（动态形状、丰富的操作集）→ StableHLO
    - 推理需要效率（固定形状、量化支持、硬件友好）→ TOSA
 
@@ -41,10 +41,10 @@ TOSA（Tensor Operator Set Architecture）是 MLIR 中一个**用于推理场景
 TOSA 的设计哲学
 ======================
 
-**操作集稳定**：TOSA 的操作集变化缓慢，版本升级时保持向后兼容。
+**操作集稳定** ：TOSA 的操作集变化缓慢，版本升级时保持向后兼容。
 这与 StableHLO 不同——TOSA 更关注"最小可用集"，而不是"尽可能丰富"。
 
-**形状固定**：TOSA 操作在编译期就知道张量形状，不处理动态形状：
+**形状固定** ：TOSA 操作在编译期就知道张量形状，不处理动态形状：
 
 .. code-block:: text
 
@@ -52,7 +52,7 @@ TOSA 的设计哲学
    %result = tosa.add %a, %b : (tensor<1x224x224x3xf32>, tensor<1x224x224x3xf32>) ->
        tensor<1x224x224x3xf32>
 
-**量化优先**：TOSA 原生支持 ``i8``、``i16`` 量化类型。
+**量化优先** ：TOSA 原生支持 ``i8`` 、``i16`` 量化类型。
 
 TOSA 的核心操作
 ======================
@@ -98,7 +98,7 @@ TOSA 定义了几个核心操作类：
 TOSA 与 MLIR Pipeline
 ===========================
 
-TOSA 通常作为 ML 框架的**统一输入格式**，然后降级到不同的后端：
+TOSA 通常作为 ML 框架的**统一输入格式** ，然后降级到不同的后端：
 
 .. code-block:: console
 

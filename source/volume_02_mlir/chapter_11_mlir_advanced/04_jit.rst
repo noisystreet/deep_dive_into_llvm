@@ -85,7 +85,7 @@ MLIR 的 ``ExecutionEngine`` 封装了 LLVM ORC JIT：
 Lazy JIT 编译
 ======================
 
-Lazy JIT（延迟编译）只在函数首次被调用时才编译。这可以**减少启动时间**：
+Lazy JIT（延迟编译）只在函数首次被调用时才编译。这可以**减少启动时间** ：
 
 .. code-block:: cpp
 
@@ -119,9 +119,9 @@ JIT Pipeline 的应用
 
 JIT Pipeline 在以下场景中非常有用：
 
-- **快速原型验证**：不需要 ``llc`` 和 ``clang`` 的完整编译流程
-- **动态代码生成**：运行时生成和编译 MLIR 程序
-- **调试**：快速测试降级管道的正确性
+- **快速原型验证** ：不需要 ``llc`` 和 ``clang`` 的完整编译流程
+- **动态代码生成** ：运行时生成和编译 MLIR 程序
+- **调试** ：快速测试降级管道的正确性
 
 JIT 中的性能优化
 ========================
@@ -201,7 +201,7 @@ ExecutionEngine、调用入口函数并打印结果。阅读这个文件可以�
 本章小结
 ========
 
-MLIR JIT Pipeline 的价值在于**缩短验证循环**：修改 Dialect 或 Pass 后，
+MLIR JIT Pipeline 的价值在于**缩短验证循环** ：修改 Dialect 或 Pass 后，
 无需走完整的 ``llc`` + ``clang`` 流程，一行命令就能编译执行。
 ``ExecutionEngine`` 把 MLIR 的降级成果对接到第一卷介绍的 ORC JIT 引擎，
 完成从 MLIR 到可执行机器码的最后一公里。

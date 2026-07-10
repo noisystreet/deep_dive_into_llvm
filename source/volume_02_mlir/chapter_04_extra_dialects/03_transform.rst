@@ -19,7 +19,7 @@ Transform Dialect
 传统的 MLIR Pass 是在 C++ 中硬编码的。如果你想调整 Pass 的顺序或参数，
 必须修改 C++ 代码、重新编译、重新链接。
 
-Transform Dialect 改变了这一切：**变换逻辑本身就是 MLIR IR**。
+Transform Dialect 改变了这一切：**变换逻辑本身就是 MLIR IR** 。
 
 .. code-block:: text
 

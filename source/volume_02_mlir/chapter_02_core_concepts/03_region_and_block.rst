@@ -40,10 +40,10 @@ Block（块）
 
 每个 Block 包含：
 
-1. **标签** （可选）：如 ``^block_name``，用于其他 Block 引用
-2. **Block 参数** （``%arg0``、``%arg1`` ）：从控制流入点传递的值
-3. **Operation 序列**：按顺序执行的指令
-4. **终止操作**：Block 的最后一条 Operation，决定控制流的去向
+1. **标签** （可选）：如 ``^block_name`` ，用于其他 Block 引用
+2. **Block 参数** （``%arg0`` 、``%arg1`` ）：从控制流入点传递的值
+3. **Operation 序列** ：按顺序执行的指令
+4. **终止操作** ：Block 的最后一条 Operation，决定控制流的去向
 
 如果没有指定标签，MLIR 会为 Block 分配隐式标签：
 
@@ -103,7 +103,7 @@ MLIR 有两种 Region 模式：
      - 函数体、循环体
      - MLIR 中的操作图
    * - 示例
-     - ``func.func``、``scf.for``
+     - ``func.func`` 、``scf.for``
      - ``graph.op``
 
 绝大多数 Dialect 使用 SSACFG Region。
@@ -133,7 +133,7 @@ Block 之间的控制流
    }
 
 MLIR 使用 ``cf`` Dialect 的 ``cf.br`` 和 ``cf.cond_br`` 来表示基本的控制流，
-而 ``scf`` Dialect 则提供了更高级的结构化控制流（``scf.for``、``scf.if`` ）。
+而 ``scf`` Dialect 则提供了更高级的结构化控制流（``scf.for`` 、``scf.if`` ）。
 
 Region 的嵌套
 ====================

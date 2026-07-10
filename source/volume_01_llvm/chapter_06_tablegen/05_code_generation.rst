@@ -10,7 +10,7 @@ TableGen 代码生成
 .. rst-class:: center
 
    TableGen 的"编译器"只做一件事：**解析 .td 文件，生成 Record 的集合，
-   然后转交给 C++ 后端（Backend）来输出代码**。
+   然后转交给 C++ 后端（Backend）来输出代码** 。
 
 llvm-tblgen 的架构
 ======================
@@ -40,7 +40,7 @@ llvm-tblgen 的架构
 一组 ``Record`` 对象。
 
 **后端：** 遍历 Record 数据库，根据后端类型生成不同的输出。每种后端对应
-一个 C++ 类，继承自 ``TableGenBackend``。
+一个 C++ 类，继承自 ``TableGenBackend`` 。
 
 内置后端详解
 =================

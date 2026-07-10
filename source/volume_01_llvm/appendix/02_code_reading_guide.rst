@@ -9,7 +9,7 @@ LLVM 源码库庞大且组织有序。掌握正确的阅读方法，可以大大
 .. rst-class:: center
 
    LLVM 源码中最值得读的三个文件：
-   ``LLVMContext.h``、``Instruction.h``、``PassManager.h``。
+   ``LLVMContext.h`` 、``Instruction.h`` 、``PassManager.h`` 。
 
 源码目录结构
 ==================
@@ -50,7 +50,7 @@ LLVM 项目的主仓库（ ``llvm-project`` ）采用模块化布局：
    ├── Dominators.cpp        # 支配树
    └── Verifier.cpp          # IR 验证器
 
-建议阅读顺序：``Type → Value → User → Instruction → BasicBlock → Function → Module``。
+建议阅读顺序：``Type → Value → User → Instruction → BasicBlock → Function → Module`` 。
 
 **llvm/lib/Transforms**——优化 Pass
 
@@ -137,7 +137,7 @@ LLVM 项目的主仓库（ ``llvm-project`` ）采用模块化布局：
    - LLVM: https://llvm.org/doxygen/
    - MLIR: https://mlir.llvm.org/doxygen/
 
-4. **在 IDE 中设置 include 路径**：CMake 生成的 ``compile_commands.json``
+4. **在 IDE 中设置 include 路径** ：CMake 生成的 ``compile_commands.json``
    可为 IDE（VSCode、Clion）提供完整的代码导航支持。
 
 5. **利用 ``-debug-only`` 输出** 了解 Pass 内部行为：

@@ -5,7 +5,7 @@ ORC JIT 架构
 ======================
 
 ORC JIT（Omni-Range Code JIT）是 LLVM 当前主推的 JIT 编译框架。它从 LLVM 6
-开始引入，目标是解决 MCJIT 的所有局限——**分层、异步、可组合**。
+开始引入，目标是解决 MCJIT 的所有局限——**分层、异步、可组合** 。
 
 .. rst-class:: center
 
@@ -74,7 +74,7 @@ ExecutionSession
 JITDylib
 ============
 
-``JITDylib`` 是 ORC JIT 的**符号查找作用域**。它的工作方式类似于 Linux 中的
+``JITDylib`` 是 ORC JIT 的**符号查找作用域** 。它的工作方式类似于 Linux 中的
 共享对象——每个 JITDylib 有一个符号表，其中每个符号可以被定义或未定义。
 
 .. code-block:: cpp
@@ -143,11 +143,11 @@ Materialization 过程
 
 "物化"（Materialization）是 ORC JIT 的核心概念：从 IR 到可执行代码的整个过程。
 
-1. **用户提交 IR**：通过 ``JD.add(IRModule(M))`` 将 Module 添加到 JITDylib
+1. **用户提交 IR** ：通过 ``JD.add(IRModule(M))`` 将 Module 添加到 JITDylib
 2. **分区** （Partitioning）：CompileOnDemandLayer 将 Module 拆分为函数粒度的分区
-3. **编译触发**：当外部代码首次调用某个函数时，对应的分区才被编译
-4. **编译与链接**：IRCompileLayer 编译 IR，ObjectLinkingLayer 加载并重定位
-5. **缓存**：编译结果被缓存，同一函数不会被编译两次
+3. **编译触发** ：当外部代码首次调用某个函数时，对应的分区才被编译
+4. **编译与链接** ：IRCompileLayer 编译 IR，ObjectLinkingLayer 加载并重定位
+5. **缓存** ：编译结果被缓存，同一函数不会被编译两次
 
 .. code-block:: text
 
@@ -167,7 +167,7 @@ Materialization 过程
 异步编译支持
 ================
 
-ORC JIT 的一个关键特性是**异步编译**。``ExecutionSession`` 可以配置后台编译线程，
+ORC JIT 的一个关键特性是**异步编译** 。``ExecutionSession`` 可以配置后台编译线程，
 使编译与执行重叠：
 
 .. code-block:: cpp
