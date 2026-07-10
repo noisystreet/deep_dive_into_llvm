@@ -9,6 +9,14 @@
 语言（C、C++、Rust、Swift），无论你 targeting 什么架构（x86、ARM、RISC-V），
 都可以用 LLVM IR 作为桥梁** 。
 
+.. admonition:: MLIR 的提交热度已超过 Clang
+   :class: note
+
+   根据 LLVM 2025.01 ~ 2026.07 的 commit 数据，MLIR 子项目以 **5,010 次提交**
+   （占总量的 7.7%）超越了 Clang（4,345 次，6.7%），成为 LLVM 社区中
+   **最活跃的子项目**。这并非偶然——MLIR 正在成为 AI 编译器、硬件设计（CIRCT）、
+   科学计算等领域的共同基础设施。
+
 但 LLVM IR 有一个根本性的局限。
 
 .. admonition:: MLIR 的诞生：一场 Google 内部的"IR 起义"
