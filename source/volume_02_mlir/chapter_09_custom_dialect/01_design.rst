@@ -30,14 +30,14 @@ MyDSL 设计
 
    **IREE（Intermediate Representation Execution Environment）**
    IREE 是 Google 推出的 ML 推理引擎，它使用 MLIR 作为唯一的中间表示
-   格式。IREE 定义了多个自定义 Dialect（ ``flow`` 、``hal`` 、``stream`` ）
+   格式。IREE 定义了多个自定义 Dialect（ ``flow`` 、 ``hal`` 、 ``stream`` ）
    来表示内存管理、设备分配和流式执行。
 
    IREE 的架构是 MLIR "多级 IR" 概念的极致体现：从 StableHLO 到
    ``flow`` （数据流图）到 ``hal`` （硬件抽象层）到 ``stream`` （流执行）
    到 LLVM Dialect 到机器码——一共 6 层 IR，每层负责一个明确的抽象级别。
 
-   这些成功案例说明：**自定义 Dialect 是 MLIR 生态的核心竞争力** 。
+   这些成功案例说明： **自定义 Dialect 是 MLIR 生态的核心竞争力** 。
 
 MyDSL 的功能
 ==================
@@ -57,8 +57,8 @@ MyDSL 是一个简单的算术 DSL，支持以下功能：
 
 MyDSL 定义两个自定义 Operation：
 
-- **mac** （multiply-accumulate）：``d = a * b + c``
-- **square** ：``result = x * x``
+- **mac** （multiply-accumulate）： ``d = a * b + c``
+- **square** ： ``result = x * x``
 
 项目结构
 ================
@@ -183,7 +183,7 @@ MyDSL 与 Toy 的对应关系：
 本章小结
 ========
 
-自定义 Dialect 的设计核心是**抽象级别选择**和**降级路径规划** 。
+自定义 Dialect 的设计核心是 **抽象级别选择** 和 **降级路径规划** 。
 MyDSL 选择了 arith 作为直接降级目标，与 Toy 选择 LLVM Dialect 类似但少了一层。
 后续几节将逐步实现 MyDSL 的 ODS 定义和降级逻辑。
 

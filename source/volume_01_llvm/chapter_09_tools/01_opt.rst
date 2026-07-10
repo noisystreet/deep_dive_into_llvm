@@ -24,11 +24,11 @@ opt：LLVM 优化器驱动
 
    **场景 2：调试优化器**
    ``opt -print-after-all`` 这个选项被 LLVM 开发者称为"最强大的调试武器"。
-   它在每个 Pass 之后都打印 IR，让你看到 IR 从输入到输出的**每一帧变化** 。
+   它在每个 Pass 之后都打印 IR，让你看到 IR 从输入到输出的 **每一帧变化** 。
    加上 ``-debug-only=pass-name`` 可以只看特定 Pass 的调试日志。
 
    **场景 3：LLVM 测试基础设施**
-   LLVM 的回归测试套件（``test/Transforms/`` 目录下数千个 ``.ll`` 文件）
+   LLVM 的回归测试套件（ ``test/Transforms/`` 目录下数千个 ``.ll`` 文件）
    几乎全部通过 ``opt`` 驱动。一个典型的测试文件是这样：
    
    ``; RUN: opt -pass-name < %s | FileCheck %s``

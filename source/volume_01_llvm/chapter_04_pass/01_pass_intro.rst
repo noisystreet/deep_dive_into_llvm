@@ -17,14 +17,14 @@ Pass 框架概述
 .. admonition:: Legacy PM 到 New PM 的过渡
    :class: tip
 
-   LLVM 的 Pass 框架经历过一次**漫长而痛苦的迁移**——从 Legacy Pass Manager
+   LLVM 的 Pass 框架经历过一次 **漫长而痛苦的迁移**——从 Legacy Pass Manager
    到 New Pass Manager。这个过程从 2016 年开始，到 2021 年 Legacy PM 才正式
    被标记为废弃，历时 **5 年之久** 。
 
    Legacy PM 是 LLVM 最早期的设计（2003 年），它的问题在于：
 
    1. **全局状态** ：Pass 使用静态全局变量注册，无法支持多个 LLVM 实例
-   2. **类型不安全** ：``getAnalysis<>()`` 使用运行时类型名而非编译期类型
+   2. **类型不安全** ： ``getAnalysis<>()`` 使用运行时类型名而非编译期类型
    3. **不透明依赖** ：Pass 的依赖关系在运行时才解析
    4. **线程不安全** ：无法并行执行 Pass
 
@@ -56,7 +56,7 @@ Pass 框架概述
    # 查看所有可用的 Pass
    $ opt --print-passes
 
-每个 Pass 做一件**具体且可组合的事** ：
+每个 Pass 做一件 **具体且可组合的事** ：
 
 - ``mem2reg`` ：把栈上的 ``alloca`` 提升为 SSA 寄存器
 - ``instcombine`` ：合并/简化指令
@@ -87,7 +87,7 @@ LLVM 的 Pass 分为两大类型：
      - 是
      - mem2reg、instcombine、GVN
 
-分析 Pass 和变换 Pass 之间有**依赖关系**——变换 Pass 在执行前可能需要一些分析
+分析 Pass 和变换 Pass 之间有 **依赖关系**——变换 Pass 在执行前可能需要一些分析
 Pass 的结果。LLVM 的 Pass 管理器自动处理这些依赖。
 
 Pass 的粒度
@@ -111,7 +111,7 @@ Pass 可以在三个粒度上运行：
      - 在每个 Loop 上各运行一次
      - 循环优化（LICM、IndVarSimplify）
 
-执行顺序：**Module → Function → Loop** ，外层的 Pass 可以包含内层的 Pass 管道。
+执行顺序： **Module → Function → Loop** ，外层的 Pass 可以包含内层的 Pass 管道。
 
 一个简单的 Pass 示例
 =========================
@@ -155,7 +155,7 @@ Pass 管理器（Pass Manager）负责：
 3. **缓存** ：如果多个变换 Pass 依赖同一个分析结果，避免重复计算
 4. **失效** ：当变换 Pass 修改了 IR，通知相关的分析 Pass 结果已失效
 
-LLVM 有两代 Pass 管理器：**Legacy Pass Manager** （已弃用）和 **New Pass Manager** （当前标准）。
+LLVM 有两代 Pass 管理器： **Legacy Pass Manager** （已弃用）和 **New Pass Manager** （当前标准）。
 下一节我们详细讲解它们的差异。
 
 从源码理解 Pass

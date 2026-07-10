@@ -15,7 +15,7 @@
 DominatorTree（支配树）
 ============================
 
-支配树是 LLVM 中最重要的分析之一。它回答了：**对于一个 basic block，
+支配树是 LLVM 中最重要的分析之一。它回答了： **对于一个 basic block，
 哪些 basic block 是到达它的必经之路？**
 
 **定义** ：如果从函数入口到 basic block B 的每条路径都经过 A，则称 A **支配** （dominates）B。
@@ -51,7 +51,7 @@ DominatorTree（支配树）
 PostDominatorTree（后支配树）
 ================================
 
-后支配树是支配树的"反向"版本：**如果从 block B 到函数出口的每条路径都经过 A，
+后支配树是支配树的"反向"版本： **如果从 block B 到函数出口的每条路径都经过 A，
 则称 A 后支配（post-dominates）B。**
 
 常用于识别"必然会执行到的代码"——如果某条指令后支配了整个函数，它的执行可以被
@@ -89,7 +89,7 @@ LoopInfo（循环分析）
 AliasAnalysis（别名分析）
 ============================
 
-别名分析回答了：**两个指针是否可能指向同一块内存？**
+别名分析回答了： **两个指针是否可能指向同一块内存？**
 
 .. code-block:: cpp
 
@@ -127,7 +127,7 @@ AliasAnalysis（别名分析）
 ScalarEvolution（标量演化分析）
 ====================================
 
-ScalarEvolution（SCEV）是 LLVM 中对循环和整数表达式进行**闭式分析** 的引擎。
+ScalarEvolution（SCEV）是 LLVM 中对循环和整数表达式进行 **闭式分析** 的引擎。
 它能推导出循环中的整数变量随迭代次数的变化规律。
 
 .. code-block:: cpp
@@ -148,9 +148,9 @@ ScalarEvolution（SCEV）是 LLVM 中对循环和整数表达式进行**闭式�
 - ``SCEVTruncate/SExt/ZExt`` ：类型扩展/截断
 - ``SCEVAddExpr`` ：加法表达式
 - ``SCEVMulExpr`` ：乘法表达式
-- ``SCEVAddRecExpr`` ：**加法递推表达式** （循环归纳变量）
+- ``SCEVAddRecExpr`` ： **加法递推表达式** （循环归纳变量）
 
-对一个循环 ``for (i = 0; i < n; i++)`` ，``i`` 的 SCEV 表示为：
+对一个循环 ``for (i = 0; i < n; i++)`` ， ``i`` 的 SCEV 表示为：
 ``{0, +, 1}<loop>``——从 0 开始，每次迭代 +1。
 
 这就是循环优化的数学基础。LoopStrengthReduce、IndVarSimplify 等 Pass

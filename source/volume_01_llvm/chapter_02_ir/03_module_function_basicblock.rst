@@ -4,13 +4,13 @@
 Module、Function、BasicBlock 结构
 ========================================
 
-前面两节我们从语法层面认识了 IR 的指令和类型。这一节我们从**结构** 的角度来看
+前面两节我们从语法层面认识了 IR 的指令和类型。这一节我们从 **结构** 的角度来看
 LLVM IR 在内存中的层次组织。
 
 Module -- 编译单元的顶层容器
 ================================
 
-``Module`` 是 LLVM IR 的顶层容器（``llvm/include/llvm/IR/Module.h`` ）：
+``Module`` 是 LLVM IR 的顶层容器（ ``llvm/include/llvm/IR/Module.h`` ）：
 
 .. code-block:: cpp
    :caption: llvm/include/llvm/IR/Module.h（节选）
@@ -73,9 +73,9 @@ Function -- 可执行代码的单元
    * - ``ExternalLinkage``
      - 外部可见（普通函数）
    * - ``InternalLinkage``
-     - 仅当前模块可见（``static`` ）
+     - 仅当前模块可见（ ``static`` ）
    * - ``WeakAnyLinkage``
-     - 弱符号（``__attribute__((weak))`` ）
+     - 弱符号（ ``__attribute__((weak))`` ）
 
 **函数体遍历：**
 
@@ -88,7 +88,7 @@ Function -- 可执行代码的单元
 BasicBlock -- 顺序执行的基本单元
 ====================================
 
-``BasicBlock`` 内的指令**顺序执行** ，以**终止指令** 结尾。
+``BasicBlock`` 内的指令 **顺序执行** ，以 **终止指令** 结尾。
 
 .. code-block:: llvm
 
@@ -118,7 +118,7 @@ BasicBlock -- 顺序执行的基本单元
 Instruction -- 指令
 =======================
 
-``Instruction`` 是 IR 中最细粒度的单位，每个指令有**操作码** 和**操作数列表** 。
+``Instruction`` 是 IR 中最细粒度的单位，每个指令有 **操作码** 和 **操作数列表** 。
 
 **操作码枚举：** 定义在 ``llvm/include/llvm/IR/Instruction.def`` 中，
 包括 ``Instruction::Add`` 、\ ``Instruction::Load`` 、\ ``Instruction::Br`` 等

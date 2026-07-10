@@ -16,7 +16,7 @@
    :class: tip
 
    Toy Tutorial Ch3 用不到 100 行 ODS 定义了完整的 Toy Dialect——
-   包括 ``mul`` 、``constant`` 、``return`` 等 Op。MyDSL 遵循同一模板：
+   包括 ``mul`` 、 ``constant`` 、 ``return`` 等 Op。MyDSL 遵循同一模板：
 
    1. 写 ``MyDSLOps.td`` 定义 Op
    2. ``mlir-tblgen`` 生成 C++ 类
@@ -192,7 +192,7 @@ MyDSL 的 ODS 定义模式与 Toy Tutorial Ch3 完全一致。Toy 的 ``MulOp`` 
    }
 
 对比 MyDSL 的 ``MacOp`` ，差异仅在于操作数和 Trait 不同，ODS 结构完全一致：
-``arguments`` 声明输入，``results`` 声明输出，``assemblyFormat`` 定义打印格式。
+``arguments`` 声明输入， ``results`` 声明输出， ``assemblyFormat`` 定义打印格式。
 ``mlir-tblgen`` 为两者生成相同模式的 C++ 访问器和验证骨架。
 
 CMake 构建时，TableGen 规则自动调用 ``mlir-tblgen`` ：

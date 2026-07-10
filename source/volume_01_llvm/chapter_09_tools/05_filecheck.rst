@@ -5,7 +5,7 @@ FileCheck 与测试
 ==========================
 
 FileCheck 是 LLVM 的主要测试工具。它读取输入文本，检查是否包含（或不包含）
-指定的模式。在 LLVM 测试中，FileCheck 被用来验证 ``opt`` 、``llc`` 等工具的
+指定的模式。在 LLVM 测试中，FileCheck 被用来验证 ``opt`` 、 ``llc`` 等工具的
 输出是否符合预期。
 
 .. rst-class:: center
@@ -22,8 +22,8 @@ FileCheck 是 LLVM 的主要测试工具。它读取输入文本，检查是否�
 2. 运行你的 Pass
 3. 检查输出中是否包含预期结果
 
-FileCheck 就是为这个场景量身定做的工具。它不是 shell 命令比较（``diff`` ），
-而是**模式匹配**——你告诉 FileCheck 在输出中"找什么"。
+FileCheck 就是为这个场景量身定做的工具。它不是 shell 命令比较（ ``diff`` ），
+而是 **模式匹配**——你告诉 FileCheck 在输出中"找什么"。
 
 基本用法
 ============
@@ -47,7 +47,7 @@ FileCheck 就是为这个场景量身定做的工具。它不是 shell 命令比
    -- Testing: 1 tests, 1 threads --
    PASS: LLVM :: test/add.ll (1 of 1)
 
-``RUN:`` 指令告诉 ``llvm-lit`` 如何运行测试。``%s`` 是当前测试文件的路径。
+``RUN:`` 指令告诉 ``llvm-lit`` 如何运行测试。 ``%s`` 是当前测试文件的路径。
 ``| FileCheck %s`` 表示将 ``opt`` 的输出用 FileCheck 检查，匹配模式
 写在测试文件中。
 
@@ -64,13 +64,13 @@ FileCheck 就是为这个场景量身定做的工具。它不是 shell 命令比
      - 在输出中查找指定模式
      - ``; CHECK: define i32 @test``
    * - ``CHECK-NOT``
-     - 确保输出中**不包含**指定模式
+     - 确保输出中 **不包含** 指定模式
      - ``; CHECK-NOT: alloca``
    * - ``CHECK-NEXT``
-     - 模式必须出现在**下一行**
+     - 模式必须出现在 **下一行**
      - ``; CHECK-NEXT: ret i32 %x``
    * - ``CHECK-SAME``
-     - 模式必须出现在**同一行**的后续位置
+     - 模式必须出现在 **同一行** 的后续位置
      - ``; CHECK-SAME: align 8``
    * - ``CHECK-LABEL``
      - 标记区段的开始
@@ -81,7 +81,7 @@ FileCheck 就是为这个场景量身定做的工具。它不是 shell 命令比
 
 ``CHECK`` 的匹配原则：
 
-- 如果输入中有多行匹配，FileCheck 会**依次消费**每个模式
+- 如果输入中有多行匹配，FileCheck 会 **依次消费** 每个模式
 - 第一个 ``CHECK`` 匹配第一处，第二个 ``CHECK`` 匹配第二处，以此类推
 - 顺序很重要：默认情况下，匹配模式必须按顺序出现
 
@@ -98,7 +98,7 @@ FileCheck 就是为这个场景量身定做的工具。它不是 shell 命令比
 
    ; CHECK-SAME: {{.*}} = add  ; 同一行上的后续匹配
 
-``CHECK-LABEL`` 用于**分隔区段** 。它匹配一个标签（如函数定义），然后重置
+``CHECK-LABEL`` 用于 **分隔区段** 。它匹配一个标签（如函数定义），然后重置
 后续 CHECK 的匹配位置。这在测试多个函数的输出时非常有用：
 
 .. code-block:: llvm
@@ -205,7 +205,7 @@ lit 测试框架
    # 查看测试的详细信息
    $ llvm-lit -v test/Transforms/InstCombine/add.ll
 
-lit 通过 ``RUN:`` 指令中的 ``%s`` 、``%t`` 、``%S`` 等替换符来参数化测试：
+lit 通过 ``RUN:`` 指令中的 ``%s`` 、 ``%t`` 、 ``%S`` 等替换符来参数化测试：
 
 - ``%s`` ：当前测试文件的路径
 - ``%t`` ：临时文件路径（用于输出重定向）

@@ -4,7 +4,7 @@
 LLVM Dialect
 =================
 
-``LLVM`` Dialect 是 MLIR 和 LLVM IR 之间的**桥梁** 。它将 LLVM IR 中的指令、
+``LLVM`` Dialect 是 MLIR 和 LLVM IR 之间的 **桥梁** 。它将 LLVM IR 中的指令、
 类型和元数据映射为 MLIR 的 Operation 和 Type。
 
 .. rst-class:: center
@@ -20,7 +20,7 @@ LLVM Dialect
 
    LLVM Dialect 仍是 MLIR 世界的一部分——可以用 MLIR 的 Verifier 检查
    类型一致性，用 Pass 做最后阶段的优化（如 memref 描述符展开）。
-   只有确认 LLVM Dialect 模块合法后，``mlir-translate`` 才一次性
+   只有确认 LLVM Dialect 模块合法后， ``mlir-translate`` 才一次性
    生成 LLVM IR。
 
    此外，GPU 路径中 NVVM/ROCDL Dialect 也遵循同样模式——先降到
@@ -30,7 +30,7 @@ LLVM Dialect
 LLVM Dialect 的设计
 =========================
 
-``LLVM`` Dialect 的设计原则是：**尽可能地直接映射 LLVM IR** 。
+``LLVM`` Dialect 的设计原则是： **尽可能地直接映射 LLVM IR** 。
 每个 LLVM IR 指令在 MLIR 中都有一个对应的 Operation。
 
 .. code-block:: text
@@ -161,11 +161,11 @@ LLVM Dialect 也可以包含 GPU 相关的操作，如 LLVM 内建函数：
 
 LLVM Dialect 的操作定义在
 `LLVMOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/LLVMIR/LLVMOps.td>`__ 。
-设计原则是**一对一映射 LLVM IR**——每个 MLIR 操作都有明确的 LLVM IR 对应物，
+设计原则是 **一对一映射 LLVM IR**——每个 MLIR 操作都有明确的 LLVM IR 对应物，
 这使得 ``mlir-translate`` 的翻译逻辑高度机械化。
 
 类型系统定义在 ``LLVMTypes.td`` 中。LLVM 15 之后引入的不透明指针
-（``!llvm.ptr`` ）也在此反映——与第一卷 :ref:`chapter-02-02-instruction-set`
+（ ``!llvm.ptr`` ）也在此反映——与第一卷 :ref:`chapter-02-02-instruction-set`
 讨论的 LLVM IR 指针演进同步。
 
 源码走读：ModuleTranslation

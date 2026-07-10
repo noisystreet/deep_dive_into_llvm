@@ -4,13 +4,13 @@
 类型系统与属性
 =======================
 
-MLIR 拥有一个**可扩展的类型系统**——这与 LLVM IR 的固定类型系统形成鲜明对比。
+MLIR 拥有一个 **可扩展的类型系统**——这与 LLVM IR 的固定类型系统形成鲜明对比。
 用户可以为自己的 Dialect 定义任意类型。
 
 .. rst-class:: center
 
-   LLVM IR 有固定的 ``i32`` 、``ptr`` 、``float`` 等类型；MLIR 允许你定义
-   ``tensor<4x4xf32>`` 、``memref<1024xf64>`` 或任何你需要的类型。
+   LLVM IR 有固定的 ``i32`` 、 ``ptr`` 、 ``float`` 等类型；MLIR 允许你定义
+   ``tensor<4x4xf32>`` 、 ``memref<1024xf64>`` 或任何你需要的类型。
 
 .. admonition:: Type、Attribute、Value 的三权分立
    :class: note
@@ -85,7 +85,7 @@ Type 的约束
 Attribute（属性）
 ======================
 
-Attribute 是编译期确定的**元数据** ，附着在 Operation 上。与 Value 不同，
+Attribute 是编译期确定的 **元数据** ，附着在 Operation 上。与 Value 不同，
 Attribute 在运行时不可变，并且不参与 SSA 数据流。
 
 .. code-block:: text
@@ -170,7 +170,7 @@ Attribute 的典型用法：
 内置 vs 自定义 Type
 ============================
 
-MLIR 框架内置了一些常用类型（如 ``IntegerType`` 、``FloatType`` ），但 Dialect
+MLIR 框架内置了一些常用类型（如 ``IntegerType`` 、 ``FloatType`` ），但 Dialect
 可以注册自己的类型：
 
 .. code-block:: text
@@ -211,8 +211,8 @@ Attribute 定义在
 
    mlir-opt examples/mlir/chapter_03_dialects/scf_sum.mlir
 
-注意 ``%c0 = arith.constant 0 : i32`` 中，``i32`` 是 Type，
-``0`` 是 Attribute 值，``%c0`` 是 Operation 产生的 Value——
+注意 ``%c0 = arith.constant 0 : i32`` 中， ``i32`` 是 Type，
+``0`` 是 Attribute 值， ``%c0`` 是 Operation 产生的 Value——
 三者在 MLIR 中有严格的分工。
 
 本章小结

@@ -4,7 +4,7 @@
 StableHLO Dialect
 =================
 
-StableHLO 是 MLIR 生态中**最重要的机器学习 Dialect** 之一。它是
+StableHLO 是 MLIR 生态中 **最重要的机器学习 Dialect** 之一。它是
 HLO（High-Level Operations）的稳定版本，被 TensorFlow、JAX 和 PyTorch
 等框架用于表示计算图。
 
@@ -193,7 +193,7 @@ CHLO 与 StableHLO 的分工
 本章小结
 ========
 
-StableHLO 解决了 ML 前端 IR 的**稳定性和版本化**问题，但它只是
+StableHLO 解决了 ML 前端 IR 的 **稳定性和版本化** 问题，但它只是
 MLIR 多层降级中的起点。理解它的最好方式，是把它放进
 :ref:`mlir-11-06-01` 描述的 Progressive Lowering 全景中，
 看清"从计算图到机器码"的完整链路。

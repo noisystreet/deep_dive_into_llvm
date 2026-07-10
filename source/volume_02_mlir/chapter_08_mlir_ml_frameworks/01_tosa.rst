@@ -4,7 +4,7 @@
 TOSA Dialect
 ============
 
-TOSA（Tensor Operator Set Architecture）是 MLIR 中一个**用于推理场景**
+TOSA（Tensor Operator Set Architecture）是 MLIR 中一个 **用于推理场景**
 的 Dialect。它定义了一组可移植的张量操作，专为边缘设备和推理引擎设计。
 
 .. rst-class:: center
@@ -15,7 +15,7 @@ TOSA（Tensor Operator Set Architecture）是 MLIR 中一个**用于推理场景
 .. admonition:: TOSA vs StableHLO：一"场"没有硝烟的 Dialect 之争
    :class: note
 
-   在 MLIR 生态中，TOSA 和 StableHLO 是**两个最重要的机器学习 Dialect** 。
+   在 MLIR 生态中，TOSA 和 StableHLO 是 **两个最重要的机器学习 Dialect** 。
    它们都用于表示深度学习模型的计算图，但设计哲学截然不同。
 
    **StableHLO** 是 Google 推出的，它是 XLA HLO 的"稳定版"。它的设计
@@ -26,7 +26,7 @@ TOSA（Tensor Operator Set Architecture）是 MLIR 中一个**用于推理场景
    它只包含了可以在硬件上高效实现的操作，不支持动态形状，原生支持
    量化（i8/int8）。
 
-   这场"争论"的本质是：**训练 vs 推理** 。
+   这场"争论"的本质是： **训练 vs 推理** 。
    - 训练需要灵活性（动态形状、丰富的操作集）→ StableHLO
    - 推理需要效率（固定形状、量化支持、硬件友好）→ TOSA
 
@@ -52,7 +52,7 @@ TOSA 的设计哲学
    %result = tosa.add %a, %b : (tensor<1x224x224x3xf32>, tensor<1x224x224x3xf32>) ->
        tensor<1x224x224x3xf32>
 
-**量化优先** ：TOSA 原生支持 ``i8`` 、``i16`` 量化类型。
+**量化优先** ：TOSA 原生支持 ``i8`` 、 ``i16`` 量化类型。
 
 TOSA 的核心操作
 ======================
@@ -98,7 +98,7 @@ TOSA 定义了几个核心操作类：
 TOSA 与 MLIR Pipeline
 ===========================
 
-TOSA 通常作为 ML 框架的**统一输入格式** ，然后降级到不同的后端：
+TOSA 通常作为 ML 框架的 **统一输入格式** ，然后降级到不同的后端：
 
 .. code-block:: console
 
@@ -154,7 +154,7 @@ TOSA 的降级路径：
 
 TOSA Dialect 的操作定义在
 `TosaOpBase.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Tosa/IR/TosaOpBase.td>`__ 。
-其设计强调**推理部署**——操作集小而稳定，每个 Op 的 ``summary`` 和
+其设计强调 **推理部署**——操作集小而稳定，每个 Op 的 ``summary`` 和
 ``description`` 都明确标注了量化支持和形状约束。
 
 TOSA 到 linalg 的降级 Pass 位于 ``mlir/lib/Conversion/TosaToLinalg/`` ，

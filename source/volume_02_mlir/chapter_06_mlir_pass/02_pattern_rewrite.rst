@@ -4,7 +4,7 @@
 Pattern Rewrite 框架
 =========================
 
-Pattern Rewrite 是 MLIR 中最强大、最常用的转换机制。它基于**模式匹配**
+Pattern Rewrite 是 MLIR 中最强大、最常用的转换机制。它基于 **模式匹配**
 来识别 IR 中的特定操作，并用新的操作替换它们。
 
 .. rst-class:: center

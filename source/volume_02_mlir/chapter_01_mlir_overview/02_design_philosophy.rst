@@ -9,7 +9,7 @@ MLIR 的设计哲学
 
 .. rst-class:: center
 
-   MLIR 最核心的设计原则是：**渐进降级** （Progressive Lowering）和
+   MLIR 最核心的设计原则是： **渐进降级** （Progressive Lowering）和
    **第一类 Dialect 机制** （First-class Dialects）。
 
 .. admonition:: "方言"一词的由来：编译器里的巴别塔
@@ -21,13 +21,13 @@ MLIR 的设计哲学
    同一套 **Operation / Type / Pass** 基础设施。
 
    这与 LLVM 形成对比：LLVM 只有一套 IR，新领域只能往里面"硬塞" intrinsics
-   或 metadata。MLIR 允许你**先定义自己的 Dialect，再逐步降级到公共层**——
+   或 metadata。MLIR 允许你 **先定义自己的 Dialect，再逐步降级到公共层**——
    CIRCT（芯片设计）、IREE（推理引擎）、Buddy（向量扩展）都是这条路的成功案例。
 
 Progressive Lowering（渐进降级）
 ======================================
 
-**渐进降级**是 MLIR 最重要的设计哲学。它指的是：**不要求从源语言一步降到
+**渐进降级** 是 MLIR 最重要的设计哲学。它指的是： **不要求从源语言一步降到
 机器码，而是通过多层 IR，逐步降低抽象级别，每一层都在合适的粒度上进行优化** 。
 
 对比两条路径：
@@ -123,7 +123,7 @@ MLIR 选择用 **Block Arguments**\ （块参数）而非 LLVM 的 **PHI 节点*
 **1. 消除"必须在顶部"的人为限制**
 
 LLVM 的 PHI 节点必须始终位于 BasicBlock 的顶部，所有变换都需要手动
-跳过它们。Block Arguments 是 Block 定义的**固有属性** ，不存在"位置"
+跳过它们。Block Arguments 是 Block 定义的 **固有属性** ，不存在"位置"
 问题，变换代码更简洁。
 
 .. code-block:: text
@@ -141,12 +141,12 @@ LLVM 的 PHI 节点必须始终位于 BasicBlock 的顶部，所有变换都需�
 
 **2. 统一函数参数和 Block 参数**
 
-LLVM 中函数参数（``Function::arg_begin()`` ）和 PHI 节点是两套不同的
+LLVM 中函数参数（ ``Function::arg_begin()`` ）和 PHI 节点是两套不同的
 机制。MLIR 用 Block Arguments 统一了二者——**入口 Block 的参数就是函数参数** 。
 
 **3. 消除 PHI 的原子执行语义**
 
-LLVM 中同一 Block 的所有 PHI 节点**同时执行** （atomic semantics），
+LLVM 中同一 Block 的所有 PHI 节点 **同时执行** （atomic semantics），
 这看似简单，但实际上经常导致"lost copy"问题——当需要将 PHI 节点
 转换为普通指令时，值的交换顺序很容易出错。Block Arguments 不存在
 这种问题，因为参数在进入 Block 时就已经确定。
@@ -263,12 +263,12 @@ MLIR 的哲学总结
    │   └── Block
    └── ...
 
-这个**递归树结构**是 MLIR 最核心的设计决策之一：
+这个 **递归树结构** 是 MLIR 最核心的设计决策之一：
 
-- **LLVM 的方式** ：Module → Function → BasicBlock → Instruction，**每层是不同类**
-- **MLIR 的方式** ：Operation 包含 Region，Region 包含 Block，Block 包含 Operation，**递归统一**
+- **LLVM 的方式** ：Module → Function → BasicBlock → Instruction， **每层是不同类**
+- **MLIR 的方式** ：Operation 包含 Region，Region 包含 Block，Block 包含 Operation， **递归统一**
 
-这种设计的直接好处是：通用的 IR 遍历、匹配、替换工具可以**递归地**处理
+这种设计的直接好处是：通用的 IR 遍历、匹配、替换工具可以 **递归地** 处理
 任意深度的嵌套结构，而不需要为每种层级单独写一套 API。
 
 设计决策：符号与类型的分离
@@ -294,7 +294,7 @@ MLIR 的哲学总结
 类型系统的设计和实现。如果允许 ``memref<8x%Nxf32>`` ，那么当 ``%N``
 的值变化时，整个类型系统都需要处理"类型随符号变化"的问题。
 
-这是 MLIR 设计哲学中"务实"的体现：**在表达力和实现复杂度之间，MLIR
+这是 MLIR 设计哲学中"务实"的体现： **在表达力和实现复杂度之间，MLIR
 倾向于选择更简单的实现** ，即使这意味着某些信息需要在运行时查询。
 
 源码走读：Dialect 注册与操作命名
@@ -302,7 +302,7 @@ MLIR 的哲学总结
 
 上一节列出了 MLIR 的四大构建块，它们在源码中的落点非常集中。
 
-**Operation** 的命名规则直接编码了 Dialect 归属。``Operation.h`` 中的注释说明：
+**Operation** 的命名规则直接编码了 Dialect 归属。 ``Operation.h`` 中的注释说明：
 如果操作名包含 ``.`` ，点号前是 Dialect 名，点号后是操作名
 （`Operation.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Operation.h>`__）。
 这就是为什么 ``scf.for`` 和 ``arith.addi`` 不需要额外的"所属方言"字段——
@@ -341,15 +341,15 @@ MLIR 的哲学总结
    }
 
 ODS 会自动生成 C++ 的 ``AddIOp`` 类，开发者无需手写 ``class`` 定义、
-``parse``/``print`` 方法、``verify`` 逻辑——这些全部从声明中推导。
+``parse``/``print`` 方法、 ``verify`` 逻辑——这些全部从声明中推导。
 这种"声明式规范，自动生成实现"的模式贯穿 MLIR 的整个设计。
 
 渐进降级在源码中的体现
 ==============================
 
-降级不是某个单一函数完成的，而是**一串 Pass** 串联而成。
-以 ``scf.for`` → 控制流图为例，``SCFToControlFlow.cpp`` 的文件头注释
-写得很直白：这个 Pass 将 ``scf.for`` 、``scf.if`` 转换为标准 CFG 操作
+降级不是某个单一函数完成的，而是 **一串 Pass** 串联而成。
+以 ``scf.for`` → 控制流图为例， ``SCFToControlFlow.cpp`` 的文件头注释
+写得很直白：这个 Pass 将 ``scf.for`` 、 ``scf.if`` 转换为标准 CFG 操作
 （`SCFToControlFlow.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/SCFToControlFlow/SCFToControlFlow.cpp>`__）。
 
 文件中用 ASCII 图详细描述了降级后 CFG 的结构——条件块、循环体块、出口块
@@ -375,13 +375,13 @@ MLIR 的 ``PassManager`` 同样按序调度变换，只不过操作对象从 ``l
    EOF
    mlir-opt /tmp/mixed.mlir
 
-输出中 ``func.func`` 、``arith.addi`` 、``func.return`` 分属三个 Dialect，
+输出中 ``func.func`` 、 ``arith.addi`` 、 ``func.return`` 分属三个 Dialect，
 却共存于同一模块——这正是"第一类 Dialect"的实际表现。
 
 本章小结
 ========
 
-MLIR 的设计哲学可以归结为一句话：**在正确的抽象层次做正确的事** 。
+MLIR 的设计哲学可以归结为一句话： **在正确的抽象层次做正确的事** 。
 渐进降级保证每层 IR 都保留足够的语义；第一类 Dialect 保证任何人都能
 在框架上搭建自己的 IR 层。
 

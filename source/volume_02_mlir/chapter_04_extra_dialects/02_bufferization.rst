@@ -10,14 +10,14 @@ Bufferization Pass 的中间状态。
 
 .. rst-class:: center
 
-   Bufferization 是 MLIR 降级管道中**最关键的一步**——它决定了
+   Bufferization 是 MLIR 降级管道中 **最关键的一步**——它决定了
    变量是存在寄存器里还是内存里。
 
 One-Shot Bufferization
 ============================
 
 MLIR 的 ``--one-shot-bufferize`` Pass 一次性完成所有 tensor → memref 的转换。
-它的核心思想是**就地缓冲（in-place bufferization）** 。
+它的核心思想是 **就地缓冲（in-place bufferization）** 。
 
 .. code-block:: text
 
@@ -63,7 +63,7 @@ Bufferization 在转换过程中可能插入以下操作作为中间表示：
 In-place 分析
 ======================
 
-Bufferization 的核心挑战是**决定哪些操作可以就地执行** 。
+Bufferization 的核心挑战是 **决定哪些操作可以就地执行** 。
 
 .. code-block:: text
 

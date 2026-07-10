@@ -9,7 +9,7 @@ JIT Pipeline 是 MLIR 编译管道和运行时执行之间的桥梁。
 
 .. rst-class:: center
 
-   MLIR JIT 的核心：``mlir-cpu-runner`` 内部封装了 ORC JIT。
+   MLIR JIT 的核心： ``mlir-cpu-runner`` 内部封装了 ORC JIT。
 
 .. admonition:: ExecutionEngine：MLIR 版的 LLJIT
    :class: note
@@ -85,7 +85,7 @@ MLIR 的 ``ExecutionEngine`` 封装了 LLVM ORC JIT：
 Lazy JIT 编译
 ======================
 
-Lazy JIT（延迟编译）只在函数首次被调用时才编译。这可以**减少启动时间** ：
+Lazy JIT（延迟编译）只在函数首次被调用时才编译。这可以 **减少启动时间** ：
 
 .. code-block:: cpp
 
@@ -162,7 +162,7 @@ MLIR 的 ExecutionEngine 本质上是在 MLIR Module 和 LLVM ORC JIT 之间
 JitRunner 的角色
 ======================
 
-除了库 API，``mlir/lib/ExecutionEngine/JitRunner.cpp`` 实现了
+除了库 API， ``mlir/lib/ExecutionEngine/JitRunner.cpp`` 实现了
 ``mlir-cpu-runner`` 的命令行逻辑：解析参数、构建降级管道、创建
 ExecutionEngine、调用入口函数并打印结果。阅读这个文件可以理解
 "一条 mlir-opt | mlir-cpu-runner 命令"在源码层面的完整执行路径。
@@ -201,7 +201,7 @@ ExecutionEngine、调用入口函数并打印结果。阅读这个文件可以�
 本章小结
 ========
 
-MLIR JIT Pipeline 的价值在于**缩短验证循环** ：修改 Dialect 或 Pass 后，
+MLIR JIT Pipeline 的价值在于 **缩短验证循环** ：修改 Dialect 或 Pass 后，
 无需走完整的 ``llc`` + ``clang`` 流程，一行命令就能编译执行。
 ``ExecutionEngine`` 把 MLIR 的降级成果对接到第一卷介绍的 ORC JIT 引擎，
 完成从 MLIR 到可执行机器码的最后一公里。

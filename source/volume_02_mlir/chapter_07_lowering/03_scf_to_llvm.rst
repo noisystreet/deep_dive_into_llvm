@@ -4,8 +4,8 @@
 scf/arith → LLVM Dialect 降级
 ==============================
 
-这一阶段将结构化控制流（``scf`` ）和算术运算（``arith`` ）转换为
-LLVM Dialect 中的对应操作。这是 MLIR 降级管道中**最标准的阶段** 。
+这一阶段将结构化控制流（ ``scf`` ）和算术运算（ ``arith`` ）转换为
+LLVM Dialect 中的对应操作。这是 MLIR 降级管道中 **最标准的阶段** 。
 
 .. rst-class:: center
 
@@ -17,7 +17,7 @@ LLVM Dialect 中的对应操作。这是 MLIR 降级管道中**最标准的阶�
 
    这一阶段看似三个独立 Pass，实则环环相扣：
 
-   1. **scf → cf** — 循环展平为 CFG，``iter_args`` 变成 Block 参数
+   1. **scf → cf** — 循环展平为 CFG， ``iter_args`` 变成 Block 参数
    2. **arith → llvm** — 整数运算映射为 ``llvm.add`` 等指令
    3. **func → llvm** — 函数签名和 ``return`` 映射为 ``llvm.func``
 
@@ -119,7 +119,7 @@ memref → LLVM
 ====================
 
 ``memref`` 是 MLIR 特有的类型。降级时，一个 ``memref<NxMxf32>`` 被分解为
-LLVM 的**结构化类型** ：
+LLVM 的 **结构化类型** ：
 
 .. code-block:: text
 
@@ -157,10 +157,10 @@ LLVM 的**结构化类型** ：
 ``--convert-scf-to-cf`` 的实现位于
 `SCFToControlFlow.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/SCFToControlFlow/SCFToControlFlow.cpp>`__。
 
-这个文件最值得读的不是某个函数，而是第 43–61 行的**设计注释** 。
+这个文件最值得读的不是某个函数，而是第 43–61 行的 **设计注释** 。
 它用 ASCII 图描述了 ``scf.for`` 降级后的 CFG 结构，并维护三个不变量：
 
-1. 生成的 CFG 子图有**单一入口**和**单一出口**
+1. 生成的 CFG 子图有 **单一入口** 和 **单一出口**
 2. 入口块是父 Region 的第一个块，出口块是最后一个块
 3. 循环携带值通过条件块的参数在所有块中可见
 
@@ -199,7 +199,7 @@ func 与 memref 的降级要点
 **func → llvm** ：`FuncToLLVM.cpp <file:///workspace/llvm-project/mlir/lib/Conversion/FuncToLLVM/FuncToLLVM.cpp>`__
 将 ``func.func`` 转为 ``llvm.func`` ，调用约定由 ``LLVMConversionTarget`` 统一管理。
 
-**memref → llvm** ：``memref`` 在 LLVM Dialect 中被表示为描述符结构体
+**memref → llvm** ： ``memref`` 在 LLVM Dialect 中被表示为描述符结构体
 （指针 + 对齐指针 + offset + sizes），而非裸指针。
 这让 MLIR 在降级过程中保留了对齐、偏移和形状信息，到 LLVM IR 时才进一步展开。
 
@@ -239,7 +239,7 @@ func 与 memref 的降级要点
 本章小结
 ========
 
-scf/arith → LLVM Dialect 是 MLIR 降级管道中**最成熟**的一段。
+scf/arith → LLVM Dialect 是 MLIR 降级管道中 **最成熟** 的一段。
 scf 展开为 CFG，arith 映射为 LLVM 指令，func/memref 处理函数边界和内存描述符。
 全部完成后，模块中只剩 LLVM Dialect 的操作，可以交给
 :ref:`mlir-11-06-04` 描述的 ``ModuleTranslation`` 导出为 LLVM IR。

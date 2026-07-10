@@ -16,7 +16,7 @@
 
    手写 MLIR Operation 时，最繁琐的部分是 **Print/Parse**——如何把
    Operation 格式化为文本、如何从文本解析回来。ODS 的 ``assemblyFormat``
-   用声明式字符串（如 ``"$lhs `,` $rhs attr-dict"``）描述格式，
+   用声明式字符串（如 ``"$lhs `,` $rhs attr-dict"`` ）描述格式，
    ``mlir-tblgen`` 自动生成完整的 ``print()`` 和 ``parse()`` 实现。
 
    Toy Tutorial 的 ``MulOp`` 只有十几行 ODS，却自动获得类型检查、
@@ -209,8 +209,8 @@ Toy Ch3 的 ``MulOp`` 是 ODS 定义 Operation 的标准范例，见
      let assemblyFormat = "$lhs `,` $rhs attr-dict `:` type($lhs)";
    }
 
-每个字段都有明确作用：``arguments`` 定义操作数，``results`` 定义返回值，
-``assemblyFormat`` 定义 IR 打印格式，``Pure`` Trait 标记无副作用。
+每个字段都有明确作用： ``arguments`` 定义操作数， ``results`` 定义返回值，
+``assemblyFormat`` 定义 IR 打印格式， ``Pure`` Trait 标记无副作用。
 :ref:`mlir-09-09-02` 中 MyDSL 的 ``MacOp`` 遵循完全相同的模式。
 
 动手验证

@@ -4,7 +4,7 @@
 实现 Lowering 到 arith/scf
 ==========================
 
-定义完 Operation 后，下一步是编写**降级模式** （Conversion Pattern），
+定义完 Operation 后，下一步是编写 **降级模式** （Conversion Pattern），
 将 MyDSL 的 Operator 转换为 MLIR 标准 Dialect 的操作。
 
 .. rst-class:: center
@@ -14,7 +14,7 @@
 .. admonition:: Partial Conversion：只降你想降的部分
    :class: note
 
-   自定义 Dialect 降级很少一步完成。``DialectConversion`` 支持
+   自定义 Dialect 降级很少一步完成。 ``DialectConversion`` 支持
    **Partial Conversion**——只转换目标 Dialect 的 Op，其余保持不变。
 
    典型策略：MyDSL → arith/scf（第一层）→ llvm（第二层）。

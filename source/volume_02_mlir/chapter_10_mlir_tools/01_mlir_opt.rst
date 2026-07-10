@@ -4,7 +4,7 @@
 mlir-opt
 ============
 
-``mlir-opt`` 是 MLIR 生态中**最核心**的工具。它运行 Pass Pipeline 并输出
+``mlir-opt`` 是 MLIR 生态中 **最核心** 的工具。它运行 Pass Pipeline 并输出
 转换后的 IR，是所有 MLIR 开发和测试的基础工具。
 
 .. rst-class:: center
@@ -14,7 +14,7 @@ mlir-opt
 .. admonition:: mlir-opt 的日常：MLIR 开发者的一天的"瑞士军刀"
    :class: tip
 
-   对于一个 MLIR 开发者来说，``mlir-opt`` 就像瑞士军刀一样不可或缺。
+   对于一个 MLIR 开发者来说， ``mlir-opt`` 就像瑞士军刀一样不可或缺。
    以下是几个真实的使用场景：
 
    **场景 1：验证降级的正确性**
@@ -167,7 +167,7 @@ Pass Pipeline 的高级用法
 3. 构建 PassManager 并运行
 
 这与第一卷 :ref:`chapter-09-01-opt` 中的 LLVM ``opt`` 工具形成直接对照——
-``opt`` 操作 ``llvm::Module`` ，``mlir-opt`` 操作 ``mlir::Operation`` 。
+``opt`` 操作 ``llvm::Module`` ， ``mlir-opt`` 操作 ``mlir::Operation`` 。
 
 动手验证
 ==========

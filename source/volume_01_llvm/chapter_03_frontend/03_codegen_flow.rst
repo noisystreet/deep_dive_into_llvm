@@ -61,7 +61,7 @@ Clang 的代码生成器位于 ``clang/lib/CodeGen/`` 目录下。两个核心�
        // ... 局部变量分配、控制流结构等
    };
 
-简单来说：**CGM 管"全局"，CGF 管"当前函数"** 。
+简单来说： **CGM 管"全局"，CGF 管"当前函数"** 。
 
 表达式生成
 =========================
@@ -120,7 +120,7 @@ Clang 的表达式生成分为两个主要 emitter：
        }
    }
 
-注意这里**递归下降** 的模式——``VisitBinaryOperator`` 先递归调用 ``Visit`` 处理
+注意这里 **递归下降** 的模式——``VisitBinaryOperator`` 先递归调用 ``Visit`` 处理
 左右子表达式，然后根据操作符类型创建不同的 LLVM 指令。这个模式贯穿了整个代码生成器。
 
 语句生成
@@ -144,7 +144,7 @@ Clang 的表达式生成分为两个主要 emitter：
        }
    }
 
-控制流语句（``if`` 、``for`` 、``while`` ）会创建 LLVM 的 basic block 和分支指令：
+控制流语句（ ``if`` 、 ``for`` 、 ``while`` ）会创建 LLVM 的 basic block 和分支指令：
 
 .. code-block:: cpp
    :caption: clang/lib/CodeGen/CGStmt.cpp（简化）
@@ -187,7 +187,7 @@ Clang 的表达式生成分为两个主要 emitter：
 3. **创建入口基本块** ：为函数体创建第一个 basic block
 4. **处理参数** ：将 LLVM 函数的参数与 AST 中的 ``ParmVarDecl`` 关联
 5. **生成函数体** ：用 ``CodeGenFunction`` 遍历函数体内的语句
-6. **设置调用约定和属性** ：设置 ``nobuiltin`` 、``optnone`` 、``inline`` 等属性
+6. **设置调用约定和属性** ：设置 ``nobuiltin`` 、 ``optnone`` 、 ``inline`` 等属性
 
 ABI 处理
 =========================
@@ -233,7 +233,7 @@ Itanium C++ ABI
 对于 C++，Clang 默认使用 **Itanium C++ ABI** （即使在非 Itanium 架构上）。
 这个 ABI 定义了：
 
-- 名称修饰（Name Mangling）：``int foo(int)`` → ``_Z3fooi``
+- 名称修饰（Name Mangling）： ``int foo(int)`` → ``_Z3fooi``
 - 虚函数表（vtable）的布局
 - RTTI（Run-Time Type Information）的表示
 - 异常处理（Itanium C++ Exception Handling）
@@ -249,7 +249,7 @@ Itanium C++ ABI
        ret i32 %x
    }
 
-``_Z3fooi`` 中的 ``_Z`` 是 Itanium ABI 的前缀，``3foo`` 是函数名（3 是名字长度），
+``_Z3fooi`` 中的 ``_Z`` 是 Itanium ABI 的前缀， ``3foo`` 是函数名（3 是名字长度），
 ``i`` 是参数类型（int）。
 
 --------

@@ -5,7 +5,7 @@ AST 结构
 ==========================
 
 上一节我们提到 Clang 是"库化设计"的——每个编译阶段都是独立的库。那么当你写下一段
-C 代码后，Clang 首先把它变成了什么？答案是**抽象语法树** （Abstract Syntax Tree, AST）。
+C 代码后，Clang 首先把它变成了什么？答案是 **抽象语法树** （Abstract Syntax Tree, AST）。
 
 .. rst-class:: center
 
@@ -50,7 +50,7 @@ Clang 解析这段代码后，会构建出一棵 AST。你可以用 ``clang -cc1
                └── ImplicitCastExpr 'result' (LValueToRValue)
                    └── DeclRefExpr 'result'
 
-这棵树**忠实反映了 C 语言的语法结构** ：
+这棵树 **忠实反映了 C 语言的语法结构** ：
 
 - 顶层是 ``TranslationUnitDecl`` （翻译单元，即一个源文件）
 - 下一层是 ``FunctionDecl`` （函数声明/定义）
@@ -60,7 +60,7 @@ Clang 解析这段代码后，会构建出一棵 AST。你可以用 ``clang -cc1
 - 变量引用对应 ``DeclRefExpr``
 - ``return`` 对应 ``ReturnStmt``
 
-重要特征：**AST 包含了源码中所有的语法信息，但去掉了不必要的细节** （如分号、
+重要特征： **AST 包含了源码中所有的语法信息，但去掉了不必要的细节** （如分号、
 括号等标点符号不再有单独的节点，它们隐含在节点类型中）。
 
 核心 AST 节点
@@ -71,7 +71,7 @@ Clang 的 AST 节点大致分为三类：
 Expr（表达式）
 ------------------------
 
-表达式节点代表一个**计算值的代码片段** 。表达式可以嵌套——比如 ``a + b * c`` 会
+表达式节点代表一个 **计算值的代码片段** 。表达式可以嵌套——比如 ``a + b * c`` 会
 生成一棵表达式子树。
 
 .. list-table:: 常见 Expr 子类
@@ -82,16 +82,16 @@ Expr（表达式）
      - 示例源码
    * - ``DeclRefExpr``
      - 引用一个变量/函数
-     - ``x`` 、``printf``
+     - ``x`` 、 ``printf``
    * - ``IntegerLiteral``
      - 整数字面量
-     - ``42`` 、``0xFF``
+     - ``42`` 、 ``0xFF``
    * - ``BinaryOperator``
      - 二元运算
-     - ``a + b`` 、``x != 0``
+     - ``a + b`` 、 ``x != 0``
    * - ``UnaryOperator``
      - 一元运算
-     - ``-x`` 、``!flag`` 、``*ptr``
+     - ``-x`` 、 ``!flag`` 、 ``*ptr``
    * - ``CallExpr``
      - 函数调用
      - ``foo(x, y)``
@@ -103,12 +103,12 @@ Expr（表达式）
      - ``arr[i]``
    * - ``MemberExpr``
      - 结构体/类成员访问
-     - ``s.field`` 、``p->field``
+     - ``s.field`` 、 ``p->field``
 
 Decl（声明）
 ------------------------
 
-声明节点代表一个**名字的引入**——变量、函数、类型、命名空间等。
+声明节点代表一个 **名字的引入**——变量、函数、类型、命名空间等。
 
 .. list-table:: 常见 Decl 子类
    :header-rows: 1
@@ -124,7 +124,7 @@ Decl（声明）
      - ``int x = 42;``
    * - ``ParmVarDecl``
      - 函数参数
-     - 函数括号中的 ``a`` 、``b``
+     - 函数括号中的 ``a`` 、 ``b``
    * - ``RecordDecl``
      - 结构体/类声明
      - ``struct Point { ... }``
@@ -141,7 +141,7 @@ Decl（声明）
 Stmt（语句）
 ------------------------
 
-语句节点代表一个**完整的执行步骤** 。语句通常包含表达式，或嵌套其他语句。
+语句节点代表一个 **完整的执行步骤** 。语句通常包含表达式，或嵌套其他语句。
 
 .. list-table:: 常见 Stmt 子类
    :header-rows: 1
@@ -157,7 +157,7 @@ Stmt（语句）
      - ``if (x > 0) { ... }``
    * - ``ForStmt`` / ``WhileStmt`` / ``DoStmt``
      - 循环语句
-     - ``for (;;)`` 、``while(1)``
+     - ``for (;;)`` 、 ``while(1)``
    * - ``ReturnStmt``
      - 返回语句
      - ``return x;``
@@ -166,23 +166,23 @@ Stmt（语句）
      - ``switch(n) { case 1: ... }``
    * - ``BreakStmt`` / ``ContinueStmt``
      - 跳转语句
-     - ``break;`` 、``continue;``
+     - ``break;`` 、 ``continue;``
 
 ASTContext 与 SourceManager
 =============================
 
 这两个类是理解 Clang AST 操作的关键基础设施。
 
-**ASTContext** 是整个 AST 的**所有者** 和**工厂** 。
+**ASTContext** 是整个 AST 的 **所有者** 和 **工厂** 。
 
-- 所有 AST 节点（``Decl`` 、``Stmt`` 、``Type`` 、``QualType`` ）都由 ``ASTContext`` 分配和管理
-- 它缓存了常用的类型（``int`` 、``char`` 、``void`` 等），避免了重复创建
-- 可以通过 ``ASTContext::getIntTypeForBitWidth()`` 、``ASTContext::getPointerType()`` 等方法创建和查询类型
+- 所有 AST 节点（ ``Decl`` 、 ``Stmt`` 、 ``Type`` 、 ``QualType`` ）都由 ``ASTContext`` 分配和管理
+- 它缓存了常用的类型（ ``int`` 、 ``char`` 、 ``void`` 等），避免了重复创建
+- 可以通过 ``ASTContext::getIntTypeForBitWidth()`` 、 ``ASTContext::getPointerType()`` 等方法创建和查询类型
 
 ``ASTContext`` 的定义在源码位置：
 `clang/include/clang/AST/ASTContext.h <file:///workspace/llvm-project/clang/include/clang/AST/ASTContext.h>`__
 
-**SourceManager** 负责管理**源码位置信息** （文件、行号、列号）。
+**SourceManager** 负责管理 **源码位置信息** （文件、行号、列号）。
 
 - 每个 AST 节点都关联了一个 ``SourceLocation`` ，记录了它在源码中的位置
 - ``SourceManager`` 可以获取某一行/列的源码文本，也可以判断两个位置的前后关系
@@ -199,7 +199,7 @@ ASTContext 与 SourceManager
 使用 RecursiveASTVisitor 遍历 AST
 =====================================
 
-Clang 提供了一个方便的模式来遍历整个 AST：**RecursiveASTVisitor** 。
+Clang 提供了一个方便的模式来遍历整个 AST： **RecursiveASTVisitor** 。
 
 假设我们想找出源码中所有的函数定义：
 

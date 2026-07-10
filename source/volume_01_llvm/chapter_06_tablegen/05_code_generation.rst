@@ -5,11 +5,11 @@ TableGen 代码生成
 ==========================
 
 前几节看到的都是 TableGen 的"语言"部分——如何编写 ``.td`` 文件。
-本节我们来看"编译器"部分：``llvm-tblgen`` 如何消费 ``.td`` 文件并生成 C++ 代码。
+本节我们来看"编译器"部分： ``llvm-tblgen`` 如何消费 ``.td`` 文件并生成 C++ 代码。
 
 .. rst-class:: center
 
-   TableGen 的"编译器"只做一件事：**解析 .td 文件，生成 Record 的集合，
+   TableGen 的"编译器"只做一件事： **解析 .td 文件，生成 Record 的集合，
    然后转交给 C++ 后端（Backend）来输出代码** 。
 
 llvm-tblgen 的架构
@@ -88,7 +88,7 @@ TableGen 内置了多个后端，每个生成一种 ``*Gen*.inc`` 文件。
 
 **3. -gen-dag-isel（DAG 指令选择）**
 
-这是**最复杂**的 TableGen 后端。它将 ``.td`` 中的 Pattern 编译为一个高效的
+这是 **最复杂** 的 TableGen 后端。它将 ``.td`` 中的 Pattern 编译为一个高效的
 匹配表（通常包含数万行 switch-case 代码）：
 
 .. code-block:: cpp

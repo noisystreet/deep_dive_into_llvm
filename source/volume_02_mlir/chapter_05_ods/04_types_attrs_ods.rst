@@ -130,7 +130,7 @@ ODS 中完整地描绘 Dialect 的数据类型系统。
 生成的文件
 ===============
 
-ODS 定义 Type 和 Attribute 后，``mlir-tblgen`` 会生成：
+ODS 定义 Type 和 Attribute 后， ``mlir-tblgen`` 会生成：
 
 .. code-block:: text
 

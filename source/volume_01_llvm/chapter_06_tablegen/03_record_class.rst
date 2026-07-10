@@ -9,12 +9,12 @@ TableGen 中的两个核心概念是 **Record** （记录）和 **Class** （类
 
 .. rst-class:: center
 
-   ``def`` 创建 Record，``class`` 定义模板。Record 是数据，Class 是模子。
+   ``def`` 创建 Record， ``class`` 定义模板。Record 是数据，Class 是模子。
 
 Record（记录）
 ================
 
-Record 是 TableGen 中的**具体数据单元** 。每一条 ``def`` 语句创建一个 Record：
+Record 是 TableGen 中的 **具体数据单元** 。每一条 ``def`` 语句创建一个 Record：
 
 .. code-block:: text
 
@@ -33,13 +33,13 @@ Record 是 TableGen 中的**具体数据单元** 。每一条 ``def`` 语句创�
        let Size = 64;  // 如果覆盖的话
    }
 
-你可以把 Record 理解为**一个包含键值对的 JSON 对象**——只是这些键值对的
+你可以把 Record 理解为 **一个包含键值对的 JSON 对象**——只是这些键值对的
 类型和默认值由 ``class`` 定义。
 
 Class（类）
 ================
 
-Class 是**记录的模板**——它定义了 Record 应该包含哪些字段、什么类型和默认值。
+Class 是 **记录的模板**——它定义了 Record 应该包含哪些字段、什么类型和默认值。
 
 .. code-block:: text
 
@@ -91,7 +91,7 @@ Class 可以接受模板参数，语法和 C++ 类似：
 多重继承
 ============
 
-TableGen 支持**多重继承**——一个 Record 可以从多个 Class 继承字段：
+TableGen 支持 **多重继承**——一个 Record 可以从多个 Class 继承字段：
 
 .. code-block:: text
 

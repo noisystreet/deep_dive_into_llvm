@@ -4,8 +4,8 @@
 Operation 与 Value
 =====================
 
-在 MLIR 中，**Operation** （操作）是构建一切的基本单元。一个 Operation 可以表示：
-一条算术指令、一个函数定义、一个循环、乃至整个模块。**在 MLIR 中，一切皆 Operation** 。
+在 MLIR 中， **Operation** （操作）是构建一切的基本单元。一个 Operation 可以表示：
+一条算术指令、一个函数定义、一个循环、乃至整个模块。 **在 MLIR 中，一切皆 Operation** 。
 
 .. rst-class:: center
 
@@ -19,24 +19,24 @@ Operation 与 Value
    早在 1958 年，John McCarthy 设计的 **Lisp** 就提出了"一切皆列表"
    （code is data）的概念——程序和数据用同一种结构表示。
 
-   MLIR 把它复用到了编译器领域：**一个函数是一个 Operation、一条指令
+   MLIR 把它复用到了编译器领域： **一个函数是一个 Operation、一条指令
    是一个 Operation、一个循环是一个 Operation、甚至整个模块也是一个
-   Operation** 。这种设计的最大好处是：你只需要**一套统一的工具**就能
+   Operation** 。这种设计的最大好处是：你只需要 ** 一套统一的工具** 就能
    操作所有东西——遍历、匹配、替换、验证。
 
    这和 LLVM IR 形成鲜明对比：LLVM 中 Instruction、BasicBlock、Function、
-   Module 是**不同的 C++ 类** ，各有各的 API。遍历 IR 需要根据不同层级
-   使用不同的方法（ ``inst_iterator`` 、``BasicBlock::iterator`` 、``Function::iterator`` ）。
+   Module 是 **不同的 C++ 类** ，各有各的 API。遍历 IR 需要根据不同层级
+   使用不同的方法（ ``inst_iterator`` 、 ``BasicBlock::iterator`` 、 ``Function::iterator`` ）。
    而在 MLIR 中，无论什么层级，你都用同一个 ``Operation::getOperands()`` 、
-   ``Operation::getRegions()`` 、``OpBuilder`` 来操作。
+   ``Operation::getRegions()`` 、 ``OpBuilder`` 来操作。
 
-   这意味着你可以写出**通用的 IR 变换**——如"把 IR 中所有三地址码格式的
+   这意味着你可以写出 **通用的 IR 变换**——如"把 IR 中所有三地址码格式的
    Operation 替换为 SSA 格式"——而不需要关心这个 Operation 来自哪个
    Dialect。在 LLVM 中，这种"通用变换"几乎不可能写成通用的 Pass。
 
    当然，这种设计也有代价：MLIR 的类型系统比 LLVM 更复杂，而且
    "一切皆 Operation" 意味着即使是最简单的操作（如从某处加载一个值）
-   也有比 LLVM 更深的类层次结构。这是**通用性 vs 性能**之间的经典权衡。
+   也有比 LLVM 更深的类层次结构。这是 **通用性 vs 性能** 之间的经典权衡。
 
 Operation 的结构
 ====================
@@ -78,7 +78,7 @@ Operation 的结构
        return
    }
 
-这里 ``func.func`` 、``scf.for`` 、``memref.load`` 、``arith.addi`` 、``scf.yield``
+这里 ``func.func`` 、 ``scf.for`` 、 ``memref.load`` 、 ``arith.addi`` 、 ``scf.yield``
 都是 Operation。
 
 SSA Value
@@ -98,13 +98,13 @@ MLIR 中的 **Value** 是 SSA 值（静态单赋值），每个 Value 恰好被�
 
 Value 有两个主要属性：
 
-- **Type** ：值的类型（如 ``i32`` 、``f32`` 、``tensor<4xf32>`` ）
+- **Type** ：值的类型（如 ``i32`` 、 ``f32`` 、 ``tensor<4xf32>`` ）
 - **definingOp** ：定义这个值的 Operation（可以通过 ``value.getDefiningOp()`` 获取）
 
 Block Arguments
 ======================
 
-除了 Operation 定义的 Value，MLIR 中还有一种特殊的 Value：**Block 参数** 。
+除了 Operation 定义的 Value，MLIR 中还有一种特殊的 Value： **Block 参数** 。
 Block 可以有参数，它们由控制流隐式定义，而不是由某个 Operation 显式定义：
 
 .. code-block:: text
@@ -118,13 +118,13 @@ Block 可以有参数，它们由控制流隐式定义，而不是由某个 Oper
        scf.yield %v : i32
    }
 
-在这里，``%i`` 和 ``%acc`` 都是 Block 参数——它们不是由某个 ``arith.addi``
+在这里， ``%i`` 和 ``%acc`` 都是 Block 参数——它们不是由某个 ``arith.addi``
 定义的，而是由控制流的进入点提供的。
 
 Operation 的名称格式
 ===========================
 
-每个 Operation 都有一个全局唯一的名称，格式为：``dialect.operation`` 。
+每个 Operation 都有一个全局唯一的名称，格式为： ``dialect.operation`` 。
 
 .. list-table:: 常见 Operation 命名示例
    :header-rows: 1
@@ -187,7 +187,7 @@ ODS 方式基于 TableGen，可以自动生成解析、打印、验证等代码�
 Operation 的验证
 =====================
 
-每个 Operation 都可以定义自己的**验证器** （verifier），在构造和转换时自动执行：
+每个 Operation 都可以定义自己的 **验证器** （verifier），在构造和转换时自动执行：
 
 .. code-block:: cpp
 
@@ -235,8 +235,8 @@ LLVM IR 的 Instruction/Function 分层设计，MLIR 用统一的 Operation
 
    mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir
 
-输出中每一行都是一个 Operation：``func.func`` 是 Operation，
-``arith.addi`` 是 Operation，``func.return`` 也是 Operation——
+输出中每一行都是一个 Operation： ``func.func`` 是 Operation，
+``arith.addi`` 是 Operation， ``func.return`` 也是 Operation——
 唯一的区别是有无 Region 和属性。
 
 本章小结

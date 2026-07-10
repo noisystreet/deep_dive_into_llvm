@@ -5,7 +5,7 @@ llvm-dis 与 llvm-as
 ==========================
 
 ``llvm-dis`` 和 ``llvm-as`` 是 LLVM IR 两种格式之间的转换器：
-比特码（``.bc`` ）和文本格式（``.ll`` ）。
+比特码（ ``.bc`` ）和文本格式（ ``.ll`` ）。
 
 .. rst-class:: center
 
@@ -15,7 +15,7 @@ llvm-dis 与 llvm-as
 为什么需要两种格式？
 =========================
 
-LLVM IR 有**三种表示形式** ，它们在语义上完全等价：
+LLVM IR 有 **三种表示形式** ，它们在语义上完全等价：
 
 .. list-table:: LLVM IR 的三种形式
    :header-rows: 1
@@ -97,7 +97,7 @@ LLVM 比特码格式在不同版本之间可能不兼容。LLVM 22 的 ``llvm-di
    # 使用 llvm-as 重新编译文本 IR
    $ llvm-as input.ll -o input.bc
 
-实际开发中，建议将 LLVM IR 以文本格式（``.ll`` ）保存在版本控制系统中，
+实际开发中，建议将 LLVM IR 以文本格式（ ``.ll`` ）保存在版本控制系统中，
 因为它可读、可 diff，且不受比特码版本兼容性的影响。
 
 llvm-extract：从模块中提取函数

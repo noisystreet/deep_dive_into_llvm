@@ -5,8 +5,8 @@
 =========================
 
 本章介绍 Ch3 未覆盖但同样重要的几个 MLIR Dialect：
-``memref`` （内存抽象）、``bufferization`` （张量缓冲化）、
-``transform`` （元编程）、``quant`` / ``sparse_tensor`` （量化与稀疏）。
+``memref`` （内存抽象）、 ``bufferization`` （张量缓冲化）、
+``transform`` （元编程）、 ``quant`` / ``sparse_tensor`` （量化与稀疏）。
 
 .. toctree::
    :maxdepth: 2

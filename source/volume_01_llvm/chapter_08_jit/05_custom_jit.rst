@@ -124,7 +124,7 @@
 与外部符号交互
 ===================
 
-JIT 编译的代码可能需要调用外部函数（如 ``printf`` 、``malloc`` ）。
+JIT 编译的代码可能需要调用外部函数（如 ``printf`` 、 ``malloc`` ）。
 ORC JIT 通过 ``JITDylib::define`` 来注册外部符号：
 
 .. code-block:: cpp

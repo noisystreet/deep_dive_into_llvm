@@ -4,7 +4,7 @@
 Region 与 Block
 ======================
 
-在 MLIR 中，**Region** （区域）和 **Block** （块）构成了操作间的嵌套结构。
+在 MLIR 中， **Region** （区域）和 **Block** （块）构成了操作间的嵌套结构。
 如果说 Operation 是 MLIR 的"指令"，那 Region 和 Block 就是 MLIR 的"作用域"。
 
 .. rst-class:: center
@@ -16,10 +16,10 @@ Region 与 Block
    :class: note
 
    结构化控制流的核心思想是 ``SESE`` （Single Entry, Single Exit）——
-   每个控制流区域只有一个入口和一个出口。``scf.for`` 的循环体就是一个
+   每个控制流区域只有一个入口和一个出口。 ``scf.for`` 的循环体就是一个
    SESE Region：从 ``scf.for`` 进入，从 ``scf.yield`` 退出。
 
-   MLIR 的 Region 比 LLVM BasicBlock 更灵活：``scf.if`` 有两个 Region
+   MLIR 的 Region 比 LLVM BasicBlock 更灵活： ``scf.if`` 有两个 Region
    （then/else），Region 内还可以嵌套含 Region 的 Op。这让前端可以直接
    表示 lambda、协程、GPU kernel 等结构，而不必先展平为 goto 面条代码。
 
@@ -29,7 +29,7 @@ Region 与 Block
 Block（块）
 ==============
 
-**Block** 是一个有序的 Operation 序列，以**终止操作** （terminator）结尾：
+**Block** 是一个有序的 Operation 序列，以 **终止操作** （terminator）结尾：
 
 .. code-block:: text
 
@@ -41,7 +41,7 @@ Block（块）
 每个 Block 包含：
 
 1. **标签** （可选）：如 ``^block_name`` ，用于其他 Block 引用
-2. **Block 参数** （``%arg0`` 、``%arg1`` ）：从控制流入点传递的值
+2. **Block 参数** （ ``%arg0`` 、 ``%arg1`` ）：从控制流入点传递的值
 3. **Operation 序列** ：按顺序执行的指令
 4. **终止操作** ：Block 的最后一条 Operation，决定控制流的去向
 
@@ -103,7 +103,7 @@ MLIR 有两种 Region 模式：
      - 函数体、循环体
      - MLIR 中的操作图
    * - 示例
-     - ``func.func`` 、``scf.for``
+     - ``func.func`` 、 ``scf.for``
      - ``graph.op``
 
 绝大多数 Dialect 使用 SSACFG Region。
@@ -133,7 +133,7 @@ Block 之间的控制流
    }
 
 MLIR 使用 ``cf`` Dialect 的 ``cf.br`` 和 ``cf.cond_br`` 来表示基本的控制流，
-而 ``scf`` Dialect 则提供了更高级的结构化控制流（``scf.for`` 、``scf.if`` ）。
+而 ``scf`` Dialect 则提供了更高级的结构化控制流（ ``scf.for`` 、 ``scf.if`` ）。
 
 Region 的嵌套
 ====================
@@ -189,7 +189,7 @@ Region 定义在 `Region.h <file:///workspace/llvm-project/mlir/include/mlir/IR/
 Block 定义在 `Block.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Block.h>`__ 。
 
 Region 是 Block 的容器，一个 Operation 可以拥有零个或多个 Region。
-``func.func`` 有一个 Region 包含函数体；``scf.for`` 有一个 Region 包含循环体；
+``func.func`` 有一个 Region 包含函数体； ``scf.for`` 有一个 Region 包含循环体；
 ``scf.if`` 有两个 Region 分别包含 then/else 分支。
 
 Block 内的 Operation 按顺序排列，Block 参数等价于 LLVM IR 的 PHI 节点——

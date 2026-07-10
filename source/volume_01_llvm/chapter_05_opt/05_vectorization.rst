@@ -19,8 +19,8 @@
 
    - **Loop Vectorizer** — 在循环中把标量迭代合并为向量迭代。
      适合 ``for (i) a[i] = b[i] + c[i]`` 这类规则循环。
-   - **SLP Vectorizer** — 在基本块内把**相邻的独立标量操作**合并为向量。
-     适合循环已展开后的 ``a[0]+b[0]`` 、``a[1]+b[1]`` 等操作。
+   - **SLP Vectorizer** — 在基本块内把 **相邻的独立标量操作** 合并为向量。
+     适合循环已展开后的 ``a[0]+b[0]`` 、 ``a[1]+b[1]`` 等操作。
 
    两者常配合使用：Loop Vectorizer 先合并迭代，SLP 再合并块内残余。
    ``-Rpass-analysis=loop-vectorize`` 可以打印向量化的决策理由——
@@ -53,7 +53,7 @@ Loop Vectorizer 是 LLVM 中最重要的向量化 Pass。它分析循环的迭�
        store <4 x i32>(vec_c, &a[i]);
    }
 
-在 LLVM IR 层面，向量化后的代码使用**向量类型** ：
+在 LLVM IR 层面，向量化后的代码使用 **向量类型** ：
 
 .. code-block:: llvm
 
@@ -118,7 +118,7 @@ SLP Vectorizer（超字级并行向量化）
 =======================================
 
 SLP（Superword-Level Parallelism）Vectorizer 与 Loop Vectorizer 不同：
-它不关注循环迭代间的并行性，而是在**基本块内部** 寻找可向量化的标量指令组。
+它不关注循环迭代间的并行性，而是在 **基本块内部** 寻找可向量化的标量指令组。
 
 .. code-block:: c
 

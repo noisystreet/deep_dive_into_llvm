@@ -9,7 +9,7 @@ MLIR 源码阅读指南
 
 .. rst-class:: center
 
-   推荐阅读顺序：``mlir/IR`` → ``mlir/Dialect`` → ``mlir/Conversion`` → ``mlir/Pass``
+   推荐阅读顺序： ``mlir/IR`` → ``mlir/Dialect`` → ``mlir/Conversion`` → ``mlir/Pass``
 
 目录结构
 ==================

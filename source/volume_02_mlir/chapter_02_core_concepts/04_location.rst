@@ -4,7 +4,7 @@
 位置信息与诊断
 =======================
 
-MLIR 在 IR 的每一级都保留了**源码位置信息** 。每个 Operation、Block 参数、
+MLIR 在 IR 的每一级都保留了 **源码位置信息** 。每个 Operation、Block 参数、
 乃至 Attribute 都可以关联一个 ``Location`` 。这是 MLIR 比 LLVM IR 更强大
 的特性之一——**在多层降级过程中，位置信息不会丢失** 。
 
@@ -17,7 +17,7 @@ MLIR 在 IR 的每一级都保留了**源码位置信息** 。每个 Operation�
    :class: note
 
    传统编译器在 AST → IR 降级后，优化 Pass 可能让指令的 ``debug loc``
-   变得模糊甚至丢失。MLIR 把 ``Location`` 作为**一等公民**挂在每个
+   变得模糊甚至丢失。MLIR 把 ``Location`` 作为 **一等公民** 挂在每个
    Operation 上，并支持 **FusedLocation** 把多层来源合并。
 
    实际价值：当 ``linalg.matmul`` 降级为三层 ``scf.for`` 再变成
@@ -55,7 +55,7 @@ MLIR 的 ``Location`` 类型支持多种格式：
 FusedLoc：多级位置
 =======================
 
-在降级过程中，MLIR 可以将多级位置信息**融合**在一起：
+在降级过程中，MLIR 可以将多级位置信息 **融合** 在一起：
 
 .. code-block:: text
 
@@ -68,7 +68,7 @@ FusedLoc：多级位置
 DiagnosticEngine（诊断引擎）
 =====================================
 
-MLIR 的诊断系统支持可插拔的**诊断处理引擎** 。其工作方式与 LLVM 的 ``LLVM_DEBUG``
+MLIR 的诊断系统支持可插拔的 **诊断处理引擎** 。其工作方式与 LLVM 的 ``LLVM_DEBUG``
 不同——它不是打印文本，而是发送结构化的诊断对象。
 
 .. code-block:: cpp

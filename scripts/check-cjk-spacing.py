@@ -26,10 +26,11 @@ def check_file(path, fix=False):
         lines = f.readlines()
 
     in_code_block = False
-    in_literal = False
-    in_bold = False
+    in_bold = False        # 跨行保持状态
+    in_literal = False     # 跨行保持状态
     issues = []
     fixed_lines = []
+    changed = False
 
     for lineno, line in enumerate(lines, 1):
         stripped = line.rstrip('\n')
@@ -54,8 +55,6 @@ def check_file(path, fix=False):
         # 逐字符扫描
         i = 0
         result = []
-        in_bold = False
-        in_literal = False
 
         while i < len(stripped):
             ch = stripped[i]
@@ -79,6 +78,9 @@ def check_file(path, fix=False):
 
                 elif in_bold and not in_literal:
                     # 可能是 closing **
+                    # 先去除 result 末尾空格（RST 不允许 ** 前有空格当关闭标记）
+                    while result and result[-1] == ' ':
+                        result.pop()
                     # CJK 紧挨 after ** → 缺少空格
                     if is_cjk(next_):
                         issues.append((path, lineno, f"'**{next_}' 后缺少空格: ...**{next_}..."))
@@ -108,6 +110,9 @@ def check_file(path, fix=False):
                     continue
 
                 elif in_literal and not in_bold:
+                    # 去除 result 末尾空格
+                    while result and result[-1] == ' ':
+                        result.pop()
                     if is_cjk(next_):
                         issues.append((path, lineno, f"'``{next_}' 后缺少空格: ...``{next_}..."))
                         if fix:
@@ -125,7 +130,9 @@ def check_file(path, fix=False):
 
         fixed_lines.append(''.join(result) + '\n')
 
-    return issues, fixed_lines
+    # 检测是否有内容发生变化
+    changed = (fixed_lines != lines)
+    return issues, fixed_lines, changed
 
 
 def is_cjk(ch):
@@ -158,11 +165,10 @@ def main():
     for f in sorted(files):
         if not os.path.exists(f):
             continue
-        issues, fixed = check_file(f, fix=args.fix)
+        issues, fixed, changed = check_file(f, fix=args.fix)
 
         if issues:
             if args.fix:
-                # 写回修复后的内容
                 with open(f, 'w', encoding='utf-8') as fh:
                     fh.writelines(fixed)
                 print(f"  🔧 {len(issues)} 处修复: {f}")
@@ -171,6 +177,15 @@ def main():
                 for path, lineno, msg in issues:
                     print(f"    L{lineno}: {msg}")
             total_issues += len(issues)
+        elif args.fix and changed:
+            with open(f, 'w', encoding='utf-8') as fh:
+                fh.writelines(fixed)
+            print(f"  🔧 格式修正: {f}")
+        elif args.fix and changed:
+            # 无 CJK 问题但有格式修正（如去掉关闭 ** 前的空格）
+            with open(f, 'w', encoding='utf-8') as fh:
+                fh.writelines(fixed)
+            print(f"  🔧 格式修正: {f}")
 
     if total_issues == 0:
         print("✅ 所有文件 CJK 间距正确")

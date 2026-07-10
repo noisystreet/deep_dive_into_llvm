@@ -9,7 +9,7 @@ LLVM 源码库庞大且组织有序。掌握正确的阅读方法，可以大大
 .. rst-class:: center
 
    LLVM 源码中最值得读的三个文件：
-   ``LLVMContext.h`` 、``Instruction.h`` 、``PassManager.h`` 。
+   ``LLVMContext.h`` 、 ``Instruction.h`` 、 ``PassManager.h`` 。
 
 源码目录结构
 ==================
@@ -50,7 +50,7 @@ LLVM 项目的主仓库（ ``llvm-project`` ）采用模块化布局：
    ├── Dominators.cpp        # 支配树
    └── Verifier.cpp          # IR 验证器
 
-建议阅读顺序：``Type → Value → User → Instruction → BasicBlock → Function → Module`` 。
+建议阅读顺序： ``Type → Value → User → Instruction → BasicBlock → Function → Module`` 。
 
 **llvm/lib/Transforms**——优化 Pass
 

@@ -10,7 +10,7 @@ LLVM 架构概览
 从问题出发：传统编译器的痛点
 ================================
 
-在 LLVM 诞生之前，GCC 是开源世界的主流编译器。GCC 的架构是**前端-中端-后端**
+在 LLVM 诞生之前，GCC 是开源世界的主流编译器。GCC 的架构是 **前端-中端-后端**
 三者耦合在一起的：每个前端（C、C++、Fortran、Ada、Java 等）有自己独特的中间表示，
 没有统一的 IR。这意味着：
 
@@ -21,7 +21,7 @@ LLVM 架构概览
 .. admonition:: LLVM 的"三段式"如何改变编译器产业
    :class: note
 
-   Chris Lattner 在 2000 年设计 LLVM 时的核心洞察是：**用统一的 IR 连接
+   Chris Lattner 在 2000 年设计 LLVM 时的核心洞察是： **用统一的 IR 连接
    前端和后端** 。这催生了一个新产业——语言前端只需生成 LLVM IR
    （Rust、Swift、Julia 都走这条路）；硬件厂商只需实现 LLVM 后端；
    工具厂商的 Sanitizer、LTO、PGO 自动惠及所有前端。
@@ -80,12 +80,12 @@ LLVM 将编译过程划分为三个独立的阶段：
 LLVM IR — 统一中间表示
 ==============================
 
-LLVM IR 是整个架构的**基石** 。它是一种**静态单赋值（SSA, Static Single Assignment）**
+LLVM IR 是整个架构的 **基石** 。它是一种 **静态单赋值（SSA, Static Single Assignment）**
 形式的低级中间表示。
 
 **为什么是 SSA？**
 
-SSA 的核心约束是：**每个变量（在 LLVM IR 中称为"值"）只被赋值一次** 。你可能会问：
+SSA 的核心约束是： **每个变量（在 LLVM IR 中称为"值"）只被赋值一次** 。你可能会问：
 这难道不会让编程很不方便吗？事实恰恰相反——SSA 极大地简化了编译器的优化工作。
 
 举个例子，在非 SSA 形式中，如果我们要分析一段代码中变量 ``x`` 的取值来源：
@@ -96,7 +96,7 @@ SSA 的核心约束是：**每个变量（在 LLVM IR 中称为"值"）只被赋
    int x = a + b;   // 定义 1
    x = x * c;       // 定义 2（覆盖了定义 1）
 
-要判断 ``x * c`` 中的 ``x`` 来自哪个定义，优化器需要做**定值-引用链**
+要判断 ``x * c`` 中的 ``x`` 来自哪个定义，优化器需要做 **定值-引用链**
 （def-use chain）分析。在有多个控制流路径时，这个分析会变得非常复杂。
 
 但在 SSA 形式中，每个变量只有唯一的定义点，def-use 关系天然清晰：
@@ -111,7 +111,7 @@ SSA 的核心约束是：**每个变量（在 LLVM IR 中称为"值"）只被赋
 这就是 SSA 的威力——**让 def-use 链变成局部信息** 。常量传播、死代码消除、
 循环不变式外提等 Pass 的实现在 SSA 形式上都会简化很多。
 
-除了 SSA 特性，LLVM IR 还同时具备**三个形态** ：
+除了 SSA 特性，LLVM IR 还同时具备 **三个形态** ：
 
 **三种形态的 IR：**
 
@@ -144,7 +144,7 @@ SSA 的核心约束是：**每个变量（在 LLVM IR 中称为"值"）只被赋
 - ``llvm::Module`` （`:file:///workspace/llvm-project/llvm/include/llvm/IR/Module.h`）— 
   一个编译单元（通常对应一个源文件）的顶层容器，包含函数、全局变量、元数据等
 - ``llvm::Function`` （`:file:///workspace/llvm-project/llvm/include/llvm/IR/Function.h`）— 
-  表示一个函数，包含多个 BasicBlock。函数可以有参数、属性（如 ``noreturn`` 、``readonly`` ）
+  表示一个函数，包含多个 BasicBlock。函数可以有参数、属性（如 ``noreturn`` 、 ``readonly`` ）
 - ``llvm::BasicBlock`` — 基本块，包含一系列指令序列，以控制流终止指令结束
 - ``llvm::Instruction``\ — 单条指令的操作码和操作数。Instruction 有大量子类，
   如 ``BinaryOperator``\ （二元运算）、\ ``LoadInst``\ （加载）、\ ``StoreInst``\ （存储）、
@@ -188,7 +188,7 @@ SSA 的核心约束是：**每个变量（在 LLVM IR 中称为"值"）只被赋
        ret i32 %result
    }
 
-``i32`` 是 32 位整数类型，``%a`` 、``%b`` 是 SSA 值（每个值只被赋值一次），
+``i32`` 是 32 位整数类型， ``%a`` 、 ``%b`` 是 SSA 值（每个值只被赋值一次），
 ``add`` 指令的两个操作数分别是 ``%a`` 和 ``%b`` 。看到没有——IR 中没有任何
 与 C 语言相关的信息（没有类型名、没有 C 的关键字），只有最底层的整数运算。
 这就是"语言无关"的含义：同样的 IR 也可以由 Rust 编译器生成。
@@ -244,12 +244,12 @@ Pass 分为两类：
 
 - **分析 Pass**\ （Analysis Pass）：分析 IR 但不修改它，生成供其他 Pass 使用的信息
   （如 ``DominatorTreeAnalysis`` 计算支配树）
-- **变换 Pass**\ （Transform Pass）：修改 IR 来优化它，如函数内联（``InlinerPass`` ）、
-  常量传播（``SCCPPass`` ）、循环向量化（``LoopVectorizePass`` ）
+- **变换 Pass**\ （Transform Pass）：修改 IR 来优化它，如函数内联（ ``InlinerPass`` ）、
+  常量传播（ ``SCCPPass`` ）、循环向量化（ ``LoopVectorizePass`` ）
 
 **优化等级的设计哲学：**
 
-LLVM 定义了多个优化等级（``-O0`` 、\ ``-O1`` 、\ ``-O2`` 、\ ``-O3`` 、\ ``-Os`` 、\ ``-Oz`` ），
+LLVM 定义了多个优化等级（ ``-O0`` 、\ ``-O1`` 、\ ``-O2`` 、\ ``-O3`` 、\ ``-Os`` 、\ ``-Oz`` ），
 每个等级对应一组 Pass 的集合（称为 Pass Pipeline）。为什么需要多个等级？
 
 .. code-block:: bash
@@ -259,7 +259,7 @@ LLVM 定义了多个优化等级（``-O0`` 、\ ``-O1`` 、\ ``-O2`` 、\ ``-O3`
    clang -S -emit-llvm -O2 hello.c -o hello.O2.ll   # 标准优化，适合生产
    clang -S -emit-llvm -O3 hello.c -o hello.O3.ll   # 激进优化，可能增大代码体积
 
-- **-O0** ：不做任何优化，生成的 IR 和源代码结构一一对应，适合调试（``-g`` 调试信息
+- **-O0** ：不做任何优化，生成的 IR 和源代码结构一一对应，适合调试（ ``-g`` 调试信息
   在 -O0 下最准确）。所有的 ``alloca``/``store``/``load`` 都保留，变量名可读
 - **-O1** ：基本优化，在编译速度和代码质量之间平衡
 - **-O2** ：生产环境推荐等级，启用大多数标准优化（内联、循环优化、全局优化等）

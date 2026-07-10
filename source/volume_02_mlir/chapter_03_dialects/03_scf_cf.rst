@@ -4,13 +4,13 @@
 控制流 Dialect: scf / cf
 ==========================
 
-MLIR 中有两个控制流 Dialect：**scf** （Structured Control Flow）提供结构化的
-控制流结构；**cf** （Control Flow）提供底层的分支指令。两者的关系类似于
+MLIR 中有两个控制流 Dialect： **scf** （Structured Control Flow）提供结构化的
+控制流结构； **cf** （Control Flow）提供底层的分支指令。两者的关系类似于
 高级语言中的 ``for/while`` 和汇编语言中的 ``jmp/je`` 。
 
 .. rst-class:: center
 
-   绝大多数 MLIR 程序使用 ``scf`` 来表达控制流。``cf`` 只在降级的最后阶段
+   绝大多数 MLIR 程序使用 ``scf`` 来表达控制流。 ``cf`` 只在降级的最后阶段
    出现——当结构化控制流被转换为底层分支后。
 
 .. admonition:: scf 与 cf：编译器里的"高级语言"与"汇编"
@@ -21,7 +21,7 @@ MLIR 中有两个控制流 Dialect：**scf** （Structured Control Flow）提供
    - **scf** ≈ 带 ``for``/``if`` 的高级语言——保留循环结构，便于分析和变换
    - **cf** ≈ 只有 ``br``/``cond_br`` 的汇编——接近 LLVM IR 的 CFG
 
-   关键设计决策是：**优化尽量在 scf 层完成** 。循环展开、向量化、
+   关键设计决策是： **优化尽量在 scf 层完成** 。循环展开、向量化、
    并行化都依赖 ``scf.for`` 的 ``iter_args`` 语义；一旦降到 cf，
    循环携带值变成 Block 参数，变换难度陡增。
 
@@ -31,7 +31,7 @@ MLIR 中有两个控制流 Dialect：**scf** （Structured Control Flow）提供
 scf Dialect
 =================
 
-``scf`` 提供了三种结构化控制流结构：``scf.for`` 、``scf.while`` 、``scf.if`` 。
+``scf`` 提供了三种结构化控制流结构： ``scf.for`` 、 ``scf.while`` 、 ``scf.if`` 。
 
 **scf.for：定次循环**
 
@@ -49,7 +49,7 @@ scf Dialect
        scf.yield %v : i32
    }
 
-``scf.for`` 的语义：``%i`` 从 ``%lb`` 开始，每次增加 ``%step`` ，
+``scf.for`` 的语义： ``%i`` 从 ``%lb`` 开始，每次增加 ``%step`` ，
 直到大于等于 ``%ub`` 。循环体的每次迭代通过 ``scf.yield`` 传递值给下一轮。
 
 **scf.while：条件循环**
@@ -68,7 +68,7 @@ scf Dialect
        scf.yield %next : i32
    }
 
-``scf.while`` 有两个 Region：``before`` 块检查条件，``after`` 块执行体。
+``scf.while`` 有两个 Region： ``before`` 块检查条件， ``after`` 块执行体。
 
 **scf.if：条件分支**
 
@@ -100,7 +100,7 @@ scf Dialect
        scf.yield
    }
 
-``scf.parallel`` 的语义是：迭代之间**没有数据依赖** ，可以并行执行。
+``scf.parallel`` 的语义是：迭代之间 **没有数据依赖** ，可以并行执行。
 降级时，它可以根据目标平台映射为 OpenMP 的 ``#pragma omp parallel for``
 或 GPU 的线程网格。
 
@@ -172,7 +172,7 @@ scf → cf 的降级
 它实现了 ``RegionBranchOpInterface`` ——告诉 MLIR 框架这个 Op 的 Region
 如何与外部控制流交互。
 
-与 LLVM IR 的 ``phi`` 节点对比：``scf.for`` 用 ``iter_args`` 显式声明
+与 LLVM IR 的 ``phi`` 节点对比： ``scf.for`` 用 ``iter_args`` 显式声明
 循环携带值，用 ``scf.yield`` 传递下一轮的状态。优化器不需要运行
 支配树分析就能识别循环结构——这正是 :ref:`chapter-05-03-loop-optimizations`
 中 LoopInfo 试图恢复的信息，而 scf 在 IR 层面直接保留了它。
@@ -207,7 +207,7 @@ scf → cf 的降级
        --convert-func-to-llvm \
        --reconcile-unrealized-casts
 
-第二步输出中应出现 ``cf.br`` 、``cf.cond_br`` 和 ``^bb1`` 等 CFG 结构——
+第二步输出中应出现 ``cf.br`` 、 ``cf.cond_br`` 和 ``^bb1`` 等 CFG 结构——
 这正是前文 scf → cf 降级示例的具体 IR 形态。
 
 本章小结

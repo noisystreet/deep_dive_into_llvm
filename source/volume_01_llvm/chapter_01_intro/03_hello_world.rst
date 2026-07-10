@@ -84,7 +84,7 @@ Hello World
    ./hello
    # 输出: Result: 100
 
-但这样我们就看不到中间过程了。接下来我们用 Clang 的 ``-`` 系列选项来**逐步查看**
+但这样我们就看不到中间过程了。接下来我们用 Clang 的 ``-`` 系列选项来 **逐步查看**
 LLVM 各阶段的产物。
 
 查看中间产物
@@ -203,10 +203,10 @@ LLVM 各阶段的产物。
 使用 opt 运行优化 Pass
 ==========================
 
-Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独** 运行某个 Pass 来观察
+Clang 编译时默认会运行一系列优化 Pass。但如果我们想 **单独** 运行某个 Pass 来观察
 它对 IR 的影响，就需要 ``opt`` 工具。
 
-``opt`` 是 LLVM 的**优化器驱动程序** ，它以 LLVM IR 作为输入，应用指定的 Pass 后
+``opt`` 是 LLVM 的 **优化器驱动程序** ，它以 LLVM IR 作为输入，应用指定的 Pass 后
 输出优化后的 IR。它的源码在 ``llvm/tools/opt/`` 中。
 
 **1. 单 Pass 运行：mem2reg**
@@ -222,7 +222,7 @@ Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独*
    opt -S -passes=mem2reg hello.unopt.ll -o hello.mem2reg.ll
 
 ``-passes=mem2reg`` 告诉 opt 运行 ``mem2reg`` 这个 Pass。运行后，原来的
-``alloca`` 、``store`` 、``load`` 指令被替换为直接使用 SSA 寄存器：
+``alloca`` 、 ``store`` 、 ``load`` 指令被替换为直接使用 SSA 寄存器：
 
 .. code-block:: llvm
 
@@ -233,8 +233,8 @@ Clang 编译时默认会运行一系列优化 Pass。但如果我们想**单独*
      ret i32 0
    }
 
-看到区别了吗？优化前，``x`` 、``y`` 、``result`` 变量都通过 ``alloca`` 分配栈空间
-然后 ``store``/``load`` 读写。``mem2reg`` 分析后发现这些变量可以安全地提升为
+看到区别了吗？优化前， ``x`` 、 ``y`` 、 ``result`` 变量都通过 ``alloca`` 分配栈空间
+然后 ``store``/``load`` 读写。 ``mem2reg`` 分析后发现这些变量可以安全地提升为
 SSA 值，直接传参给 ``add`` 函数——栈分配和内存读写都被消除了。
 
 **2. 多 Pass 链式运行**
@@ -272,7 +272,7 @@ SSA 值，直接传参给 ``add`` 函数——栈分配和内存读写都被消�
 
    opt -S -passes=verify hello.unopt.ll -o /dev/null
 
-如果 IR 有语法错误或语义问题（如类型不匹配、SSA 违反等），``verify`` Pass 会
+如果 IR 有语法错误或语义问题（如类型不匹配、SSA 违反等）， ``verify`` Pass 会
 输出诊断信息。这个 Pass 在你编写 Pass 或手动修改 IR 时尤其有用。
 
 **5. 查看可用 Pass 列表**
@@ -418,7 +418,7 @@ LLVM 的库采用模块化设计，每个组件对应一个库：
 
 .. note::
 
-   从 ``llvm::Module`` 的定义（``llvm/include/llvm/IR/Module.h`` ）可以看到，
+   从 ``llvm::Module`` 的定义（ ``llvm/include/llvm/IR/Module.h`` ）可以看到，
    Module 是一个编译单元的顶层容器，包含 ``GlobalList`` （全局变量列表）、
    ``FunctionList`` （函数列表）等。当你创建一个 ``Module`` 对象时，你已经在
    构造 LLVM IR 的内存表示——这是所有后续操作（优化、代码生成）的起点。

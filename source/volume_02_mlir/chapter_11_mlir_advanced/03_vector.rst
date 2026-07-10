@@ -4,7 +4,7 @@
 Vector Dialect
 ===================
 
-Vector Dialect 是 MLIR 中用于**显式向量化**的 Dialect。它提供了丰富的
+Vector Dialect 是 MLIR 中用于 **显式向量化** 的 Dialect。它提供了丰富的
 向量操作，可以精确控制 SIMD 指令的生成。
 
 .. rst-class:: center
@@ -15,9 +15,9 @@ Vector Dialect 是 MLIR 中用于**显式向量化**的 Dialect。它提供了�
 .. admonition:: Vector Dialect vs LLVM 自动向量化
    :class: note
 
-   LLVM 的 Loop Vectorizer 从标量循环**自动推断** SIMD 机会——方便但
-   不可控。Vector Dialect 走**显式向量**路线：前端或优化器直接生成
-   ``vector.transfer_read`` 、``vector.fma`` 等 Op，精确控制向量宽度。
+   LLVM 的 Loop Vectorizer 从标量循环 **自动推断** SIMD 机会——方便但
+   不可控。Vector Dialect 走 **显式向量** 路线：前端或优化器直接生成
+   ``vector.transfer_read`` 、 ``vector.fma`` 等 Op，精确控制向量宽度。
 
    两条路线互补：MLIR 在 linalg 层做 Tiling 后，可以选择
    降为 ``vector`` Dialect（显式 SIMD）或 ``scf`` 循环（交给 LLVM 自动向量化）。
@@ -35,7 +35,7 @@ Vector Dialect 定义了自己的向量类型：
    vector<8xi32>          // 8 个 i32 的向量
    vector<2x4xf32>        // 2x4 的 2D 向量（外层 2，内层 4）
 
-向量的维度可以是**多维**的——但在降级时，多维向量会映射为对应维度
+向量的维度可以是 **多维** 的——但在降级时，多维向量会映射为对应维度
 的 SIMD 指令序列。
 
 核心操作
@@ -162,14 +162,14 @@ Vector Dialect 的降级不是一步完成的，源码中明确拆为两个阶�
 最终由 LLVM 后端的向量化 Pass 或指令选择生成 ``vaddps`` 等机器指令。
 
 这条路径与第一卷 :ref:`chapter-05-05-vectorization` 讨论的 LLVM 自动向量化
-形成互补：MLIR Vector Dialect 让开发者**显式**控制向量形状和操作，
+形成互补：MLIR Vector Dialect 让开发者 **显式** 控制向量形状和操作，
 而不完全依赖 LLVM 的 LoopVectorize 启发式分析。
 
 向量 load/store 与内存对齐
 ==============================
 
 ``vector.load`` 和 ``vector.store`` 在降级时需要处理对齐要求。
-如果 memref 的对齐信息不足，``VectorToLLVM`` 会插入额外的对齐断言或
+如果 memref 的对齐信息不足， ``VectorToLLVM`` 会插入额外的对齐断言或
 降级为标量循环——这是手写向量化时必须注意的陷阱。
 
 动手验证

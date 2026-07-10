@@ -5,7 +5,7 @@ tensor → scf 降级
 =================
 
 从 ``tensor`` / ``linalg`` 到 ``scf`` / ``arith`` 的降级是 MLIR 计算
-降级管道中的第一步。它将高层**张量计算**展开为显式的**标量循环** 。
+降级管道中的第一步。它将高层 **张量计算** 展开为显式的 **标量循环** 。
 
 .. rst-class:: center
 
@@ -15,7 +15,7 @@ tensor → scf 降级
 .. admonition:: Bufferization：函数式张量的"落地"时刻
    :class: note
 
-   ``tensor`` 是**不可变值语义**——``%1 = tensor.insert %v into %t[%i]``
+   ``tensor`` 是 **不可变值语义**——``%1 = tensor.insert %v into %t[%i]``
    产生新 tensor，不修改旧值。这对分析和优化很友好，但硬件只有一块内存。
 
    **Bufferization** 就是把值语义的 tensor 映射到有地址的 memref：
@@ -60,7 +60,7 @@ Bufferization 是 tensor 计算降级的第一步。它将不可变的 ``tensor`
 
    $ mlir-opt --one-shot-bufferize input.mlir
 
-One-Shot Bufferize 的核心策略是**就地缓冲** （in-place bufferization）。
+One-Shot Bufferize 的核心策略是 **就地缓冲** （in-place bufferization）。
 它分析 tensor 的使用链，尽可能复用现有的缓冲区，避免内存分配。
 
 **Bufferization 的主要挑战** ：
@@ -145,7 +145,7 @@ linalg.generic 到 scf.for 的降级
 源码走读：Bufferization 的三阶段
 ======================================
 
-``tensor`` 是不可变值语义，``memref`` 是可变内存引用。二者之间的转换由
+``tensor`` 是不可变值语义， ``memref`` 是可变内存引用。二者之间的转换由
 One-Shot Bufferize Pass 完成，其实现分布在：
 
 - `OneShotAnalysis.cpp <file:///workspace/llvm-project/mlir/lib/Dialect/Bufferization/Transforms/OneShotAnalysis.cpp>`__ —— 分析阶段
@@ -212,7 +212,7 @@ region 内的计算，再把结果 ``store`` 到输出。三重嵌套循环的�
 本章小结
 ========
 
-tensor → scf 降级的本质是**语义展开** ：把声明式的张量操作翻译为命令式的循环。
+tensor → scf 降级的本质是 **语义展开** ：把声明式的张量操作翻译为命令式的循环。
 Bufferization 解决"tensor 不可变"与"循环需要读写内存"之间的矛盾；
 linalg → loops 则利用 ``indexing_maps`` 和 ``iterator_types`` 自动生成正确的循环嵌套。
 

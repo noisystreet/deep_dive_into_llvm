@@ -22,7 +22,7 @@
    3. **LoopRotate** — 旋转循环，暴露更多优化机会
    4. **LoopVectorize** — 生成 SIMD 指令
 
-   这条流水线的设计哲学是**逐层暴露结构**——每步为下一步创造条件。
+   这条流水线的设计哲学是 **逐层暴露结构**——每步为下一步创造条件。
    理解循环优化，就理解了 LLVM 如何将"数学上的迭代"转化为"硬件上的并行"。
 
 LoopInfo 与 ScalarEvolution
@@ -39,12 +39,12 @@ LoopInfo 与 ScalarEvolution
    // for (int i = 0; i < n; i++)  →  SCEV: {0,+,1}<loop>
    // for (int i = 0; i < n; i+=2) →  SCEV: {0,+,2}<loop>
 
-SCEV 的分析结果（``SCEVAddRecExpr`` ）是大多数循环优化的数学基础。
+SCEV 的分析结果（ ``SCEVAddRecExpr`` ）是大多数循环优化的数学基础。
 
 循环不变量外提（LICM）
 ==========================
 
-LICM（Loop Invariant Code Motion）将循环内**不随迭代变化的计算** 外提到循环前。
+LICM（Loop Invariant Code Motion）将循环内 **不随迭代变化的计算** 外提到循环前。
 
 .. code-block:: c
 
@@ -61,7 +61,7 @@ LICM（Loop Invariant Code Motion）将循环内**不随迭代变化的计算** 
 
 在 LLVM IR 层面，LICM 做的操作是：
 
-1. 识别循环内哪些指令的**所有操作数都不受循环控制** （即 SCEV 分析结果为常量或不变）
+1. 识别循环内哪些指令的 **所有操作数都不受循环控制** （即 SCEV 分析结果为常量或不变）
 2. 将这些指令通过 ``moveToPreheader`` 移出循环
 
 .. code-block:: llvm
@@ -107,7 +107,7 @@ LICM 的源码位置：`llvm/lib/Transforms/Scalar/LICM.cpp <file:///workspace/l
 循环展开（Loop Unrolling）
 ==============================
 
-循环展开将循环体复制多份，减少循环控制指令（``br`` 、``icmp`` ）的执行次数。
+循环展开将循环体复制多份，减少循环控制指令（ ``br`` 、 ``icmp`` ）的执行次数。
 
 .. code-block:: c
 
@@ -124,7 +124,7 @@ LICM 的源码位置：`llvm/lib/Transforms/Scalar/LICM.cpp <file:///workspace/l
        a[i+3] = a[i+3] * 2;  // 第 4 次
    }
 
-再进一步，如果迭代次数在编译期已知，可以**完全展开** ：
+再进一步，如果迭代次数在编译期已知，可以 **完全展开** ：
 
 .. code-block:: c
 
@@ -157,7 +157,7 @@ LLVM 有两个展开相关的 Pass：
        c[i] = a[i] + 1;
    }
 
-融合的好处：减少循环开销，**提高数据局部性** （a 的写入后立即被读取）。
+融合的好处：减少循环开销， **提高数据局部性** （a 的写入后立即被读取）。
 
 **循环分发** （Loop Distribution）：和融合相反——将一个包含多条依赖路径的循环
 拆分为多个小循环，以便后续向量化。

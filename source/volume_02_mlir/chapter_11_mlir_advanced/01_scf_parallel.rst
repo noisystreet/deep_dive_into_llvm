@@ -5,7 +5,7 @@ SCF 并行优化
 =========================
 
 SCF（Structured Control Flow）Dialect 提供了三种级别的并行化支持：
-``scf.parallel`` 、``scf.for`` 的 ``thread_local`` 属性、以及隐式并行语义。
+``scf.parallel`` 、 ``scf.for`` 的 ``thread_local`` 属性、以及隐式并行语义。
 
 .. rst-class:: center
 
@@ -14,7 +14,7 @@ SCF（Structured Control Flow）Dialect 提供了三种级别的并行化支持�
 .. admonition:: 编译器自动并行化的梦想与现实
    :class: note
 
-   编译器的**自动并行化**——让编译器自动识别可以并行执行的代码片段
+   编译器的 **自动并行化**——让编译器自动识别可以并行执行的代码片段
    并生成多线程代码——这是一个在编译器领域存在了 40 多年的梦想。
 
    上世纪 80-90 年代，很多研究项目试图在 Fortran 编译器上实现自动
@@ -22,7 +22,7 @@ SCF（Structured Control Flow）Dialect 提供了三种级别的并行化支持�
    只能处理模式非常规整的循环（如连续的内存访问、无复杂控制流），
    对现实世界中的代码效果不佳。
 
-   MLIR 并没有放弃这个梦想，而是换了一个更现实的思路：**不试图自动发现
+   MLIR 并没有放弃这个梦想，而是换了一个更现实的思路： **不试图自动发现
    并行性，而是让上层 IR 显式标记并行性** 。
 
    ``scf.parallel`` 和 ``scf.for`` 的区别就是这种思路的体现：
@@ -41,7 +41,7 @@ SCF（Structured Control Flow）Dialect 提供了三种级别的并行化支持�
 scf.parallel
 ==================
 
-``scf.parallel`` 是 SCF 中**显式的并行循环** ：
+``scf.parallel`` 是 SCF 中 **显式的并行循环** ：
 
 .. code-block:: text
 
@@ -150,11 +150,11 @@ GPU 后端：
 
 ``scf.parallel`` 定义在
 `SCFOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/SCF/IR/SCFOps.td>`__ 。
-与 ``scf.for`` 的关键区别是：``iterator_types`` 标记为 ``parallel`` 的维度
+与 ``scf.for`` 的关键区别是： ``iterator_types`` 标记为 ``parallel`` 的维度
 **没有跨迭代依赖** ，优化器可以安全地映射为 OpenMP 的 ``#pragma omp parallel for``
 或 GPU 的线程网格。
 
-降级时，``scf.parallel`` 通常先展开为多个 ``scf.for`` ，
+降级时， ``scf.parallel`` 通常先展开为多个 ``scf.for`` ，
 再接入标准的 scf → cf → LLVM 管道。GPU 路径则通过
 :ref:`mlir-11-07-04` 的 ``convert-linalg-to-gpu`` 直接映射为 kernel launch。
 
@@ -168,13 +168,13 @@ GPU 后端：
    # 串行循环示例
    mlir-opt examples/mlir/chapter_03_dialects/scf_sum.mlir
 
-``scf.for`` 有 ``iter_args`` 传递循环携带值；``scf.parallel`` 则要求
+``scf.for`` 有 ``iter_args`` 传递循环携带值； ``scf.parallel`` 则要求
 迭代间无依赖，这是编译器判断能否并行的核心语义差异。
 
 本章小结
 ========
 
-MLIR 的并行策略是**显式标记而非自动推断**——前端或优化器用 ``scf.parallel``
+MLIR 的并行策略是 **显式标记而非自动推断**——前端或优化器用 ``scf.parallel``
 声明并行性，后端负责映射到目标平台。这与 :ref:`chapter-05-05-vectorization`
 中 LLVM 自动向量化的思路形成互补。
 

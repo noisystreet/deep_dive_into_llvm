@@ -15,10 +15,10 @@ LLVM IR 的指令在 ``llvm/include/llvm/IR/Instructions.h`` 中定义，
 
    LLVM IR 有 60+ 种指令，但可按语义分为几个"家族"：
 
-   - **Terminator** — 改变控制流：``br`` 、 ``ret`` 、 ``switch``
-   - **BinaryOperator** — 二元运算：``add`` 、 ``fmul`` 、 ``and``
-   - **Memory** — 内存访问：``load`` 、 ``store`` 、 ``alloca`` 、 ``getelementptr``
-   - **Cast** — 类型转换：``zext`` 、 ``bitcast`` 、 ``ptrtoint``
+   - **Terminator** — 改变控制流： ``br`` 、 ``ret`` 、 ``switch``
+   - **BinaryOperator** — 二元运算： ``add`` 、 ``fmul`` 、 ``and``
+   - **Memory** — 内存访问： ``load`` 、 ``store`` 、 ``alloca`` 、 ``getelementptr``
+   - **Cast** — 类型转换： ``zext`` 、 ``bitcast`` 、 ``ptrtoint``
    - **Other** — 调用、PHI、向量操作等
 
    理解这个分类对读 Pass 源码至关重要——``InstCombiner`` 按家族分派，
@@ -119,12 +119,12 @@ SSA 寄存器。
      - 浮点比较（oeq/ogt/olt/une/uno 等）
      - ``%r = fcmp oeq float %a, %b``
 
-浮点比较谓词分为有序（``o`` 前缀）和无序（``u`` 前缀）两组，因为要考虑 NaN。
+浮点比较谓词分为有序（ ``o`` 前缀）和无序（ ``u`` 前缀）两组，因为要考虑 NaN。
 
 控制流指令
 ================
 
-控制流指令都是**基本块终止指令**——必须是基本块的最后一条指令。
+控制流指令都是 **基本块终止指令**——必须是基本块的最后一条指令。
 
 **br -- 无条件或条件分支**
 
@@ -211,7 +211,7 @@ SSA 寄存器。
 类型转换指令
 ================
 
-LLVM 要求所有类型转换都**显式** 写出：
+LLVM 要求所有类型转换都 **显式** 写出：
 
 .. list-table::
    :header-rows: 1
@@ -239,7 +239,7 @@ GEP 详解
 ================
 
 **GetElementPtr（GEP）** 是 LLVM IR 中最容易被误解的指令。
-它**不访问内存** ，只计算指针经过若干索引后的地址。
+它 **不访问内存** ，只计算指针经过若干索引后的地址。
 
 **基本语法：**
 
@@ -247,7 +247,7 @@ GEP 详解
 
    %result = getelementptr <elem_type>, ptr <base>, <index1>, <index2>, ...
 
-GEP 的索引是**从外层到内层** 的。第一个索引作用于指针本身，后续索引依次深入。
+GEP 的索引是 **从外层到内层** 的。第一个索引作用于指针本身，后续索引依次深入。
 
 **例 1：一维数组**
 

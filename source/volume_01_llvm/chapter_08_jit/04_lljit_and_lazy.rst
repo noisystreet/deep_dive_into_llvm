@@ -4,7 +4,7 @@
 LLJIT 与 Lazy Compilation
 ==========================
 
-LLJIT（Low-Level JIT）是 ORC JIT 提供的一个**开箱即用的高级 API** 。
+LLJIT（Low-Level JIT）是 ORC JIT 提供的一个 **开箱即用的高级 API** 。
 它封装了 ORC JIT 的底层 Layer 栈，让你用最少的代码就能运行 JIT 编译。
 
 .. rst-class:: center
@@ -125,7 +125,7 @@ ORC JIT 通过 ``CompileOnDemandLayer`` 实现懒编译。
    auto Sym = JIT->lookup("rarely_used");
    // 上面的 lookup 触发了 "rarely_used" 的编译
 
-懒编译的实现原理是：当 Module 被提交时，``CompileOnDemandLayer`` 分析 Module
+懒编译的实现原理是：当 Module 被提交时， ``CompileOnDemandLayer`` 分析 Module
 的函数调用图，将每个函数包装为一个"桩"（stub）。当 stub 被调用时，它触发
 对应函数的实际编译。
 
@@ -162,7 +162,7 @@ LLJIT 内部构建的 Layer 栈是：
          ↓
    ObjectLinkingLayer（加载 + 重定位）
 
-这个栈提供了平衡的默认行为：**懒编译 → 优化 → 编译 → 链接** 。
+这个栈提供了平衡的默认行为： **懒编译 → 优化 → 编译 → 链接** 。
 
 惰性 vs 即时编译策略
 ========================

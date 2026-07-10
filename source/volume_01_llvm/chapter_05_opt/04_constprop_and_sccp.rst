@@ -4,7 +4,7 @@
 常量传播与 SCCP
 ==============================
 
-常量传播是编译器中最经典、最基础的优化之一。它的观察很简单：**如果一个值
+常量传播是编译器中最经典、最基础的优化之一。它的观察很简单： **如果一个值
 在编译期就能确定，那就直接使用它的编译期已知值** 。
 
 .. rst-class:: center
@@ -58,7 +58,7 @@
 SCCP（稀疏条件常量传播）
 ============================
 
-SCCP（Sparse Conditional Constant Propagation）是常量传播的**更强大版本** 。
+SCCP（Sparse Conditional Constant Propagation）是常量传播的 **更强大版本** 。
 它不仅传播常量，还能分析控制流——如果某个分支的条件在编译期就是确定值，
 SCCP 可以直接消除死分支。
 
@@ -83,7 +83,7 @@ SCCP 可以直接消除死分支。
                              // if 和 then 分支被消除
    }
 
-SCCP 的工作原理可以用一个**值格** （Value Lattice）来描述：
+SCCP 的工作原理可以用一个 **值格** （Value Lattice）来描述：
 
 .. code-block:: text
 

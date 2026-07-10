@@ -5,7 +5,7 @@
 =============
 
 如果你读完了本书的第一卷，你已经熟悉了 LLVM IR——一种语言无关的、基于 SSA 的
-中间表示。LLVM IR 成功地统一了编译器前端的多样性和后端的多样性：**无论你用什么
+中间表示。LLVM IR 成功地统一了编译器前端的多样性和后端的多样性： **无论你用什么
 语言（C、C++、Rust、Swift），无论你 targeting 什么架构（x86、ARM、RISC-V），
 都可以用 LLVM IR 作为桥梁** 。
 
@@ -20,17 +20,17 @@
 
    当时 Google 的 TensorFlow 团队面临一个头疼的问题：TensorFlow 的
    计算图需要通过 XLA 编译器编译到 GPU/TPU，而 XLA 内部使用的 HLO IR
-   （High-Level Operations）和 LLVM IR 之间存在着巨大的**语义鸿沟** 。
-   为了填补这道鸿沟，Google 团队在 LLVM IR 之上堆了**多层**自定义的
+   （High-Level Operations）和 LLVM IR 之间存在着巨大的 **语义鸿沟** 。
+   为了填补这道鸿沟，Google 团队在 LLVM IR 之上堆了 **多层** 自定义的
    IR 转换——结果就是代码越来越复杂、维护越来越困难。
 
    Chris Lattner 在 2017 年加入 Google 后，很快就意识到问题的根源：
    **不是 IR 不够好，而是 IR 的数量不够多** 。传统编译器的架构假设
    "一个 IR 就够了"，但现实中，不同的优化需要不同抽象层次的 IR。
-   他的解决方案很大胆：为什么不做一个**可以定义任意多 IR** 的框架？
+   他的解决方案很大胆：为什么不做一个 **可以定义任意多 IR** 的框架？
 
-   这就是 MLIR 的核心理念——一个**IR 的 IR 框架** 。你不是在使用一个
-   固定的 IR，而是使用 MLIR 的 Infrastructure 来**创造自己需要的 IR** 。
+   这就是 MLIR 的核心理念——一个 **IR 的 IR 框架** 。你不是在使用一个
+   固定的 IR，而是使用 MLIR 的 Infrastructure 来 **创造自己需要的 IR** 。
    每个 IR 被称作一个 Dialect，而 Dialect 本身也是 MLIR 中的一等公民。
 
    有趣的是，LLVM 社区内部一开始对这个项目持保留态度——"又一个 IR？"
@@ -68,13 +68,13 @@
 
 LLVM IR 是低级 IR——它没有 ``for`` 循环、没有张量（tensor）、没有多维数组的概念。
 如果你想优化一个矩阵乘法，在 LLVM IR 层面你看不到"矩阵"——你只看到一堆
-``load`` 、``store`` 、``add`` 、``mul`` 指令。你需要通过模式匹配来"猜测"
+``load`` 、 ``store`` 、 ``add`` 、 ``mul`` 指令。你需要通过模式匹配来"猜测"
 源代码的结构。
 
 **2. 降级（Lowering）过程中的信息丢失**
 
 当 Clang 将 ``for (int i = 0; i < n; i++)`` 编译为 LLVM IR 时，它变成了
-``phi`` 、``icmp`` 、``br`` 指令的组合——循环结构信息丢失了。之后想恢复这个
+``phi`` 、 ``icmp`` 、 ``br`` 指令的组合——循环结构信息丢失了。之后想恢复这个
 信息做循环优化，需要运行 ``LoopInfo`` 分析 Pass 重新推导。
 
 **3. 多种 IR 之间的转换成本**
@@ -90,7 +90,7 @@ MLIR（Multi-Level Intermediate Representation）是 LLVM 项目中为了解决�
 而发起的新项目。它在 2019 年的 LLVM 开发者大会上首次公开发布，由 Google、Apple
 等公司的工程师共同推动。
 
-MLIR 的核心思想很简单：**不要试图用一个 IR 覆盖所有需求，而是让用户定义
+MLIR 的核心思想很简单： **不要试图用一个 IR 覆盖所有需求，而是让用户定义
 自己需要的 IR** 。
 
 .. mermaid::
@@ -116,7 +116,7 @@ building and working with IRs。"
 
 这意味着：
 
-- MLIR 提供了一**套框架**来定义 IR（Operation、Type、Attribute、Dialect）
+- MLIR 提供了一 **套框架** 来定义 IR（Operation、Type、Attribute、Dialect）
 - 你可以用 MLIR 框架定义自己需要的 IR（称为 **Dialect** ）
 - 不同 Dialect 之间可以互相转换（通过 Lowering Pass）
 - 最终可以降级到 LLVM Dialect，然后翻译为 LLVM IR，接着走 LLVM 后端的代码生成
@@ -151,7 +151,7 @@ MLIR 命名中的"多重含义"
    or "Machine Learning IR" or "Mid Level IR" — we prefer the first.
 
 **官方首选的是 "Multi-Level IR"** （多级中间表示），因为这个名字最准确地
-反映了 MLIR 的核心设计：不只有一种 IR，而是有**多层 IR** ，每层在不同的
+反映了 MLIR 的核心设计：不只有一种 IR，而是有 **多层 IR** ，每层在不同的
 抽象级别上工作。
 
 至于其他几个候选名字也各有渊源：
@@ -160,12 +160,12 @@ MLIR 命名中的"多重含义"
 - **Mid Level IR** ：强调了它在编译流程中的"中端"定位
 
 这种"名字不止一个含义"的模糊性，恰恰说明了 MLIR 的定位——它不是一个
-为单一目的设计的 IR，而是一个**框架** ，不同的使用者看到不同的侧面。
+为单一目的设计的 IR，而是一个 **框架** ，不同的使用者看到不同的侧面。
 
 多面体编译的基因
 ========================
 
-MLIR 不仅继承了 LLVM 的 SSA 传统，还吸收了**多面体编译** （polyhedral
+MLIR 不仅继承了 LLVM 的 SSA 传统，还吸收了 **多面体编译** （polyhedral
 compilation）的核心思想。`Rationale.md <file:///workspace/llvm-project/mlir/docs/Rationale/Rationale.md>`__
 中这样描述：
 
@@ -175,13 +175,13 @@ compilation）的核心思想。`Rationale.md <file:///workspace/llvm-project/ml
    表示中的概念，旨在表达、分析和变换高层数据流图以及面向高性能
    数据并行系统的目标代码。
 
-多面体模型用**整数映射、集合和关系**来描述循环嵌套和多维数组访问。
-这使得 MLIR 能够以**数学形式**紧凑地表达循环分块、循环融合、循环交换
+多面体模型用 **整数映射、集合和关系** 来描述循环嵌套和多维数组访问。
+这使得 MLIR 能够以 **数学形式** 紧凑地表达循环分块、循环融合、循环交换
 等所有传统循环变换，而不需要像 LLVM IR 那样先通过 ``LoopInfo`` 分析
 "逆向推导"循环结构。
 
 与 LLVM 的 Polly 项目不同，Polly 只能处理满足仿射约束的"规则"循环，
-MLIR 的设计允许**不规则控制流和数据访问**与多面体表示共存——只不过
+MLIR 的设计允许 **不规则控制流和数据访问** 与多面体表示共存——只不过
 不规则部分无法应用多面体优化，但不影响 IR 的合法性。
 
 MLIR 与 LLVM IR 的对比
@@ -215,7 +215,7 @@ MLIR 与 LLVM IR 的对比
      - 传统编译器的 IR
      - 编译器框架 + 机器学习编译器
 
-MLIR 不是要取代 LLVM，而是**建立在 LLVM 之上的抽象层** 。MLIR 的最后一层
+MLIR 不是要取代 LLVM，而是 **建立在 LLVM 之上的抽象层** 。MLIR 的最后一层
 （LLVM Dialect）可以精确映射为 LLVM IR，然后继续走 LLVM 的优化和代码生成。
 
 同一函数，两种 IR 长什么样？
@@ -238,7 +238,7 @@ MLIR 不是要取代 LLVM，而是**建立在 LLVM 之上的抽象层** 。MLIR 
      func.return %result : i32
    }
 
-优化器一眼就能看出：这是一个带归纳变量的循环，``%acc`` 是循环携带值（loop-carried value）。
+优化器一眼就能看出：这是一个带归纳变量的循环， ``%acc`` 是循环携带值（loop-carried value）。
 在 ``linalg`` 或 ``tensor`` 层次，你甚至能看到"矩阵乘法"这样的高层语义——不必从 ``load/add`` 反推。
 
 **LLVM IR（phi + br，循环结构需分析恢复）**
@@ -265,7 +265,7 @@ MLIR 不是要取代 LLVM，而是**建立在 LLVM 之上的抽象层** 。MLIR 
 要做循环分块或向量化，编译器得先跑 ``LoopInfo`` 分析把结构找回来——这正是
 :ref:`chapter-05-03-loop-optimizations` 中讨论的问题。
 
-MLIR 的做法不是抛弃 LLVM IR，而是在它**上方**再铺几层语义更丰富的 IR，
+MLIR 的做法不是抛弃 LLVM IR，而是在它 **上方** 再铺几层语义更丰富的 IR，
 让每一层都在合适的粒度上做优化，最后再降到 LLVM IR 走成熟的后端。
 这与第一卷 :ref:`chapter-07-01-backend-overview` 描述的 CodeGen 管道形成上下衔接。
 
@@ -287,8 +287,8 @@ MLIR 所有 Dialect 的操作最终都建立在 ``Operation`` 类之上。源码
 `mlir/include/mlir/IR/Operation.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Operation.h>`__
 
 其中有一段关键说明：操作名如果包含 ``.`` ，点号前面是 Dialect 名，后面是操作名。
-这就是为什么我们在 IR 中看到 ``arith.addi`` 、``scf.for`` 这样的命名格式——
-它不是语法糖，而是 MLIR 框架对 Dialect 的**一等公民**支持的直接体现。
+这就是为什么我们在 IR 中看到 ``arith.addi`` 、 ``scf.for`` 这样的命名格式——
+它不是语法糖，而是 MLIR 框架对 Dialect 的 **一等公民** 支持的直接体现。
 
 Dialect 本身的定义在 `mlir/include/mlir/IR/Dialect.h <file:///workspace/llvm-project/mlir/include/mlir/IR/Dialect.h>`__：
 
@@ -298,7 +298,7 @@ Dialect 本身的定义在 `mlir/include/mlir/IR/Dialect.h <file:///workspace/ll
    /// behavior associated with the entire group.
 
 一组 Operation、Type、Attribute 加上统一的行为钩子，就构成一个 Dialect。
-内置的 ``arith`` 、``scf`` 和你将来自定义的 Dialect，在框架眼里没有高低之分。
+内置的 ``arith`` 、 ``scf`` 和你将来自定义的 Dialect，在框架眼里没有高低之分。
 
 MLIRContext：一切的中心
 ==============================
@@ -326,7 +326,7 @@ MLIRContext 扮演着 **"MLIR 的操作系统"** 的角色：
    context.getOrLoadDialect<arith::ArithDialect>();
    context.getOrLoadDialect<scf::SCFDialect>();
 
-Context 的另一个重要设计是**可配置的线程模式** 。注释中给出了一个典型的
+Context 的另一个重要设计是 **可配置的线程模式** 。注释中给出了一个典型的
 使用场景：对于长时间运行、会反复创建和销毁 Context 的进程，可以显式
 禁用内置线程池，注入外部线程池来避免线程爆炸：
 
@@ -366,7 +366,7 @@ Context 的另一个重要设计是**可配置的线程模式** 。注释中给�
 本章小结
 ========
 
-本节回答了"MLIR 是什么"：它不是又一个固定 IR，而是一套**可定义多层 IR** 的
+本节回答了"MLIR 是什么"：它不是又一个固定 IR，而是一套 **可定义多层 IR** 的
 基础设施。LLVM IR 擅长贴近机器的优化，MLIR 擅长在更高层次保留源程序的语义结构。
 
 下一节 :ref:`mlir-01-01-02` 将深入其两大设计支柱——渐进降级与第一类 Dialect 机制。

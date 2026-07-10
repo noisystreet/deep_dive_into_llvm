@@ -14,7 +14,7 @@ mlir-cpu-runner
 .. admonition:: 端到端验证：从 .mlir 到 stdout 只需一条命令
    :class: tip
 
-   开发自定义 Dialect 时，``mlir-cpu-runner`` 是最高效的冒烟测试——
+   开发自定义 Dialect 时， ``mlir-cpu-runner`` 是最高效的冒烟测试——
    它把降级、翻译、JIT、执行串成一条命令，直接打印 ``main`` 的返回值。
 
    内部流程：MLIR IR → LLVM Dialect → LLVM IR → ORC JIT → 调用 ``main`` 。
@@ -152,7 +152,7 @@ Toy Ch7 的 ``toyc.cpp`` （:ref:`mlir-09-09-04`）使用同一套 API，
 已降级到 LLVM Dialect 的 MLIR 输入。
 
 这与第一卷 :ref:`chapter-09-03-lli-and-jit-tools` 中的 ``lli`` 工具类比：
-``lli`` 解释执行 LLVM IR ，``mlir-cpu-runner`` 先翻译再 JIT 执行。
+``lli`` 解释执行 LLVM IR ， ``mlir-cpu-runner`` 先翻译再 JIT 执行。
 
 动手验证
 ==========

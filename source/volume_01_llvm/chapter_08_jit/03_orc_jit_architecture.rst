@@ -16,13 +16,13 @@ ORC JIT（Omni-Range Code JIT）是 LLVM 当前主推的 JIT 编译框架。它�
    :class: note
 
    **Omni-Range** 意为"全范围"——ORC JIT 不假设你只 JIT 一个函数或一个模块，
-   而是管理**任意数量、任意依赖关系**的代码单元。核心抽象：
+   而是管理 **任意数量、任意依赖关系** 的代码单元。核心抽象：
 
    - **JITDylib** — 类似动态库，容纳一组符号
    - **MaterializationUnit** — 延迟编译的代码单元
    - **ExecutionSession** — 协调查找、编译、链接的总调度器
 
-   对比 MCJIT 的"一次性编译整个模块"，ORC 支持**懒编译**——
+   对比 MCJIT 的"一次性编译整个模块"，ORC 支持 **懒编译**——
    函数第一次被调用时才触发编译，且已编译的函数可以跨 Session 缓存。
    LLJIT 在此基础上封装了更简洁的 API，成为今天 LLVM JIT 的事实标准。
 
@@ -74,7 +74,7 @@ ExecutionSession
 JITDylib
 ============
 
-``JITDylib`` 是 ORC JIT 的**符号查找作用域** 。它的工作方式类似于 Linux 中的
+``JITDylib`` 是 ORC JIT 的 **符号查找作用域** 。它的工作方式类似于 Linux 中的
 共享对象——每个 JITDylib 有一个符号表，其中每个符号可以被定义或未定义。
 
 .. code-block:: cpp
@@ -93,7 +93,7 @@ Layer（层）
 ================
 
 Layer 是 ORC JIT 编译流水线中的处理单元。每个 Layer 封装一个特定功能，
-多个 Layer 可以**叠加** （stacked）形成完整的编译管道。
+多个 Layer 可以 **叠加** （stacked）形成完整的编译管道。
 
 .. list-table:: ORC JIT 核心 Layer
    :header-rows: 1
@@ -167,7 +167,7 @@ Materialization 过程
 异步编译支持
 ================
 
-ORC JIT 的一个关键特性是**异步编译** 。``ExecutionSession`` 可以配置后台编译线程，
+ORC JIT 的一个关键特性是 **异步编译** 。 ``ExecutionSession`` 可以配置后台编译线程，
 使编译与执行重叠：
 
 .. code-block:: cpp

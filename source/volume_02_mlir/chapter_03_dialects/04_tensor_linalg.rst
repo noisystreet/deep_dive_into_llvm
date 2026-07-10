@@ -4,22 +4,22 @@
 tensor / linalg Dialect
 ==========================
 
-``tensor`` 和 ``linalg`` 是 MLIR 中用于**张量计算**和**线性代数**的核心 Dialect。
+``tensor`` 和 ``linalg`` 是 MLIR 中用于 **张量计算** 和 **线性代数** 的核心 Dialect。
 它们在机器学习编译器中扮演着重要角色——深度学习模型中的大多数计算最终会
 以 ``linalg`` 操作的形式出现。
 
 .. rst-class:: center
 
    ``linalg`` 的设计哲学：不是为每个线性代数操作定义单独的操作，而是提供
-   一个**通用的结构化操作模板** （``linalg.generic`` ），由用户描述输入输出
+   一个 **通用的结构化操作模板** （ ``linalg.generic`` ），由用户描述输入输出
    的访问模式。
 
 .. admonition:: linalg 的"一个 generic 统治一切"
    :class: note
 
-   传统方案为每种线性代数操作定义独立 Op：``MatMulOp`` 、``ConvOp`` 、``DotOp``……
-   每新增一种操作就要写 ODS、Verifier、Lowering、测试。``linalg.generic``
-   反其道而行：**用 ``indexing_maps`` 描述访问模式，一个 Op 表达所有逐元素/归约/收缩计算** 。
+   传统方案为每种线性代数操作定义独立 Op： ``MatMulOp`` 、 ``ConvOp`` 、 ``DotOp``……
+   每新增一种操作就要写 ODS、Verifier、Lowering、测试。 ``linalg.generic``
+   反其道而行： **用 ``indexing_maps`` 描述访问模式，一个 Op 表达所有逐元素/归约/收缩计算** 。
 
    这借鉴了数学中"张量索引记号"的思想——爱因斯坦求和约定 ``A[i,j] * B[j,k]``
    不需要为每种乘法定义新语法。Tiling、Fusion 等优化只需理解 ``indexing_maps`` ，
@@ -42,7 +42,7 @@ tensor Dialect
    tensor<*xf32>                // 任意形状的 f32 张量
    tensor<4x?xf32>              // 4 行，列数动态的张量
 
-``?`` 表示该维度是动态的（在运行时确定）。``*`` 表示所有维度都是动态的。
+``?`` 表示该维度是动态的（在运行时确定）。 ``*`` 表示所有维度都是动态的。
 
 **tensor 操作**
 
@@ -67,14 +67,14 @@ tensor Dialect
            tensor.yield %v : i32
    } : tensor<?xi32>
 
-tensor 操作的一个重要特性是：它们不涉及**内存管理** 。张量是不可变的值——
+tensor 操作的一个重要特性是：它们不涉及 **内存管理** 。张量是不可变的值——
 每次 ``tensor.insert`` 都会产生一个新的张量值。内存分配和复用是在之后
 的 **Bufferization** 阶段解决的。
 
 linalg Dialect
 ===================
 
-``linalg`` Dialect（线性代数）提供了可以**结构化的循环计算** 。
+``linalg`` Dialect（线性代数）提供了可以 **结构化的循环计算** 。
 它最核心的操作是 ``linalg.generic`` 。
 
 **linalg.generic：通用结构化操作**
@@ -100,7 +100,7 @@ linalg Dialect
 
 - **indexing_maps** ：每个操作数（输入和输出）的索引映射。定义了多维张量
   的每个维度如何映射到循环迭代空间
-- **iterator_types** ：每个循环维度的类型（``parallel`` 、``reduction`` 等）
+- **iterator_types** ：每个循环维度的类型（ ``parallel`` 、 ``reduction`` 等）
 - **Region** ：计算内核，使用标量值进行计算
 
 **矩阵乘法的 linalg 表示**
@@ -184,7 +184,7 @@ Bufferization：tensor → memref
 
 ``linalg.generic`` 是 MLIR 中最精巧的抽象之一。它的 ODS 定义在
 `LinalgStructuredOps.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/Linalg/IR/LinalgStructuredOps.td>`__ ，
-核心字段 ``indexing_maps`` 和 ``iterator_types`` 将**循环结构**与**计算内核**
+核心字段 ``indexing_maps`` 和 ``iterator_types`` 将 **循环结构** 与 **计算内核**
 解耦：
 
 - ``indexing_maps`` 用 ``AffineMap`` 描述每个操作数张量的索引如何映射到迭代空间

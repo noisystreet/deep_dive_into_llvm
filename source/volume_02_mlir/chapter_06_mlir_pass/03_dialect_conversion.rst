@@ -15,7 +15,7 @@ Dialect Conversion 是 MLIR **渐进降级** （Progressive Lowering）的核心
    :class: note
 
    渐进降级中，源 Dialect 和目标 Dialect 的类型系统往往不兼容——
-   ``tensor<4xf32>`` 无法直接变成 ``!llvm.ptr`` 。``DialectConversion``
+   ``tensor<4xf32>`` 无法直接变成 ``!llvm.ptr`` 。 ``DialectConversion``
    框架引入 **Materialization** 机制，用 ``unrealized_conversion_cast``
    作为临时占位符。
 
@@ -70,7 +70,7 @@ ConversionPattern
 
 **Adaptor 机制**
 
-``Adaptor`` 是 Conversion 的一个重要机制。它自动完成了**操作数的类型映射** ：
+``Adaptor`` 是 Conversion 的一个重要机制。它自动完成了 **操作数的类型映射** ：
 
 .. code-block:: cpp
 

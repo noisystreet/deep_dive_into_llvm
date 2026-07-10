@@ -4,19 +4,19 @@
 quant / sparse_tensor Dialect
 =============================
 
-``quant`` 和 ``sparse_tensor`` 是两个**专用领域**的 Dialect。
+``quant`` 和 ``sparse_tensor`` 是两个 **专用领域** 的 Dialect。
 它们服务于特定场景，但展示了 MLIR 的 Dialect 机制如何扩展到
 完全不同的计算需求。
 
 .. rst-class:: center
 
    这两个 Dialect 代表了 MLIR 生态的两个方向：
-   **降低精度** （量化）和**利用稀疏性** （稀疏张量）。
+   **降低精度** （量化）和 **利用稀疏性** （稀疏张量）。
 
 quant Dialect
 =================
 
-``quant`` Dialect 处理**量化**——将浮点计算转换为定点或整数计算。
+``quant`` Dialect 处理 **量化**——将浮点计算转换为定点或整数计算。
 这是推理引擎中的核心技术。
 
 **量化类型**
@@ -62,7 +62,7 @@ quant Dialect 的降级路径：
 sparse_tensor Dialect
 ============================
 
-``sparse_tensor`` Dialect 处理**稀疏张量**——大部分元素为零的张量。
+``sparse_tensor`` Dialect 处理 **稀疏张量**——大部分元素为零的张量。
 通过只存储非零元素来节省内存和计算。
 
 **稀疏张量格式**

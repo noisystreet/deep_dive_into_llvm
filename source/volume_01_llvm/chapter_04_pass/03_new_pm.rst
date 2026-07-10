@@ -58,7 +58,7 @@ New PM 不再使用继承体系（不再有 ``FunctionPass`` 基类），而是�
        static AnalysisKey Key;
    };
 
-对比 Legacy PM，**不再有 return bool** （是否修改 IR），而是返回
+对比 Legacy PM， **不再有 return bool** （是否修改 IR），而是返回
 ``PreservedAnalyses``——一个显式声明"我保留了哪些分析结果"的集合。
 
 PreservedAnalyses 机制
@@ -113,7 +113,7 @@ PreservedAnalyses 机制
        }
    };
 
-注意：**不需要 ID** ，**不需要 RegisterPass 宏** ，**不需要匿名命名空间** 。
+注意： **不需要 ID** ， **不需要 RegisterPass 宏** ， **不需要匿名命名空间** 。
 代码简洁了很多。
 
 分析 Pass 的编写

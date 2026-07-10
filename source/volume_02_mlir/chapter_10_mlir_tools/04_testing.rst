@@ -137,7 +137,7 @@ MLIR 测试示例
 mlir-reduce
 ==================
 
-``mlir-reduce`` 是 MLIR 的**测试用例缩减工具** 。当有测试失败时，
+``mlir-reduce`` 是 MLIR 的 **测试用例缩减工具** 。当有测试失败时，
 它自动将 IR 缩减到最小的可重现用例：
 
 .. code-block:: console

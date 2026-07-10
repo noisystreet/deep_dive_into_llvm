@@ -21,7 +21,7 @@ SelectionDAG
    ``*.td`` 模式）。
 
    一个有趣的设计：DAG 节点类型用 ``ISD`` （Instruction Selection DAG）
-   枚举定义，如 ``ISD::ADD`` 、``ISD::LOAD``——这些在 ``llvm/include/llvm/CodeGen/ISDOpcodes.h``
+   枚举定义，如 ``ISD::ADD`` 、 ``ISD::LOAD``——这些在 ``llvm/include/llvm/CodeGen/ISDOpcodes.h``
    中声明，与目标无关。目标相关的部分只在最后的 Pattern Match 阶段出现。
    这让 LLVM 能为 20+ 个目标共享 90% 的后端代码。
 
@@ -135,7 +135,7 @@ LLVM 定义了三种操作合法化状态：
 指令选择模式匹配
 ======================
 
-经过合法化后，DAG 中的操作被转换为目标原生支持的形式。接下来是**指令选择**
+经过合法化后，DAG 中的操作被转换为目标原生支持的形式。接下来是 **指令选择**
 （Instruction Selection）——将 DAG 中的每个节点匹配为具体的目标指令。
 
 指令选择的核心是 TableGen 生成的 ``XXXGenDAGISel.inc`` 文件。它包含一个巨大的

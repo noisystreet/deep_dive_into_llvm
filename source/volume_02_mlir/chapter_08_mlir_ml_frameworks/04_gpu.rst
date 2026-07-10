@@ -14,7 +14,7 @@ CUDA、ROCm 和 OpenCL 后端的 Dialect 和 Pass。
 .. admonition:: Kernel Outlining：从"内联代码"到"独立核函数"
    :class: note
 
-   GPU 编程的核心难题是区分**主机代码**和**设备代码** 。
+   GPU 编程的核心难题是区分 **主机代码** 和 **设备代码** 。
    ``gpu.launch`` 体内的 Operation 必须通过 **Kernel Outlining**
    提取为独立的 ``gpu.func`` ，才能编译为 PTX/SPIR-V。
 
@@ -28,7 +28,7 @@ CUDA、ROCm 和 OpenCL 后端的 Dialect 和 Pass。
 GPU Dialect
 ===================
 
-MLIR 的 GPU Dialect 提供了**与后端无关**的 GPU 编程抽象：
+MLIR 的 GPU Dialect 提供了 **与后端无关** 的 GPU 编程抽象：
 
 **启动配置**
 
@@ -159,10 +159,10 @@ mlir-gpu-runner
 
 GPU Dialect 的操作定义在
 `GPUBase.td <file:///workspace/llvm-project/mlir/include/mlir/Dialect/GPU/IR/GPUBase.td>`__ 。
-``gpu.launch`` 封装了 kernel 启动语义，``gpu.thread_id`` 等操作提供了
+``gpu.launch`` 封装了 kernel 启动语义， ``gpu.thread_id`` 等操作提供了
 与 CUDA 线程模型对应但不绑定具体后端的抽象。
 
-降级到 NVIDIA 时，``convert-gpu-to-nvvm`` 将 GPU 操作映射为 NVVM Dialect，
+降级到 NVIDIA 时， ``convert-gpu-to-nvvm`` 将 GPU 操作映射为 NVVM Dialect，
 最终通过 ``mlir-translate`` 生成含 PTX intrinsics 的 LLVM IR。
 Kernel Outlining 由 ``gpu-kernel-outlining`` Pass 完成，将 launch 体内的
 代码提取为独立的 ``gpu.func`` ——这与函数提取的编译器经典变换类似。

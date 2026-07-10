@@ -4,7 +4,7 @@
 builtin Dialect
 =================
 
-``builtin`` Dialect 是 MLIR 中最基础的 Dialect。它定义了一组**所有 MLIR 程序**
+``builtin`` Dialect 是 MLIR 中最基础的 Dialect。它定义了一组 **所有 MLIR 程序**
 都需要的核心类型和操作，不需要显式导入。
 
 .. rst-class:: center
@@ -16,7 +16,7 @@ builtin Dialect
    :class: note
 
    传统编译器只有一个 IR（或者两个，如 GCC 的 GENERIC + GIMPLE），
-   为什么 MLIR 需要**几十个** Dialect？
+   为什么 MLIR 需要 **几十个** Dialect？
 
    答案就在第一章提到过的"N × M 问题"的另一个维度上。传统编译器
    用 "一个 IR" 来解决前端 × 后端的 N × M 问题，但当编译器的应用
@@ -58,7 +58,7 @@ ModuleOp：顶层容器
 
 - 容纳所有顶级 Operation（函数、全局变量、类型定义等）
 - 提供符号（symbol）的作用域——函数名、全局变量名等在 Module 内唯一
-- 在降级过程中，``ModuleOp`` 最终会映射为 LLVM IR 中的 ``llvm::Module``
+- 在降级过程中， ``ModuleOp`` 最终会映射为 LLVM IR 中的 ``llvm::Module``
 
 ModuleOp 验证规则：
 
@@ -100,10 +100,10 @@ UnrealizedConversionCastOp
      - 示例
      - 说明
    * - ``IntegerType``
-     - ``i1`` 、``i8`` 、``i32`` 、``i64``
+     - ``i1`` 、 ``i8`` 、 ``i32`` 、 ``i64``
      - 任意位宽的整数
    * - ``FloatType``
-     - ``f16`` 、``f32`` 、``f64`` 、``bf16``
+     - ``f16`` 、 ``f32`` 、 ``f64`` 、 ``bf16``
      - IEEE 浮点数
    * - ``NoneType``
      - ``none``
@@ -210,7 +210,7 @@ FunctionType
    mlir-opt examples/mlir/chapter_06_lowering/vector_add.mlir
 
 输出最外层应是 ``module { ... }`` 包裹的 ``func.func`` 。
-如果手动删除 ``module`` 包裹，``mlir-opt`` 的验证器会报告 IR 结构错误——
+如果手动删除 ``module`` 包裹， ``mlir-opt`` 的验证器会报告 IR 结构错误——
 这说明 ``ModuleOp`` 不是可选的语法糖，而是 MLIR 程序的根节点。
 
 本章小结

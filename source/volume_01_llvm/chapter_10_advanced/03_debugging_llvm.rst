@@ -9,7 +9,7 @@ LLVM 是一个大型的 C++ 项目，它的调试方式与一般 C++ 项目类�
 
 .. rst-class:: center
 
-   调试编译器的特殊之处在于：你调试的是一个**操作代码的代码**——
+   调试编译器的特殊之处在于：你调试的是一个 **操作代码的代码**——
    既要处理你自己的 bug，也要处理你生成的代码的 bug。
 
 LLVM_DEBUG 与 -debug
@@ -32,7 +32,7 @@ LLVM 项目中广泛使用 ``LLVM_DEBUG`` 宏来输出调试信息：
        }
    }
 
-**关键点** ：``LLVM_DEBUG`` 在 Release 模式**不产生任何代码** 。只有 Debug 构建
+**关键点** ： ``LLVM_DEBUG`` 在 Release 模式 **不产生任何代码** 。只有 Debug 构建
 或 Release 构建时用 ``-DLLVM_ENABLE_ASSERTIONS=ON`` 才会编译进去。
 
 运行时通过 ``-debug`` 或 ``-debug-only`` 控制输出：
@@ -184,7 +184,7 @@ GDB 调试 LLVM 的最佳实践
 bugpoint：最小化测试用例
 ==============================
 
-``bugpoint`` 是 LLVM 的**自动化测试用例最小化工具** 。当发现一个 Pass 有 bug 时，
+``bugpoint`` 是 LLVM 的 **自动化测试用例最小化工具** 。当发现一个 Pass 有 bug 时，
 用 bugpoint 可以将触发 bug 的大型 IR 文件缩小到最小可复现版本：
 
 .. code-block:: console
