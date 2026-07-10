@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # 使用 Noto Sans CJK 支持中文
 matplotlib.rcParams.update({
-    'font.family': ['Noto Sans CJK SC', 'DejaVu Sans'],
+    'font.family': ['Noto Sans CJK JP', 'DejaVu Sans'],
     'font.size': 11,
     'axes.unicode_minus': False,
     'figure.dpi': 150,
