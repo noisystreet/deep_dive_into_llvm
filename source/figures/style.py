@@ -11,6 +11,7 @@ matplotlib.rcParams.update({
     'savefig.dpi': 300,
     'savefig.bbox': 'tight',
     'figure.facecolor': 'white',
+    'svg.fonttype': 'path',  # 文字转为路径，RTD 上无需中文字体
 })
 
 # 书籍配色方案
