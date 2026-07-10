@@ -64,18 +64,8 @@ source_suffix = {
 }
 
 # -- Figure generation --------------------------------------------------------
-
-figure_generators = ['source/figures/llvm_three_stage.py', 'source/figures/mlir_progressive_lowering.py']
-
-def setup(app):
-    """构建前自动生成 matplotlib 图表。"""
-    app.connect('builder-inited', lambda app: generate_figures())
-
-def generate_figures():
-    import subprocess, sys, os
-    script = os.path.join(os.path.dirname(__file__), '..', 'scripts', 'generate-figures.py')
-    if os.path.exists(script):
-        subprocess.run([sys.executable, script], cwd=os.path.dirname(script))
+# SVG 已在本地用 Noto Sans CJK JP 生成并提交到 git。
+# RTD 上字体不可用，无需重新生成。
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
