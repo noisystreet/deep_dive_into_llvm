@@ -63,10 +63,14 @@ opt：LLVM 优化器驱动
 - ``-S`` ：输出文本格式 IR（.ll），不指定则输出比特码（.bc）
 - ``-o`` ：指定输出文件，不指定则输出到 stdout
 
+``opt`` 的输入输出都是 IR，这意味着 **你可以把 ``opt`` 的输出再喂给
+另一个 ``opt``**。这种"管道式"设计使 ``opt`` 成为 IR 变换的"瑞士军刀"——
+你可以把多个 ``opt`` 调用串联起来，逐步调试每一步的变换效果。
+
 Pass 管道语法
 ================
 
-``opt`` 的 ``-passes`` 参数支持丰富的管道描述语法：
+``opt`` 的 ``-passes`` 参数支持丰富的管道描述语法，这是 New PM 的一大亮点：
 
 .. code-block:: console
 
@@ -85,6 +89,15 @@ Pass 管道语法
 
    # 在默认管道前后插入 Pass
    -passes='default<O2>,my-pass'
+
+为什么 ``-passes`` 需要支持嵌套？因为 LLVM 的 Pass 有不同作用域：
+**Function Pass** 在每个函数上运行，**Module Pass** 在整个模块上运行。
+嵌套语法 ``function(mem2reg,instcombine)`` 明确表达了"在函数作用域内
+依次运行 mem2reg 和 instcombine"。
+
+这与 Legacy PM 的 ``-mem2reg -instcombine -gvn`` 扁平语法形成对比——
+New PM 的嵌套语法让 Pass 管道的 **结构显式化**，管道结构本身就是
+文档。
 
 加载 Pass 插件
 ====================
@@ -107,10 +120,17 @@ Legacy PM（可选）仍然使用 ``-load`` ：
 
    $ opt -load ./libMyLegacyPass.so -my-pass input.ll -S
 
+Pass 插件机制是 LLVM 模块化设计的体现：**Pass 不需要编译进 ``opt`` 二进制**，
+而是作为动态库加载。这有两层意义：
+
+1. **开发者角度**：开发新 Pass 时不需要重新编译整个 LLVM，只需编译
+   一个 ``.so`` 文件，极大缩短了开发迭代周期
+2. **用户角度**：可以按需加载 Pass，不需要的 Pass 不加载，减少内存占用
+
 调试输出
 ============
 
-``opt`` 提供了丰富的调试选项：
+``opt`` 提供了丰富的调试选项，让 IR 变换的过程完全透明：
 
 .. code-block:: console
 
@@ -133,6 +153,15 @@ Legacy PM（可选）仍然使用 ``-load`` ：
    # 查看 Pass 管道的结构
    $ opt -passes='default<O2>' -print-pipeline-passes
 
+``-print-after-all`` 是 LLVM 开发者最常用的调试选项。它会在每个 Pass
+之后打印 IR 的快照，就像电影的逐帧播放。如果你在开发一个 Pass 时发现
+输出不符合预期，先用 ``-print-after-all`` 找到"IR 第一次出错的 Pass"，
+然后只关注那个 Pass 的调试输出。
+
+结合 ``-print-before-all`` 和 ``-print-after-all``，你可以看到
+**每个 Pass 的输入和输出**——这正是"夹叙夹议"中"叙"的极致体现：
+IR 的每一帧变化都是可观察的。
+
 统计信息
 ============
 
@@ -148,6 +177,10 @@ Legacy PM（可选）仍然使用 ``-load`` ：
 
 # 查看 Pass 管道的执行顺序
    $ opt -passes='default<O2>' -print-pipeline-passes
+
+``-stats`` 输出的是 Pass 内部的计数器——每个 Pass 可以定义自己的统计
+指标（删除了多少条指令、做了多少次内联等）。这些数字是衡量 Pass 效果的
+"硬数据"，比"感觉上优化了"可靠得多。
 
 典型用法：对比优化前后
 ==============================
@@ -165,6 +198,14 @@ Legacy PM（可选）仍然使用 ``-load`` ：
 
    # 或者直接用 -O2 生成优化后的 IR
    $ clang -S -emit-llvm -O2 hello.c -o optimized.ll
+
+这个工作流是学习 LLVM 优化最有效的方式：**写一段 C 代码，生成优化前后
+的 IR，用 ``diff`` 逐行对比**。看 ``diff`` 的输出，问自己两个问题：
+
+1. "优化器删除了什么？"——理解每个 Pass 的"删除"能力
+2. "优化器做了什么变换？"——理解每个 Pass 的"变换"能力
+
+如果你能解释 ``diff`` 输出中的每一行变化，你就真正理解了 LLVM 的优化。
 
 opt 的源码位置
 ====================
@@ -190,3 +231,13 @@ opt 的源码位置
 
    // 运行 Pass 管道
    MPM.run(M, MAM);
+
+这段代码展示了 LLVM 架构的一个重要设计：**PassBuilder 是 Pass 管理的
+核心入口**。它负责三件事：
+
+1. **解析**：将 ``-passes`` 字符串解析为 Pass 对象
+2. **构建**：创建 PassManager 并注册 Pass
+3. **运行**：执行整个 Pass 管道
+
+这种"解析-构建-运行"的三段式设计，使得 Pass 管道可以灵活配置——
+这正是 ``opt`` 作为"Pass 运行器"的底层实现。
